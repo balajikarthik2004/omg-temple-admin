@@ -56,14 +56,14 @@ export function TempleShell() {
       <Toaster position="top-right" richColors />
 
       {/* Sidebar */}
-      <aside className="fixed left-0 top-0 z-30 flex h-screen w-[260px] flex-col border-r border-white/10 bg-sidebar text-sidebar-foreground">
+      <aside className="fixed left-0 top-0 z-30 flex h-screen w-[260px] flex-col border-r border-border bg-sidebar text-sidebar-foreground">
         <div className="flex flex-col px-6 py-6">
           <div className="flex items-center gap-3">
             <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white shadow-sm">
               <img src={omgLogo} alt="OMG Logo" className="h-7 w-auto object-contain" />
             </div>
             <div>
-              <div className="text-xl font-bold tracking-tight text-white">OMG</div>
+              <div className="text-xl font-bold tracking-tight text-sidebar-foreground">OMG</div>
               <div className="text-[10px] uppercase tracking-widest text-sidebar-muted">
                 Admin Portal
               </div>
@@ -93,26 +93,26 @@ export function TempleShell() {
                 className={`group flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all duration-300 ${
                   active
                     ? "bg-sidebar-active text-white shadow-md"
-                    : "text-sidebar-muted hover:bg-white/10 hover:text-white hover:translate-x-1 hover:shadow-sm"
+                    : "text-sidebar-muted hover:bg-muted hover:text-sidebar-foreground hover:translate-x-1 hover:shadow-sm"
                 }`}
               >
-                <Icon size={18} className={`transition-all duration-300 ${active ? "text-white" : "text-sidebar-muted group-hover:text-white group-hover:scale-110"}`} />
+                <Icon size={18} className={`transition-all duration-300 ${active ? "text-white" : "text-sidebar-muted group-hover:text-sidebar-foreground group-hover:scale-110"}`} />
                 {item.label}
               </button>
             );
           })}
         </nav>
 
-        <div className="mt-auto border-t border-white/10 p-4">
-          <div className="flex items-center gap-3 rounded-xl p-2 hover:bg-white/5 transition-colors cursor-pointer group">
-            <div className="grid h-9 w-9 place-items-center rounded-full bg-white/10 text-xs font-bold text-white group-hover:bg-sidebar-active transition-colors">
+        <div className="mt-auto border-t border-border p-4">
+          <div className="flex items-center gap-3 rounded-xl p-2 hover:bg-muted transition-colors cursor-pointer group">
+            <div className="grid h-9 w-9 place-items-center rounded-full bg-muted text-xs font-bold text-sidebar-foreground group-hover:bg-sidebar-active group-hover:text-white transition-colors">
               RK
             </div>
             <div className="min-w-0 flex-1 text-left">
-              <div className="truncate text-sm font-semibold text-white">Rajesh Kumar</div>
+              <div className="truncate text-sm font-semibold text-sidebar-foreground">Rajesh Kumar</div>
               <div className="truncate text-[10px] uppercase tracking-wider text-sidebar-muted">Executive Officer</div>
             </div>
-            <LogOut size={16} className="text-sidebar-muted group-hover:text-white transition-colors" />
+            <LogOut size={16} className="text-sidebar-muted group-hover:text-sidebar-foreground transition-colors" />
           </div>
         </div>
       </aside>

@@ -81,12 +81,12 @@ export function DashboardSection({ temple }: { temple: Temple }) {
   return (
     <div className="space-y-6">
       {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-border bg-sidebar p-6 text-white">
+      <div className="relative overflow-hidden rounded-2xl border border-border bg-sidebar p-6 text-sidebar-foreground">
         <div className="grid gap-6 md:grid-cols-3 md:items-center">
           <div>
             <div className="text-xl font-bold">{temple.name}</div>
-            <div className="text-sm text-white/80">Crowd Intelligence Dashboard</div>
-            <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-xs">
+            <div className="text-sm text-muted-foreground">Crowd Intelligence Dashboard</div>
+            <div className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald" />
               LIVE · Updated {now.toLocaleTimeString("en-IN", { hour12: false })}
             </div>
@@ -94,25 +94,25 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           <div className="flex items-center justify-center gap-5">
             <div className="relative grid h-32 w-32 place-items-center">
               <svg viewBox="0 0 100 100" className="absolute inset-0 -rotate-90">
-                <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="8" />
-                <circle cx="50" cy="50" r="42" fill="none" stroke="white" strokeWidth="8" strokeLinecap="round"
+                <circle cx="50" cy="50" r="42" fill="none" stroke="var(--muted)" strokeWidth="8" />
+                <circle cx="50" cy="50" r="42" fill="none" stroke="var(--saffron)" strokeWidth="8" strokeLinecap="round"
                   strokeDasharray={`${(pct / 100) * 264} 264`} />
               </svg>
               <div className="text-center">
                 <div className="text-xl font-bold tabular-nums">{pct}%</div>
-                <div className="text-[10px] uppercase opacity-80">Capacity</div>
+                <div className="text-[10px] uppercase text-muted-foreground">Capacity</div>
               </div>
             </div>
             <div>
               <div className="text-4xl font-bold tabular-nums">{inside.toLocaleString("en-IN")}</div>
-              <div className="text-xs text-white/80">Devotees currently inside</div>
+              <div className="text-xs text-muted-foreground">Devotees currently inside</div>
             </div>
           </div>
           <div className="space-y-1.5 text-sm">
-            <div className="flex justify-between"><span className="text-white/70">Today's total</span><span className="font-semibold tabular-nums">38,240</span></div>
-            <div className="flex justify-between"><span className="text-white/70">Peak (10:30 AM)</span><span className="font-semibold tabular-nums">15,820</span></div>
-            <div className="flex justify-between"><span className="text-white/70">Opens</span><span className="font-semibold">6:00 AM</span></div>
-            <div className="flex justify-between"><span className="text-white/70">Closes</span><span className="font-semibold">9:00 PM</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Today's total</span><span className="font-semibold tabular-nums">38,240</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Peak (10:30 AM)</span><span className="font-semibold tabular-nums">15,820</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Opens</span><span className="font-semibold">6:00 AM</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Closes</span><span className="font-semibold">9:00 PM</span></div>
           </div>
         </div>
       </div>
