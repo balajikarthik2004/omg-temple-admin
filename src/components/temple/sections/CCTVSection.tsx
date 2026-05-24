@@ -177,55 +177,52 @@ export function CCTVSection() {
  }
  }, [searchState]);
  return (
- <div className="space-y-5">
+ <div className="space-y-8">
  
- {/* Top Header & Navigation */}
- <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-sm md:flex-row md:items-center md:justify-between">
- 
- <div>
- 
- <div className="font-bold tracking-tight text-foreground">Command Center</div>
- <div className="mt-1 flex items-center gap-3 text-sm font-semibold text-muted-foreground">
- 
- <span className="flex items-center gap-1.5 text-emerald">
- <span className="h-1.5 w-1.5 rounded-xl bg-emerald shadow-[0_0_5px_rgba(16,185,129,0.6)]" />
- 12 Active
- </span>
- <span>0 Offline</span>
- <span className="flex items-center gap-1.5">
- <span className="blink-rec h-1.5 w-1.5 rounded-xl bg-danger shadow-[0_0_5px_rgba(255,0,0,0.6)]" />
- Recording All
- </span>
- </div>
- </div>
- <div className="flex items-center gap-2 rounded-xl border border-border bg-surface p-1">
- 
- <button
- onClick={() => setTab("live")}
- className={`flex items-center gap-2 rounded-xl px-4 py-1.5 text-xs font-bold transition-all ${tab ==="live" ?"bg-card text-foreground shadow-sm" :"text-muted-foreground hover:text-foreground"}`}
- >
- 
- <Activity size={14} /> Live Grid
- </button>
- <button
- onClick={() => setTab("search")}
- className={`flex items-center gap-2 rounded-xl px-4 py-1.5 text-xs font-bold transition-all ${tab ==="search" ?"bg-card text-foreground shadow-sm ring-1 ring-info/50 text-info" :"text-muted-foreground hover:text-foreground"}`}
- >
- 
- <ScanFace size={14} /> AI Person Search
- </button>
- </div>
- </div>
+ {/* Top Header & Navigation */ }
+      <div className="relative overflow-hidden rounded-2xl border border-indigo-deep/20 bg-gradient-to-br from-indigo-deep via-[#3a44a1] to-primary p-8 text-white shadow-lg flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 rounded-full bg-white/10 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 -mb-20 h-40 w-40 rounded-full bg-saffron/20 blur-2xl pointer-events-none" />
+
+        <div className="relative z-10">
+          <div className="text-2xl font-bold tracking-tight">Security Command Center</div>
+          <div className="mt-2 flex items-center gap-8 text-sm font-semibold text-indigo-100">
+            <span className="flex items-center gap-1.5 text-emerald">
+              <span className="h-2 w-2 rounded-full bg-emerald shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse" />
+              12 Active
+            </span>
+            <span>0 Offline</span>
+            <span className="flex items-center gap-1.5 text-danger font-bold">
+              <span className="blink-rec h-2 w-2 rounded-full bg-danger shadow-[0_0_8px_rgba(255,0,0,0.8)]" />
+              Recording All
+            </span>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 rounded-xl border border-white/20 bg-white/10 p-1 backdrop-blur-md relative z-10">
+          <button
+            onClick={() => setTab("live")}
+            className={`flex items-center gap-2 rounded-xl px-4 py-1.5 text-xs font-bold transition-all ${tab ==="live" ?"bg-white text-indigo-deep shadow-sm" :"text-indigo-100 hover:text-white"}`}
+          >
+            <Activity size={14} /> Live Grid
+          </button>
+          <button
+            onClick={() => setTab("search")}
+            className={`flex items-center gap-2 rounded-xl px-4 py-1.5 text-xs font-bold transition-all ${tab ==="search" ?"bg-white text-indigo-deep shadow-sm" :"text-indigo-100 hover:text-white"}`}
+          >
+            <ScanFace size={14} /> AI Person Search
+          </button>
+        </div>
+      </div>
  {tab ==="live" ? (
- <div className="grid gap-5 xl:grid-cols-[1fr_320px]">
+ <div className="grid gap-8 xl:grid-cols-[1fr_320px]">
  
  {/* Camera Grid */}
- <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+ <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
  
  {CCTV_CAMERAS.map((c, i) => (
  <div
  key={c.id}
- className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:border-border/80 hover:shadow-md"
+ className="group rounded-xl border border-border bg-card p-8 shadow-sm transition-all hover:border-border/80 hover:shadow-md"
  >
  
  <FakeFeed idx={i} status={c.status} />
@@ -270,9 +267,9 @@ export function CCTVSection() {
  ))}
  </div>
  {/* Analytics Sidebar */}
- <div className="flex flex-col gap-5">
+ <div className="flex flex-col gap-8">
  
- <div className="grid grid-cols-2 gap-3">
+ <div className="grid grid-cols-2 gap-8">
  
  {[
  { l:"Total Detected", v:"1,739", c:"text-saffron", i: Users },
@@ -282,7 +279,7 @@ export function CCTVSection() {
  ].map((s) => (
  <div
  key={s.l}
- className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md"
+ className="group rounded-xl border border-border bg-card p-8 shadow-sm transition-all hover:shadow-md"
  >
  
  <div className="flex items-start justify-between mb-2">
@@ -295,21 +292,21 @@ export function CCTVSection() {
  <s.i size={12} />
  </div>
  </div>
- <div className={`text-lg font-semibold tracking-tight ${s.c} tabular-nums`}>
+ <div className={`text-lg font-montserrat font-semibold tracking-tight ${s.c} tabular-nums`}>
  {s.v}
  </div>
  </div>
  ))}
  </div>
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm flex-1">
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm flex-1">
  
- <div className="mb-3 text-sm font-bold text-foreground">Critical Alerts</div>
+ <div className="mb-2 text-sm font-bold text-foreground">Critical Alerts</div>
  <div className="space-y-3">
  
  {alerts.map((a, i) => (
  <div
  key={i}
- className={`rounded-xl border border-${a.color}/30 bg-${a.color}/10 p-3 text-xs`}
+ className={`rounded-xl border border-${a.color}/30 bg-${a.color}/10 p-8 text-xs`}
  >
  
  <div className="flex items-center justify-between">
@@ -329,10 +326,10 @@ export function CCTVSection() {
  </div>
  </div>
  ) : (
- /* AI Person Search Tab */ <div className="grid gap-5 lg:grid-cols-[380px_1fr]">
+ /* AI Person Search Tab */ <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
  
  {/* Upload & Controls */}
- <div className="rounded-xl border border-border bg-card p-5 shadow-sm flex flex-col">
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm flex flex-col">
  
  <div className="mb-6">
  
@@ -351,7 +348,7 @@ export function CCTVSection() {
  onChange={handleUpload}
  className="absolute inset-0 opacity-0 cursor-pointer"
  />
- <div className="rounded-xl bg-surface p-3 shadow-sm transition-transform group-hover:scale-110">
+ <div className="rounded-xl bg-surface p-8 shadow-sm transition-transform group-hover:scale-110">
  
  <UploadCloud
  size={32}
@@ -366,7 +363,7 @@ export function CCTVSection() {
  </div>
  </label>
  ) : (
- <div className="flex flex-col items-center rounded-xl border border-border bg-surface p-5">
+ <div className="flex flex-col items-center rounded-xl border border-border bg-surface p-8">
  
  <div className="relative h-32 w-32 overflow-hidden rounded-xl border-4 border-info shadow-[0_0_20px_rgba(0,191,255,0.3)] bg-card">
  
@@ -407,12 +404,12 @@ export function CCTVSection() {
  )}
  </div>
  {/* Scanning & Results View */}
- <div className="rounded-xl border border-border bg-card p-5 shadow-sm min-h-[500px] flex flex-col">
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm min-h-[500px] flex flex-col">
  
  {searchState ==="idle" && (
  <div className="flex h-full flex-col items-center justify-center text-center opacity-60">
  
- <Target size={48} className="mb-3 text-border" />
+ <Target size={48} className="mb-2 text-border" />
  <div className="text-sm font-semibold text-muted-foreground">
  Awaiting Target Image
  </div>
@@ -431,7 +428,7 @@ export function CCTVSection() {
  </span>
  <span className="tabular-nums">{scanProgress}%</span>
  </div>
- <div className="mt-12 grid grid-cols-4 gap-3 opacity-50">
+ <div className="mt-12 grid grid-cols-4 gap-8 opacity-50">
  
  {CCTV_CAMERAS.slice(0, 4).map((c, i) => (
  <div key={i} className="opacity-70 grayscale">
@@ -460,7 +457,7 @@ export function CCTVSection() {
  {matchResults.map((m, i) => (
  <div
  key={i}
- className="flex flex-col sm:flex-row gap-3 rounded-xl border border-border bg-surface p-3 transition-all hover:shadow-md hover:border-info/30 group"
+ className="flex flex-col sm:flex-row gap-8 rounded-xl border border-border bg-surface p-8 transition-all hover:shadow-md hover:border-info/30 group"
  >
  
  <div className="w-full sm:w-48 shrink-0">

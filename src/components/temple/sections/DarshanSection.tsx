@@ -22,6 +22,7 @@ const darshanCategories = [
  cap:"High",
  color:"text-muted-foreground",
  bg:"bg-muted-foreground",
+ bgTint:"bg-muted-foreground/10",
  },
  {
  id:"100",
@@ -32,6 +33,7 @@ const darshanCategories = [
  cap:"Medium",
  color:"text-info",
  bg:"bg-info",
+ bgTint:"bg-info/10",
  },
  {
  id:"200",
@@ -42,6 +44,7 @@ const darshanCategories = [
  cap:"Medium",
  color:"text-saffron",
  bg:"bg-saffron",
+ bgTint:"bg-saffron/10",
  },
  {
  id:"300",
@@ -52,6 +55,7 @@ const darshanCategories = [
  cap:"Low",
  color:"text-emerald",
  bg:"bg-emerald",
+ bgTint:"bg-emerald/10",
  },
 ];
 const hourlyFlow = Array.from({ length: 12 }).map((_, i) => ({
@@ -75,12 +79,12 @@ export function DarshanSection() {
  <div className="space-y-4">
  
  {/* KPI Cards */}
- <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+ <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
  
  {darshanCategories.map((c) => (
  <div
  key={c.id}
- className="group flex flex-col justify-between rounded-lg border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md"
+ className={`kpi-card p-6 flex flex-col justify-between ${c.bgTint}`}
  >
  
  <div>
@@ -98,7 +102,7 @@ export function DarshanSection() {
  </div>
  <div className="mb-2 flex items-baseline gap-2">
  
- <div className={`text-2xl font-medium tracking-tight ${c.color}`}>{c.wait}</div>
+ <div className={`text-2xl font-montserrat font-medium tracking-tight ${c.color}`}>{c.wait}</div>
  <div className="text-xs font-semibold text-muted-foreground">wait time</div>
  </div>
  <div className="mt-auto flex items-center justify-between border-t border-border pt-2">
@@ -115,9 +119,9 @@ export function DarshanSection() {
  <div className="grid gap-4 lg:grid-cols-[1.5fr_1fr]">
  
  {/* Hourly Flow Chart */}
- <div className="rounded-lg border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-lg border border-border bg-card p-8 shadow-sm">
  
- <div className="mb-3 flex items-center justify-between">
+ <div className="mb-2 flex items-center justify-between">
  
  <div>
  
@@ -223,9 +227,9 @@ export function DarshanSection() {
  const key = keys[i] as keyof typeof lanes;
  const isOpen = lanes[key];
  return (
- <div key={c.id} className="flex items-center justify-between p-3">
+ <div key={c.id} className="flex items-center justify-between p-8">
  
- <div className="flex items-center gap-3">
+ <div className="flex items-center gap-8">
  
  <div
  className={`h-2 w-2 rounded-lg ${isOpen ? c.bg :"bg-muted"} ring-2 ring-background`}

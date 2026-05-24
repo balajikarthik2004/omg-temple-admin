@@ -10,6 +10,7 @@ import {
 import { useJitter } from"@/lib/use-live";
 import { toast } from"sonner";
 import { Car, Bike, AlertCircle, ArrowRight, TrendingUp, IndianRupee } from"lucide-react";
+import { StatCard } from "../ui/StatCard";
 const flowData = Array.from({ length: 16 }).map((_, i) => ({
  t: `${i * 5}m`,
  entry: 10 + Math.round(Math.sin(i / 2) * 5 + 8),
@@ -61,92 +62,47 @@ export function ParkingSection() {
  return"var(--status-normal)";
  };
  return (
- <div className="space-y-5">
+ <div className="space-y-8">
  
  {/* Top Metrics Row */}
- <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
- 
- <div className="group rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-xs font-extrabold text-muted-foreground">
- Total Two-Wheelers
+ <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+  <StatCard
+    icon={Bike}
+    label="Total Two-Wheelers"
+    value={(lotA2W + lotB2W).toLocaleString()}
+    valueSuffix="/ 1,200"
+    bgTint="bg-saffron/10"
+  />
+  <StatCard
+    icon={Car}
+    label="Total Four-Wheelers"
+    value={(lotA4W + lotB4W).toLocaleString()}
+    valueSuffix="/ 750"
+    bgTint="bg-info/10"
+  />
+  <StatCard
+    icon={TrendingUp}
+    label="Parking Fill Speed"
+    value="+18"
+    color="text-primary"
+    sub="more arriving/min"
+    bgTint="bg-primary/10"
+  />
+  <StatCard
+    icon={IndianRupee}
+    label="Daily Revenue (Est)"
+    value="₹42.5K"
+    color="text-emerald"
+    bgTint="bg-emerald/10"
+  />
  </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <Bike size={12} />
- </div>
- </div>
- <div className="text-xl font-bold tracking-tight text-foreground tabular-nums">
- 
- {(lotA2W + lotB2W).toLocaleString()}
- <span className="text-sm font-normal text-muted-foreground">/ 1,200</span>
- </div>
- </div>
- <div className="group rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-xs font-extrabold text-muted-foreground">
- Total Four-Wheelers
- </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <Car size={12} />
- </div>
- </div>
- <div className="text-xl font-bold tracking-tight text-foreground tabular-nums">
- 
- {(lotA4W + lotB4W).toLocaleString()}
- <span className="text-sm font-normal text-muted-foreground">/ 750</span>
- </div>
- </div>
- <div className="group rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-xs font-extrabold text-muted-foreground">
- Parking Fill Speed
- </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <TrendingUp size={12} />
- </div>
- </div>
- <div className="text-2xl font-semibold tracking-tight text-saffron tabular-nums">
- 
- +18
- <span className="text-[11px] font-normal text-muted-foreground">
- more arriving/min
- </span>
- </div>
- </div>
- <div className="group rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-xs font-extrabold text-muted-foreground">
- Daily Revenue (Est)
- </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <IndianRupee size={12} />
- </div>
- </div>
- <div className="text-2xl font-semibold tracking-tight text-emerald tabular-nums">
- 
- ₹42.5K
- </div>
- </div>
- </div>
- <div className="grid gap-5 xl:grid-cols-[1fr_340px]">
+ <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
  
  {/* Left Column: Lots & Flow */}
- <div className="flex flex-col gap-5">
+ <div className="flex flex-col gap-8">
  
  {/* Detailed Lot Cards */}
- <div className="grid gap-3 md:grid-cols-2">
+ <div className="grid gap-8 md:grid-cols-2">
  
  {lots.slice(0, 2).map((l) => {
  const pct2W = Math.round((l.filled2W / l.capacity2W) * 100) || 0;
@@ -154,10 +110,10 @@ export function ParkingSection() {
  return (
  <div
  key={l.name}
- className="rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:shadow-md"
+ className="kpi-card p-6"
  >
  
- <div className="mb-3 flex items-center justify-between">
+ <div className="mb-2 flex items-center justify-between">
  
  <div className="font-semibold text-foreground">{l.name}</div>
  <span
@@ -198,9 +154,9 @@ export function ParkingSection() {
  })}
  </div>
  {/* Vehicle Flow Chart */}
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm flex-1">
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm flex-1">
  
- <div className="mb-3 font-semibold text-foreground">Traffic Flow (Last 90 Mins)</div>
+ <div className="mb-2 font-semibold text-foreground">Traffic Flow (Last 90 Mins)</div>
  <div className="h-56">
  
  <ResponsiveContainer>
@@ -266,10 +222,10 @@ export function ParkingSection() {
  </div>
  </div>
  {/* Right Column: Alerts & Mini Map */}
- <div className="flex flex-col gap-5">
+ <div className="flex flex-col gap-8">
  
  {/* AI Alert Card */}
- <div className="rounded-xl border border-status-crowded/30 bg-status-crowded/5 p-4 shadow-sm">
+ <div className="rounded-xl border border-status-crowded/30 bg-status-crowded/5 p-8 shadow-sm">
  
  <div className="flex items-center gap-2 text-sm font-semibold text-status-crowded">
  
@@ -296,13 +252,13 @@ export function ParkingSection() {
  </div>
  </div>
  {/* Realistic Aisle Map */}
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm flex-1">
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm flex-1">
  
- <div className="mb-3 flex items-center justify-between text-sm font-semibold text-foreground">
+ <div className="mb-2 flex items-center justify-between text-sm font-semibold text-foreground">
  
  Live Map: Main Lot A
  </div>
- <div className="relative rounded-xl bg-surface p-3">
+ <div className="relative rounded-xl bg-surface p-8">
  
  <svg viewBox="0 0 400 250" className="w-full drop-shadow-sm h-[220px]">
  

@@ -10,6 +10,7 @@ import {
  Wrench,
  Activity,
 } from"lucide-react";
+import { StatCard } from "../ui/StatCard";
 const announcements = [
  {
  id: 1,
@@ -59,74 +60,16 @@ export function OperationsSection() {
  toast(`Janitorial team dispatched for ${id}`);
  };
  return (
- <div className="space-y-5">
+ <div className="space-y-8">
  
  {/* 1. Operations Pulse (Top Level KPIs) */}
- <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
- 
- <div className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-sm font-extrabold text-muted-foreground">
- Open Work Orders
+ <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+  <StatCard icon={Wrench} label="Open Work Orders" value={orders.filter((o) => o.status ==="open").length} color="text-status-busy" bgTint="bg-status-busy/10" />
+  <StatCard icon={Activity} label="Facility Health" value="94%" color="text-emerald" bgTint="bg-emerald/10" />
+  <StatCard icon={ShieldAlert} label="Active Rituals" value={1} color="text-saffron" bgTint="bg-saffron/10" />
+  <StatCard icon={Megaphone} label="Active Broadcasts" value={broadcasts.length} color="text-info" bgTint="bg-info/10" />
  </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <Wrench size={12} />
- </div>
- </div>
- <div className="text-xl font-semibold tabular-nums text-status-busy">
- 
- {orders.filter((o) => o.status ==="open").length}
- </div>
- </div>
- <div className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-sm font-extrabold text-muted-foreground">
- Facility Health
- </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <Activity size={12} />
- </div>
- </div>
- <div className="text-xl font-semibold tabular-nums text-emerald">94%</div>
- </div>
- <div className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-sm font-extrabold text-muted-foreground">
- Active Rituals
- </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <ShieldAlert size={12} />
- </div>
- </div>
- <div className="text-xl font-semibold tabular-nums text-saffron">1</div>
- </div>
- <div className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-sm font-extrabold text-muted-foreground">
- Active Broadcasts
- </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <Megaphone size={12} />
- </div>
- </div>
- <div className="text-xl font-semibold tabular-nums text-info">
- {broadcasts.length}
- </div>
- </div>
- </div>
- <div className="grid gap-5 lg:grid-cols-[1.2fr_1fr]">
+ <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
  
  {/* 2. Live Ritual & Event Command */}
  <div className="flex flex-col rounded-xl border border-border bg-card">
@@ -138,9 +81,9 @@ export function OperationsSection() {
  Today's Daily Pooja Schedule
  </div>
  </div>
- <div className="flex-1 p-4">
+ <div className="flex-1 p-8">
  
- <ol className="relative space-y-5 border-l-2 border-border pl-6">
+ <ol className="relative space-y-8 border-l-2 border-border pl-6">
  
  {POOJAS.map((p, i) => {
  const isLive = p.status ==="live";
@@ -163,7 +106,7 @@ export function OperationsSection() {
  
  <div className="max-w-md">
  
- <div className="flex items-center gap-3">
+ <div className="flex items-center gap-8">
  
  <span className="font-mono text-xs text-muted-foreground">
  {p.time}
@@ -235,7 +178,7 @@ export function OperationsSection() {
  return (
  <div
  key={order.id}
- className={`flex flex-col gap-2.5 p-4 ${isOpen ?"" :"opacity-50"}`}
+ className={`flex flex-col gap-2.5 p-8 ${isOpen ?"" :"opacity-50"}`}
  >
  
  <div className="flex items-start justify-between">
@@ -302,7 +245,7 @@ export function OperationsSection() {
  Manage live broadcasts across temple displays and mobile app
  </div>
  </div>
- <div className="grid gap-5 p-4 lg:grid-cols-2">
+ <div className="grid gap-8 p-8 lg:grid-cols-2">
  
  {/* Broadcaster */}
  <div>
@@ -312,7 +255,7 @@ export function OperationsSection() {
  value={newText}
  onChange={(e) => setNewText(e.target.value)}
  placeholder="Type message to display..."
- className="w-full resize-none rounded-xl border border-border bg-surface p-3 text-sm font-normal text-foreground placeholder:text-muted-foreground focus:border-saffron focus:outline-none focus:ring-1 focus:ring-saffron"
+ className="w-full resize-none rounded-xl border border-border bg-surface p-8 text-sm font-normal text-foreground placeholder:text-muted-foreground focus:border-saffron focus:outline-none focus:ring-1 focus:ring-saffron"
  rows={3}
  />
  <div className="mt-2 flex items-center justify-between">
@@ -347,7 +290,7 @@ export function OperationsSection() {
  broadcasts.map((b) => (
  <div
  key={b.id}
- className="flex items-center justify-between rounded-xl border border-border bg-surface p-3 shadow-sm"
+ className="flex items-center justify-between rounded-xl border border-border bg-surface p-8 shadow-sm"
  >
  
  <div>

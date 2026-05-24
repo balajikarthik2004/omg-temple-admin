@@ -12,11 +12,11 @@ import { useJitter } from"@/lib/use-live";
 import { toast } from"sonner";
 import { Plus, Pause, Megaphone, Merge, Siren, AlertOctagon } from"lucide-react";
 const lanes = [
- { name:"Queue A", waiting: 620, max: 800, wait: 52, vols: 8, status:"ACTIVE" },
- { name:"Queue B", waiting: 540, max: 800, wait: 46, vols: 6, status:"ACTIVE" },
- { name:"Queue C", waiting: 280, max: 500, wait: 28, vols: 4, status:"ACTIVE" },
- { name:"VIP Lane", waiting: 34, max: 100, wait: 8, vols: 2, status:"ACTIVE" },
- { name:"Special Darshan", waiting: 12, max: 200, wait: 5, vols: 1, status:"LIMITED" },
+ { name:"Queue A", waiting: 620, max: 800, wait: 52, vols: 8, status:"ACTIVE", bgTint:"bg-saffron/10" },
+ { name:"Queue B", waiting: 540, max: 800, wait: 46, vols: 6, status:"ACTIVE", bgTint:"bg-info/10" },
+ { name:"Queue C", waiting: 280, max: 500, wait: 28, vols: 4, status:"ACTIVE", bgTint:"bg-emerald/10" },
+ { name:"VIP Lane", waiting: 34, max: 100, wait: 8, vols: 2, status:"ACTIVE", bgTint:"bg-gold/10" },
+ { name:"Special Darshan", waiting: 12, max: 200, wait: 5, vols: 1, status:"LIMITED", bgTint:"bg-primary/5" },
 ];
 const waitTrend = Array.from({ length: 16 }).map((_, i) => ({
  t: `${i * 15}m`,
@@ -30,15 +30,14 @@ export function QueueSection() {
  return (
  <div className="space-y-4">
  
- <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+ <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
  
  {lanes.map((l) => {
  const pct = l.waiting / l.max;
- const color = pct > 0.8 ?"bg-danger" : pct > 0.5 ?"bg-status-busy" :"bg-emerald";
  return (
  <div
  key={l.name}
- className="flex flex-col justify-between rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md"
+ className={`kpi-card p-6 flex flex-col justify-between ${l.bgTint}`}
  >
  
  <div className="flex items-center justify-between">
@@ -58,7 +57,7 @@ export function QueueSection() {
  
  <div className="flex items-end gap-1.5">
  
- <span className="text-xl font-semibold tabular-nums leading-none">
+ <span className="text-xl font-montserrat font-semibold tabular-nums leading-none">
  {l.waiting}
  </span>
  <span className="text-xs font-semibold text-muted-foreground mb-0.5">
@@ -89,7 +88,7 @@ export function QueueSection() {
  AI Optimization Recommended
  </div>
  </div>
- <div className="p-4">
+ <div className="p-8">
  
  <div className="text-sm font-bold text-foreground">
  Open Special Darshan Lane
@@ -113,14 +112,14 @@ export function QueueSection() {
  </div>
  </div>
  </div>
- <div className="grid gap-3 lg:grid-cols-[1.6fr_1fr]">
+ <div className="grid gap-8 lg:grid-cols-[1.6fr_1fr]">
  
- <div className="rounded-xl border border-border bg-card p-4">
+ <div className="rounded-xl border border-border bg-card p-8">
  
- <div className="mb-3 flex items-center justify-between">
+ <div className="mb-2 flex items-center justify-between">
  
  <div className="font-semibold text-foreground">Queue Wait Time Trend</div>
- <div className="flex items-center gap-3">
+ <div className="flex items-center gap-8">
  
  <span className="text-xs font-extrabold text-muted-foreground">
  Last 4 Hours
@@ -220,7 +219,7 @@ export function QueueSection() {
  </div>
  <div className="space-y-4">
  
- <div className="rounded-xl border border-border bg-card p-4">
+ <div className="rounded-xl border border-border bg-card p-8">
  
  <div className="mb-2 text-sm font-medium">Queue Actions</div>
  <div className="grid grid-cols-1 gap-2 text-xs">
@@ -243,7 +242,7 @@ export function QueueSection() {
  ))}
  </div>
  </div>
- <div className="rounded-xl border border-border bg-card p-4">
+ <div className="rounded-xl border border-border bg-card p-8">
  
  <div className="mb-2 text-sm font-medium">Queue Configuration</div>
  <div className="space-y-4 text-xs">

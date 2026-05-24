@@ -36,7 +36,7 @@ export function AnnouncementsSection() {
  return (
  <div className="space-y-4">
  
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
  
  <div className="mb-2 font-medium">New Announcement</div>
  <div className="space-y-3">

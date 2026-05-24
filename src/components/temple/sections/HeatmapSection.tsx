@@ -3,6 +3,7 @@ import { densityColor, statusColor, ZONES } from"@/lib/temple-data";
 import { useJitter } from"@/lib/use-live";
 import { Play, Pause, Users, UsersRound, Car, Activity } from"lucide-react";
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Cell } from"recharts";
+import { StatCard } from "../ui/StatCard";
 
 const zones = [
  { id:"Main Gopuram", x: 220, y: 30, w: 160, h: 50 },
@@ -25,20 +26,6 @@ const forecast = [
  { t:"Now", v: 12450 }, { t:"+30m", v: 13200 }, { t:"+60m", v: 14800 },
  { t:"+90m", v: 13500 }, { t:"+120m", v: 11200 },
 ];
-
-function StatCard({ icon: Icon, label, value, color }: { icon: any; label: string; value: string; color: string }) {
- return (
- <div className="group rounded-lg border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md">
- <div className="flex items-start justify-between mb-2">
- <div className="text-xs font-extrabold text-muted-foreground">{label}</div>
- <div className="flex h-5 w-5 items-center justify-center rounded-lg bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- <Icon size={10} />
- </div>
- </div>
- <div className={`text-2xl font-medium tracking-tight ${color} tabular-nums`}>{value}</div>
- </div>
- );
-}
 
 export function HeatmapSection() {
  const [realtime, setRealtime] = useState(true);
@@ -70,21 +57,21 @@ export function HeatmapSection() {
  }, [realtime, playing]);
 
  return (
- <div className="space-y-5">
- <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
- <StatCard icon={Users} label="Inside Now" value={inside.toLocaleString("en-IN")} color="text-saffron" />
- <StatCard icon={UsersRound} label="In Queues" value={queues.toLocaleString("en-IN")} color="text-info" />
- <StatCard icon={Car} label="In Parking" value={parking.toLocaleString("en-IN")} color="text-status-busy" />
- <StatCard icon={Activity} label="Total on premises" value={(inside + queues + parking).toLocaleString("en-IN")} color="text-foreground" />
+ <div className="space-y-8">
+ <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+ <StatCard icon={Users} label="Inside Now" value={inside.toLocaleString("en-IN")} color="text-saffron" bgTint="bg-saffron/10" />
+ <StatCard icon={UsersRound} label="In Queues" value={queues.toLocaleString("en-IN")} color="text-info" bgTint="bg-info/10" />
+ <StatCard icon={Car} label="In Parking" value={parking.toLocaleString("en-IN")} color="text-status-busy" bgTint="bg-gold/10" />
+ <StatCard icon={Activity} label="Total on premises" value={(inside + queues + parking).toLocaleString("en-IN")} color="text-foreground" bgTint="bg-emerald/10" />
  </div>
 
- <div className="grid gap-5 xl:grid-cols-[1fr_340px]">
+ <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
  {/* Heatmap Map Area */}
- <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-4 shadow-sm">
- <div className="flex flex-wrap items-center justify-between gap-3">
+ <div className="flex flex-col gap-8 rounded-xl border border-border bg-card p-8 shadow-sm">
+ <div className="flex flex-wrap items-center justify-between gap-8">
  <div className="flex items-center gap-2">
- <button onClick={() => setRealtime(true)} className={`rounded-lg px-3 py-1.5 text-xs font-normal transition-colors ${realtime ?"bg-saffron text-white" :"bg-surface text-foreground hover:bg-muted"}`}>Real-time</button>
- <button onClick={() => setRealtime(false)} className={`rounded-lg px-3 py-1.5 text-xs font-normal transition-colors ${!realtime ?"bg-saffron text-white" :"bg-surface text-foreground hover:bg-muted"}`}>Historical</button>
+ <button onClick={() => setRealtime(true)} className={`rounded-lg px-3 py-1.5 text-xs font-normal transition-colors ${realtime ?"bg-gradient-to-r from-primary to-secondary text-white border-transparent shadow-sm" :"bg-surface text-foreground hover:bg-muted"}`}>Real-time</button>
+ <button onClick={() => setRealtime(false)} className={`rounded-lg px-3 py-1.5 text-xs font-normal transition-colors ${!realtime ?"bg-gradient-to-r from-primary to-secondary text-white border-transparent shadow-sm" :"bg-surface text-foreground hover:bg-muted"}`}>Historical</button>
  </div>
  <div className="text-sm font-semibold text-muted-foreground">
  {realtime ?"Live: OMG Temple Complex" :"Replaying: Last 6 Hours"}
@@ -99,7 +86,7 @@ export function HeatmapSection() {
  </div>
  </div>
 
- <div className="relative flex-1 rounded-xl bg-surface p-3">
+ <div className="relative flex-1 rounded-xl bg-surface p-8">
  <svg viewBox="0 0 600 360" className="h-[460px] w-full drop-shadow-sm">
  <rect x="20" y="10" width="560" height="340" rx="16" fill="var(--card)" stroke="var(--border)" strokeWidth="1.5" />
  <defs>
@@ -137,8 +124,8 @@ export function HeatmapSection() {
  </div>
 
  {/* Analytics Sidebar */}
- <div className="flex flex-col gap-5">
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="flex flex-col gap-8">
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
  <div className="mb-2 text-sm font-semibold text-foreground">AI Crowd Forecast (Next 2 Hours)</div>
  <div className="mb-6 text-[11px] font-normal text-muted-foreground">Peak warning at +60m based on historical trends</div>
  <div className="h-44">
@@ -158,8 +145,8 @@ export function HeatmapSection() {
  </div>
  </div>
 
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm flex-1">
- <div className="mb-3 text-sm font-semibold text-foreground">Status Legend</div>
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm flex-1">
+ <div className="mb-2 text-sm font-semibold text-foreground">Status Legend</div>
  <div className="space-y-3 text-xs font-normal text-foreground">
  {[
  ["Clear / Normal","var(--status-normal)"],
@@ -167,14 +154,14 @@ export function HeatmapSection() {
  ["Crowded","var(--status-crowded)"],
  ["Critical","var(--status-critical)"],
  ].map(([l, c]) => (
- <div key={l} className="flex items-center gap-3 rounded-lg bg-surface p-2 border border-border">
+ <div key={l} className="flex items-center gap-8 rounded-lg bg-surface p-2 border border-border">
  <span className="h-3 w-3 rounded-full shadow-inner" style={{ background: c }} />
  <span>{l}</span>
  </div>
  ))}
  </div>
 
- <div className="mt-6 rounded-lg border border-status-busy/30 bg-status-busy/10 p-3 text-xs leading-relaxed text-foreground">
+ <div className="mt-6 rounded-lg border border-status-busy/30 bg-status-busy/10 p-8 text-xs leading-relaxed text-foreground">
  <span className="font-semibold text-status-busy">AI Insight:</span> Recommend activating full queue management protocols by 15:00.
  </div>
  </div>

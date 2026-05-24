@@ -54,7 +54,7 @@ export function AnalyticsSection() {
  {["Today","7 Days","30 Days","Custom"].map((r, i) => (
  <button
  key={r}
- className={`rounded-xl px-3 py-1.5 ${i === 1 ?"bg-saffron text-white" :"bg-card border border-border"}`}
+ className={`rounded-xl px-3 py-1.5 ${i === 1 ?"bg-gradient-to-r from-primary to-secondary text-white border-transparent shadow-sm" :"bg-card border border-border"}`}
  >
  {r}
  </button>
@@ -64,7 +64,7 @@ export function AnalyticsSection() {
  Export Report
  </button>
  </div>
- <div className="grid gap-3 md:grid-cols-2">
+ <div className="grid gap-8 md:grid-cols-2">
  
  <Card title="Today vs Yesterday vs Last Week">
  
@@ -112,7 +112,7 @@ export function AnalyticsSection() {
  </AreaChart>
  </Card>
  </div>
- <div className="grid gap-3 md:grid-cols-2">
+ <div className="grid gap-8 md:grid-cols-2">
  
  <Card title="Devotee Journey Time (min)">
  
@@ -155,7 +155,7 @@ export function AnalyticsSection() {
  </LineChart>
  </Card>
  </div>
- <div className="grid gap-3 md:grid-cols-2">
+ <div className="grid gap-8 md:grid-cols-2">
  
  <Card title="Monthly Footfall (6 mo)">
  
@@ -243,7 +243,7 @@ export function AnalyticsSection() {
 }
 function Card({ title, children }: { title: string; children: React.ReactElement }) {
  return (
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
  
  <div className="mb-2 text-sm font-medium">{title}</div>
  <div className="h-60">

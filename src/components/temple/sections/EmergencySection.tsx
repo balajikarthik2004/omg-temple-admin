@@ -50,12 +50,12 @@ export function EmergencySection() {
  <div className="space-y-4">
  
  {active ? (
- <div className="pulse-critical rounded-xl border border-danger bg-danger/10 p-4 text-center">
+ <div className="pulse-critical rounded-xl border border-danger bg-danger/10 p-8 text-center">
  
  <div className="text-xs font-semibold text-danger">
  ● Active Emergency
  </div>
- <div className="mt-1 text-lg font-semibold text-danger">{active}</div>
+ <div className="mt-1 text-lg font-montserrat font-semibold text-danger">{active}</div>
  <div className="mt-1 text-xs text-muted-foreground">Protocol active · 00:42 elapsed</div>
  <button
  onClick={() => {
@@ -68,7 +68,7 @@ export function EmergencySection() {
  </button>
  </div>
  ) : (
- <div className="rounded-xl border border-emerald/30 bg-emerald/10 p-4 text-center">
+ <div className="rounded-xl border border-emerald/30 bg-emerald/10 p-8 text-center">
  
  <div className="text-base font-semibold text-emerald">
  ● All Clear — No Active Emergencies
@@ -81,12 +81,12 @@ export function EmergencySection() {
  <div>
  
  <div className="mb-2 text-sm font-medium">Emergency Protocols</div>
- <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+ <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
  
  {protocols.map(({ i: Icon, l, c }) => (
- <div key={l} className={`rounded-xl border bg-card p-4 shadow-sm border-${c}/30`}>
+ <div key={l} className={`rounded-xl border bg-card p-8 shadow-sm border-${c}/30`}>
  
- <div className="flex items-center gap-3">
+ <div className="flex items-center gap-8">
  
  <div
  className={`grid h-12 w-12 place-items-center rounded-xl bg-${c}/15 text-${c}`}
@@ -108,10 +108,10 @@ export function EmergencySection() {
  <div>
  
  <div className="mb-2 text-sm font-medium">Emergency Contacts</div>
- <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+ <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
  
  {contacts.map((c) => (
- <div key={c.name} className="rounded-xl border border-border bg-card p-3 shadow-sm">
+ <div key={c.name} className="rounded-xl border border-border bg-card p-8 shadow-sm">
  
  <div className="text-xs text-muted-foreground">{c.name}</div>
  <div className="mt-1 font-mono text-sm font-normal">{c.phone}</div>
@@ -172,12 +172,12 @@ export function EmergencySection() {
  </div>
  {confirm && (
  <div
- className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-3"
+ className="fixed inset-0 z-50 grid place-items-center bg-black/40 p-8"
  onClick={() => setConfirm(null)}
  >
  
  <div
- className="w-full max-w-md rounded-xl border border-border bg-card p-5 shadow-xl"
+ className="w-full max-w-md rounded-xl border border-border bg-card p-8 shadow-xl"
  onClick={(e) => e.stopPropagation()}
  >
  

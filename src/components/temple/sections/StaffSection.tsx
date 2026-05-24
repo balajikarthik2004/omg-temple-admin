@@ -12,6 +12,7 @@ import {
  UserMinus,
  Users,
 } from"lucide-react";
+import { StatCard } from "../ui/StatCard";
 const statusBadge = (s: string) => {
  if (s ==="duty")
  return { label:"● On Duty", cls:"text-emerald bg-emerald/10 border-emerald/20" };
@@ -47,77 +48,24 @@ export function StaffSection() {
  const off = STAFF.filter((s) => s.status ==="off").length;
  const [selected, setSelected] = useState<number | null>(null);
  return (
- <div className="space-y-5">
+ <div className="space-y-8">
  
  {/* KPI Cards */}
- <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
- 
- <div className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-sm font-extrabold text-muted-foreground">
- On Duty
+ <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+  <StatCard icon={UserCheck} label="On Duty" value={onDuty} color="text-emerald" bgTint="bg-emerald/10" />
+  <StatCard icon={Coffee} label="On Break" value={onBreak} color="text-status-busy" bgTint="bg-status-busy/10" />
+  <StatCard icon={UserMinus} label="Off Duty" value={off} color="text-muted-foreground" bgTint="bg-muted/30" />
+  <StatCard icon={Users} label="Total Assigned" value={60} color="text-foreground" bgTint="bg-primary/5" />
  </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <UserCheck size={12} />
- </div>
- </div>
- <div className="text-xl font-semibold tabular-nums text-emerald">{onDuty}</div>
- </div>
- <div className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-sm font-extrabold text-muted-foreground">
- On Break
- </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <Coffee size={12} />
- </div>
- </div>
- <div className="text-xl font-semibold tabular-nums text-status-busy">{onBreak}</div>
- </div>
- <div className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-sm font-extrabold text-muted-foreground">
- Off Duty
- </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <UserMinus size={12} />
- </div>
- </div>
- <div className="text-xl font-semibold tabular-nums text-muted-foreground">{off}</div>
- </div>
- <div className="group rounded-xl border border-border bg-card p-3 shadow-sm transition-all hover:shadow-md">
- 
- <div className="flex items-start justify-between mb-2">
- 
- <div className="text-sm font-extrabold text-muted-foreground">
- Total Assigned
- </div>
- <div className="flex h-6 w-6 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
- 
- <Users size={12} />
- </div>
- </div>
- <div className="text-xl font-bold tabular-nums text-foreground">60</div>
- </div>
- </div>
- <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr]">
+ <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
  
  {/* Floor Map */}
- <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
+ <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
  
- <div className="mb-3 flex items-center justify-between">
+ <div className="mb-2 flex items-center justify-between">
  
  <div className="font-semibold text-foreground">Staff Positions — Temple Floor</div>
- <div className="flex gap-3 text-xs text-muted-foreground">
+ <div className="flex gap-8 text-xs text-muted-foreground">
  
  <span className="flex items-center gap-1.5">
  <div className="h-2 w-2 rounded-xl bg-emerald" /> On Duty
@@ -206,7 +154,7 @@ export function StaffSection() {
  </svg>
  </div>
  {selected !== null && STAFF[selected] && (
- <div className="mt-3 flex items-center justify-between rounded-xl border border-info/30 bg-info/5 p-3 shadow-sm">
+ <div className="mt-3 flex items-center justify-between rounded-xl border border-info/30 bg-info/5 p-8 shadow-sm">
  
  <div>
  
@@ -231,9 +179,9 @@ export function StaffSection() {
  )}
  </div>
  {/* Quick Actions */}
- <div className="rounded-xl border border-border bg-card p-4">
+ <div className="rounded-xl border border-border bg-card p-8">
  
- <div className="mb-3 font-semibold text-foreground">Quick Actions</div>
+ <div className="mb-2 font-semibold text-foreground">Quick Actions</div>
  <div className="space-y-2">
  
  {[
