@@ -198,3 +198,12 @@
 .animate-track {
   animation: track-drift 6s ease-in-out infinite;
 }
+
+@keyframes fill-up {
+  0% { clip-path: inset(100% 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); }
+}
+
+.animate-fill-up {
+  animation: fill-up 1.2s ease-in-out forwards;
+}

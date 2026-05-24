@@ -46,7 +46,7 @@ export function TempleShell() {
     setShimmer(true);
     setTempleId(id);
     setTempleOpen(false);
-    setTimeout(() => setShimmer(false), 600);
+    setTimeout(() => setShimmer(false), 1200);
   };
 
   const sectionTitle = NAV_ITEMS.find((n) => n.id === section)?.label ?? "";
@@ -197,17 +197,40 @@ export function TempleShell() {
       </header>
 
       <main className="ml-[260px] pt-16">
-        <div className="relative p-6">
-          {section === "dashboard" && <DashboardSection temple={temple} />}
-          {section === "heatmap" && <HeatmapSection />}
-          {section === "cctv" && <CCTVSection />}
-          {section === "queue" && <QueueSection />}
-          {section === "staff" && <StaffSection />}
-          {section === "operations" && <OperationsSection />}
-          {section === "parking" && <ParkingSection />}
-          {/* {section === "announcements" && <AnnouncementsSection />}
-          {section === "analytics" && <AnalyticsSection />}
-          {section === "emergency" && <EmergencySection />} */}
+        <div className="relative p-6 min-h-[calc(100vh-4rem)]">
+          {shimmer && (
+            <div className="fixed top-16 left-[260px] right-0 bottom-0 z-50 flex flex-col items-center justify-center bg-surface/60 backdrop-blur-sm animate-in fade-in duration-300">
+              <div className="flex flex-col items-center gap-4">
+                <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-surface shadow-sm overflow-hidden border border-border">
+                  {/* Empty state */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-muted">
+                    <span className="text-4xl text-muted-foreground/30">ॐ</span>
+                  </div>
+                  
+                  {/* Filling state */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-saffron animate-fill-up">
+                    <span className="text-4xl text-white">ॐ</span>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div className="text-lg font-bold text-foreground">Switching to {temple.name}</div>
+                  <div className="text-sm font-medium text-muted-foreground mt-1">Connecting to live telemetry...</div>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className={`transition-all duration-500 ${shimmer ? "opacity-30 blur-[2px] pointer-events-none translate-y-2" : "opacity-100 translate-y-0 blur-none"}`}>
+            {section === "dashboard" && <DashboardSection temple={temple} />}
+            {section === "heatmap" && <HeatmapSection />}
+            {section === "cctv" && <CCTVSection />}
+            {section === "queue" && <QueueSection />}
+            {section === "staff" && <StaffSection />}
+            {section === "operations" && <OperationsSection />}
+            {section === "parking" && <ParkingSection />}
+            {/* {section === "announcements" && <AnnouncementsSection />}
+            {section === "analytics" && <AnalyticsSection />}
+            {section === "emergency" && <EmergencySection />} */}
+          </div>
         </div>
       </main>
     </div>

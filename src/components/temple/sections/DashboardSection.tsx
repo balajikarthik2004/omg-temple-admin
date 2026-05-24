@@ -111,8 +111,8 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           <div className="space-y-1.5 text-sm">
             <div className="flex justify-between"><span className="text-muted-foreground">Today's total</span><span className="font-semibold tabular-nums">38,240</span></div>
             <div className="flex justify-between"><span className="text-muted-foreground">Peak (10:30 AM)</span><span className="font-semibold tabular-nums">15,820</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Opens</span><span className="font-semibold">6:00 AM</span></div>
-            <div className="flex justify-between"><span className="text-muted-foreground">Closes</span><span className="font-semibold">9:00 PM</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Darshan Flow Rate</span><span className="font-semibold">1,250 / hr</span></div>
+            <div className="flex justify-between"><span className="text-muted-foreground">Next Peak Est.</span><span className="font-semibold">5:30 PM</span></div>
           </div>
         </div>
       </div>
