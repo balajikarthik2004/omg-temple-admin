@@ -1,15 +1,16 @@
 import { useState } from"react";
 import { Ticket, Clock, IndianRupee, TrendingUp, TrendingDown, Users } from"lucide-react";
 import {
- AreaChart,
- Area,
- BarChart,
- Bar,
- ResponsiveContainer,
- XAxis,
- YAxis,
- Tooltip,
- CartesianGrid,
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  Legend
 } from"recharts";
 import { toast } from"sonner"; // Mock Data
 const darshanCategories = [
@@ -135,76 +136,18 @@ export function DarshanSection() {
  
  <ResponsiveContainer width="100%" height="100%">
  
- <AreaChart data={hourlyFlow}>
- 
- <defs>
- 
- <linearGradient id="colorGen" x1="0" y1="0" x2="0" y2="1">
- <stop offset="5%" stopColor="var(--muted-foreground)" stopOpacity={0.3} />
- <stop offset="95%" stopColor="var(--muted-foreground)" stopOpacity={0} />
- </linearGradient>
- <linearGradient id="color100" x1="0" y1="0" x2="0" y2="1">
- <stop offset="5%" stopColor="var(--info)" stopOpacity={0.3} />
- <stop offset="95%" stopColor="var(--info)" stopOpacity={0} />
- </linearGradient>
- </defs>
- <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
- <XAxis
- dataKey="time"
- stroke="var(--muted-foreground)"
- fontSize={10}
- tickLine={false}
- axisLine={false}
- />
- <YAxis
- stroke="var(--muted-foreground)"
- fontSize={10}
- tickLine={false}
- axisLine={false}
- />
- <Tooltip
- contentStyle={{
- background:"var(--card)",
- border:"1px solid var(--border)",
- borderRadius: 8,
- fontSize: 11,
- }}
- />
- <Area
- type="monotone"
- dataKey="general"
- stackId="1"
- stroke="var(--muted-foreground)"
- fill="url(#colorGen)"
- name="General"
- />
- <Area
- type="monotone"
- dataKey="t100"
- stackId="1"
- stroke="var(--info)"
- fill="url(#color100)"
- name="₹100 Special"
- />
- <Area
- type="monotone"
- dataKey="t200"
- stackId="1"
- stroke="var(--saffron)"
- fill="var(--saffron)"
- fillOpacity={0.2}
- name="₹200 Quick"
- />
- <Area
- type="monotone"
- dataKey="t300"
- stackId="1"
- stroke="var(--emerald)"
- fill="var(--emerald)"
- fillOpacity={0.2}
- name="₹300 VIP"
- />
- </AreaChart>
+              <LineChart data={hourlyFlow} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+                <XAxis dataKey="time" stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis stroke="var(--muted-foreground)" fontSize={10} tickLine={false} axisLine={false} />
+                <Tooltip contentStyle={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 11, boxShadow: "0 4px 12px rgba(0,0,0,0.05)" }} />
+                <Legend wrapperStyle={{ fontSize: 11, paddingTop: "15px" }} iconType="circle" />
+                
+                <Line type="monotone" dataKey="general" stroke="#9ca3af" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0, fill: "#9ca3af" }} name="General" />
+                <Line type="monotone" dataKey="t100" stroke="var(--info)" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0, fill: "var(--info)" }} name="₹100 Special" />
+                <Line type="monotone" dataKey="t200" stroke="var(--saffron)" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0, fill: "var(--saffron)" }} name="₹200 Quick" />
+                <Line type="monotone" dataKey="t300" stroke="var(--emerald)" strokeWidth={3} dot={false} activeDot={{ r: 6, strokeWidth: 0, fill: "var(--emerald)" }} name="₹300 VIP" />
+              </LineChart>
  </ResponsiveContainer>
  </div>
  </div>
