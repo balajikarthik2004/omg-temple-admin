@@ -15,6 +15,7 @@ export type Temple = typeof TEMPLES[number];
 
 export const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: "Home" },
+  { id: "darshan", label: "Special Darshan", icon: "Ticket" },
   { id: "heatmap", label: "AI Heatmap", icon: "Flame" },
   { id: "cctv", label: "CCTV Monitor", icon: "Video" },
   { id: "queue", label: "Queue Management", icon: "Timer" },
