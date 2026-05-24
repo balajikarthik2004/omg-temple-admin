@@ -316,7 +316,7 @@ export function TempleShell() {
       <div className={`transition-all duration-500 ${shimmer ? "opacity-30 blur-[2px] pointer-events-none translate-y-2" : "opacity-100 translate-y-0 blur-none"}`}>
        {section === "dashboard" && <DashboardSection temple={temple} />}
        {section === "darshan" && <DarshanSection />}
-       {section === "heatmap" && <HeatmapSection />}
+       {section === "heatmap" && <HeatmapSection temple={temple} />}
        {section === "cctv" && <CCTVSection />}
        {section === "queue" && <QueueSection />}
        {section === "staff" && <StaffSection />}

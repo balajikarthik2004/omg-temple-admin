@@ -1,9 +1,23 @@
 import { useState, useEffect } from"react";
 import { densityColor, statusColor, ZONES } from"@/lib/temple-data";
 import { useJitter } from"@/lib/use-live";
-import { Play, Pause, Users, UsersRound, Car, Activity } from"lucide-react";
+import { Play, Pause, Users, UsersRound, Car, Activity, Maximize2, Minimize2 } from "lucide-react";
 import { BarChart, Bar, ResponsiveContainer, XAxis, YAxis, Tooltip, CartesianGrid, Cell } from"recharts";
 import { StatCard } from "../ui/StatCard";
+
+import palaniImg from "@/assets/palani.png";
+import maduraiImg from "@/assets/Madurai.png";
+import srirangamImg from "@/assets/Srirangam.png";
+import arunachaleswararImg from "@/assets/Arunachaleswarar.png";
+import rameswaramImg from "@/assets/Rameswaram.png";
+
+const imgMap: Record<string, string> = {
+  "palani": palaniImg,
+  "meenakshi": maduraiImg,
+  "srirangam": srirangamImg,
+  "tiruvannamalai": arunachaleswararImg,
+  "rameswaram": rameswaramImg
+};
 
 const zones = [
  { id:"Main Gopuram", x: 220, y: 30, w: 160, h: 50 },
@@ -27,10 +41,11 @@ const forecast = [
  { t:"+90m", v: 13500 }, { t:"+120m", v: 11200 },
 ];
 
-export function HeatmapSection() {
+export function HeatmapSection({ temple }: { temple?: any }) {
  const [realtime, setRealtime] = useState(true);
  const [layers, setLayers] = useState({ density: true, queues: true, flow: true, parking: true });
  const [playing, setPlaying] = useState(true);
+ const [fullScreen, setFullScreen] = useState(false);
 
  const inside = useJitter(12450, 80);
  const queues = useJitter(4320, 40);
@@ -67,7 +82,7 @@ export function HeatmapSection() {
 
  <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
  {/* Heatmap Map Area */}
- <div className="flex flex-col gap-8 rounded-xl border border-border bg-card p-8 shadow-sm">
+ <div className={`flex flex-col gap-8 rounded-2xl bg-card p-8 transition-all duration-500 ease-in-out ${fullScreen ? "fixed inset-4 z-50 shadow-[0_32px_64px_rgba(0,0,0,0.15)] ring-1 ring-border" : "border border-border shadow-sm"}`}>
  <div className="flex flex-wrap items-center justify-between gap-8">
  <div className="flex items-center gap-2">
  <button onClick={() => setRealtime(true)} className={`rounded-lg px-3 py-1.5 text-xs font-normal transition-colors ${realtime ?"bg-gradient-to-r from-primary to-secondary text-white border-transparent shadow-sm" :"bg-surface text-foreground hover:bg-muted"}`}>Real-time</button>
@@ -83,43 +98,67 @@ export function HeatmapSection() {
  <span className="font-normal text-foreground">{k}</span>
  </label>
  ))}
+ <button
+  onClick={() => setFullScreen(!fullScreen)}
+  className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all duration-300 ${
+   fullScreen 
+    ? "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-md hover:shadow-lg hover:-translate-y-0.5" 
+    : "bg-white border border-border text-foreground shadow-sm hover:-translate-y-0.5 hover:shadow-md"
+  }`}
+ >
+  {fullScreen ? <Minimize2 size={13} /> : <Maximize2 size={13} className="text-primary" />}
+  {fullScreen ? "Exit Full View" : "Expand Map"}
+ </button>
  </div>
  </div>
 
- <div className="relative flex-1 rounded-xl bg-surface p-8">
- <svg viewBox="0 0 600 360" className="h-[460px] w-full drop-shadow-sm">
- <rect x="20" y="10" width="560" height="340" rx="16" fill="var(--card)" stroke="var(--border)" strokeWidth="1.5" />
- <defs>
- <marker id="arrh" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto">
- <path d="M0,0 L10,5 L0,10 z" fill="var(--saffron)" />
- </marker>
- </defs>
+ <div className="relative flex-1 rounded-xl bg-surface p-0 overflow-hidden min-h-[460px]">
+ {temple && imgMap[temple.id] ? (
+  <img src={imgMap[temple.id]} alt={`${temple.name} Map`} className="absolute inset-0 w-full h-full object-cover opacity-90" />
+ ) : (
+  <svg viewBox="0 0 600 360" className="absolute inset-0 w-full h-full">
+   <rect x="20" y="10" width="560" height="340" rx="16" fill="var(--card)" stroke="var(--border)" strokeWidth="1.5" />
+   {layers.flow && Array.from({ length: 6 }).map((_, i) => (
+    <circle key={i} r="3" fill="var(--saffron)" style={{
+    offsetPath:"path('M80 150 Q 200 130 300 170 Q 400 200 520 150')",
+    animation: `flow ${3 + (i % 3)}s linear ${i * 0.4}s infinite`,
+    } as React.CSSProperties} className="opacity-80" />
+   ))}
+   </svg>
+  )}
 
- {zones.map((z) => {
- const zd = zoneData.find(d => d.id === z.id) || { pct: 50, data: ZONES[0] };
- const pct = Math.round(zd.pct);
- const color = densityColor(pct);
- if (!layers.density && z.id ==="Sanctum") return null;
- if (!layers.parking && z.id.startsWith("Parking")) return null;
- if (!layers.queues && z.id.startsWith("Queue")) return null;
- return (
- <g key={z.id} className="transition-all duration-1000">
- <rect x={z.x} y={z.y} width={z.w} height={z.h} rx="8"
- fill={color} fillOpacity={0.25} stroke={color} strokeWidth="1.5" className="transition-colors duration-1000" />
- <text x={z.x + z.w / 2} y={z.y + z.h / 2 - 2} textAnchor="middle" fontSize="10" fontWeight="600" fill="var(--foreground)">{z.id}</text>
- <text x={z.x + z.w / 2} y={z.y + z.h / 2 + 12} textAnchor="middle" fontSize="10" fill={color} fontWeight="700" className="transition-colors duration-1000">{zd.data.current || 0} · {pct}%</text>
- </g>
- );
- })}
+ {(!temple || !imgMap[temple.id]) && (
+  <svg viewBox="0 0 600 360" className="absolute inset-0 w-full h-full pointer-events-none drop-shadow-sm">
+  <defs>
+  <marker id="arrh" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+  <path d="M0,0 L10,5 L0,10 z" fill="var(--saffron)" />
+  </marker>
+  </defs>
 
- {/* flow dots animated via offsetPath */}
- {layers.flow && Array.from({ length: 6 }).map((_, i) => (
- <circle key={i} r="3" fill="var(--saffron)" style={{
- offsetPath:"path('M80 150 Q 200 130 300 170 Q 400 200 520 150')",
- animation: `flow ${3 + (i % 3)}s linear ${i * 0.4}s infinite`,
- } as React.CSSProperties} className="opacity-80" />
- ))}
- </svg>
+  {zones.map((z) => {
+  const zd = zoneData.find(d => d.id === z.id) || { pct: 50, data: ZONES[0] };
+  const pct = Math.round(zd.pct);
+  const color = densityColor(pct);
+  if (!layers.density && z.id ==="Sanctum") return null;
+  if (!layers.parking && z.id.startsWith("Parking")) return null;
+  if (!layers.queues && z.id.startsWith("Queue")) return null;
+  
+  const hasImage = temple && imgMap[temple.id];
+  const fillOp = hasImage ? 0.75 : 0.25;
+  const textCol = hasImage ? "#ffffff" : "var(--foreground)";
+  const textCol2 = hasImage ? "#ffffff" : color;
+
+  return (
+  <g key={z.id} className="transition-all duration-1000">
+  <rect x={z.x} y={z.y} width={z.w} height={z.h} rx="8"
+  fill={color} fillOpacity={fillOp} stroke={color} strokeWidth={hasImage ? "0" : "1.5"} className="transition-colors duration-1000 backdrop-blur-[1px]" />
+  <text x={z.x + z.w / 2} y={z.y + z.h / 2 - 2} textAnchor="middle" fontSize="10" fontWeight="600" fill={textCol} style={hasImage ? {textShadow: "0 1px 3px rgba(0,0,0,0.9)"} : {}}>{z.id}</text>
+  <text x={z.x + z.w / 2} y={z.y + z.h / 2 + 12} textAnchor="middle" fontSize="10" fill={textCol2} fontWeight="700" className="transition-colors duration-1000" style={hasImage ? {textShadow: "0 1px 3px rgba(0,0,0,0.9)"} : {}}>{zd.data.current || 0} · {pct}%</text>
+  </g>
+  );
+  })}
+   </svg>
+  )}
  </div>
  </div>
 
