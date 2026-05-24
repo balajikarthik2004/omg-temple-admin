@@ -120,22 +120,40 @@ export function DashboardSection({ temple }: { temple: Temple }) {
               {" "} {now.toLocaleTimeString("en-IN", { hour12: false })}
             </div>
           </div>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-6">
+            <div className="relative h-20 w-20 shrink-0 drop-shadow-md">
+              <svg className="h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" stroke="rgba(0,0,0,0.2)" strokeWidth="8" fill="none" />
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  stroke="url(#capGradient)"
+                  strokeWidth="8"
+                  fill="none"
+                  strokeDasharray="251.2"
+                  strokeDashoffset={251.2 - (251.2 * pct) / 100}
+                  strokeLinecap="round"
+                  className="transition-all duration-1000 ease-in-out"
+                />
+                <defs>
+                  <linearGradient id="capGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="var(--saffron)" />
+                    <stop offset="100%" stopColor="var(--emerald)" />
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-sm font-bold text-white">{pct}%</span>
+              </div>
+            </div>
 
-            <div className="text-center md:text-left">
-
+            <div className="text-left">
               <div className="text-4xl font-bold tabular-nums text-white tracking-tight drop-shadow-sm">
                 {inside.toLocaleString("en-IN")}
               </div>
-              <div className="text-xs text-indigo-100 mt-1.5 font-medium mb-3">
+              <div className="text-xs text-indigo-100 mt-1 font-medium">
                 Devotees currently inside
-                <span className="font-bold text-white ml-1 bg-white/10 px-1.5 py-0.5 rounded">({pct}% Capacity)</span>
-              </div>
-              <div className="h-2.5 w-full bg-black/20 rounded-full overflow-hidden border border-white/10">
-                <div 
-                  className="h-full rounded-full transition-all duration-1000 ease-in-out" 
-                  style={{ width: `${pct}%`, background: "linear-gradient(90deg, var(--saffron) 0%, var(--emerald) 100%)" }}
-                />
               </div>
             </div>
           </div>
