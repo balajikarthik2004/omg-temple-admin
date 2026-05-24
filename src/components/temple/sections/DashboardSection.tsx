@@ -121,7 +121,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
             </div>
           </div>
           <div className="flex items-center justify-center gap-6">
-            <div className="relative h-20 w-20 shrink-0 drop-shadow-md">
+            <div className="relative h-32 w-32 shrink-0 drop-shadow-md">
               <svg className="h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="40" stroke="rgba(0,0,0,0.2)" strokeWidth="8" fill="none" />
                 <circle
@@ -144,7 +144,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-sm font-bold text-white">{pct}%</span>
+                <span className="text-xl font-bold text-white">{pct}%</span>
               </div>
             </div>
 
