@@ -81,7 +81,7 @@ function FakeFeed({
     "Adult · 82%",
   ];
   return (
-    <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-muted ring-1 ring-border shadow-inner">
+    <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black ring-1 ring-border/50 shadow-inner">
       <video
         src={
           idx % 2 === 0
@@ -92,13 +92,13 @@ function FakeFeed({
         loop
         muted
         playsInline
-        className="absolute inset-0 h-full w-full object-cover opacity-90 grayscale"
+        className="absolute inset-0 h-full w-full object-cover opacity-60 grayscale invert mix-blend-screen"
       />
       <div
-        className="absolute inset-0 opacity-10 mix-blend-multiply"
+        className="absolute inset-0 opacity-20 mix-blend-multiply"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 20% 30%, rgba(0,0,0,0.08) 0, transparent 50%), radial-gradient(circle at 80% 70%, rgba(0,0,0,0.05) 0, transparent 60%)",
+            "radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0, transparent 50%), radial-gradient(circle at 80% 70%, rgba(255,255,255,0.05) 0, transparent 60%)",
         }}
       />
       {boxes.map((b, i) => {
@@ -231,37 +231,37 @@ export function CCTVSection() {
             {CCTV_CAMERAS.map((c, i) => (
               <div
                 key={c.id}
-                className="group flex flex-col justify-between rounded-[24px] border border-slate-800/80 bg-gradient-to-b from-slate-900 to-black p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition-all duration-400 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(0,0,0,0.4)] hover:border-slate-700 text-white"
+                className="group flex flex-col justify-between rounded-[24px] border border-border/50 bg-card p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-all duration-400 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)]"
               >
                 <FakeFeed idx={i} status={c.status} />
                 <div className="mt-4 flex items-start justify-between">
                   <div>
-                    <div className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">{c.id}</div>
-                    <div className="mt-1 text-[15px] font-black tracking-tight text-white leading-tight drop-shadow-sm">
+                    <div className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">{c.id}</div>
+                    <div className="mt-1 text-[15px] font-black tracking-tight text-foreground leading-tight drop-shadow-sm">
                       {c.name}
                     </div>
                   </div>
                   <span
-                    className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-black uppercase tracking-widest shadow-inner ${c.status === "CROWDED" ? "bg-danger/20 text-danger border-danger/30" :
-                        c.status === "BUSY" ? "bg-saffron/20 text-saffron border-saffron/30" :
-                          "bg-emerald/20 text-emerald border-emerald/30"
+                    className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-black uppercase tracking-widest shadow-inner ${c.status === "CROWDED" ? "bg-danger/10 text-danger border-danger/20" :
+                        c.status === "BUSY" ? "bg-saffron/10 text-saffron border-saffron/20" :
+                          "bg-emerald/10 text-emerald border-emerald/20"
                       }`}
                   >
                     {c.status}
                   </span>
                 </div>
-                <div className="mt-3.5 flex items-center justify-between border-t border-slate-800/80 pt-3.5 text-[11px] font-medium text-slate-400">
-                  <span className="flex items-center gap-1.5 text-slate-300">
-                    <UserSearch size={14} className="text-slate-500" />
+                <div className="mt-3.5 flex items-center justify-between border-t border-border/50 pt-3.5 text-[11px] font-medium text-muted-foreground">
+                  <span className="flex items-center gap-1.5 text-muted-foreground/80">
+                    <UserSearch size={14} className="text-muted-foreground/60" />
                     {c.type === "people" ? `${c.count} detected` : `${c.count} vehicles`}
                   </span>
-                  <span className="font-mono text-[10px] tracking-wider text-slate-500">{timeStr}</span>
+                  <span className="font-mono text-[10px] tracking-wider text-muted-foreground/70">{timeStr}</span>
                 </div>
                 <div className="mt-4 grid grid-cols-4 gap-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   {[ZoomIn, Camera, Bell, Maximize2].map((Icon, j) => (
                     <button
                       key={j}
-                      className="flex h-10 items-center justify-center rounded-xl bg-[#1A1F60]/80 text-white transition-all hover:bg-[#1A1F60] hover:text-white dark:bg-white/5 dark:text-white dark:hover:bg-white dark:hover:text-black hover:shadow-lg hover:-translate-y-0.5"
+                      className="flex h-10 items-center justify-center rounded-xl bg-muted/80 text-muted-foreground border border-border/50 transition-all hover:bg-surface hover:text-foreground hover:shadow-lg hover:-translate-y-0.5"
                     >
                       <Icon size={18} />
                     </button>
