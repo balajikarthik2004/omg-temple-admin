@@ -81,86 +81,110 @@ export function StaffSection() {
         />
       </div>
       <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-        {/* Floor Map */}
-        <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
-          <div className="mb-2 flex items-center justify-between">
-            <div className="font-semibold text-foreground">Staff Positions — Temple Floor</div>
-            <div className="flex gap-8 text-xs text-muted-foreground">
-              <span className="flex items-center gap-1.5">
-                <div className="h-2 w-2 rounded-xl bg-emerald" /> On Duty
+        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm overflow-hidden relative flex flex-col">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="font-bold text-lg text-foreground tracking-tight">Staff Positions — Temple Floor</div>
+            <div className="flex gap-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+              <span className="flex items-center gap-2">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald"></span>
+                </span>
+                Active Patrol
               </span>
-              <span className="flex items-center gap-1.5">
-                <div className="h-2 w-2 rounded-xl bg-status-busy" /> Break
+              <span className="flex items-center gap-2">
+                <div className="h-2.5 w-2.5 rounded-full bg-status-busy" /> Break/Stationary
               </span>
             </div>
           </div>
-          <div className="rounded-xl bg-surface p-2">
-            <svg viewBox="0 0 560 360" className="h-[340px] w-full">
-              <rect
-                x="20"
-                y="10"
-                width="520"
-                height="340"
-                rx="14"
-                fill="none"
-                stroke="var(--border)"
-                strokeDasharray="4 4"
-                strokeWidth="1"
-              />
-              <rect
-                x="220"
-                y="120"
-                width="120"
-                height="100"
-                rx="8"
-                fill="var(--saffron)"
-                fillOpacity={0.05}
-                stroke="var(--saffron)"
-                strokeOpacity={0.3}
-                strokeWidth="1"
-              />
-              <text
-                x="280"
-                y="172"
-                textAnchor="middle"
-                fontSize="11"
-                fontWeight="600"
-                fill="var(--saffron)"
-              >
-                Sanctum
-              </text>
+          <div className="relative rounded-xl bg-[#0F172A] p-2 overflow-hidden border border-border/50 shadow-inner">
+            {/* Architectural Grid Background */}
+            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px]" />
+            
+            <svg viewBox="0 0 560 360" className="h-[340px] w-full drop-shadow-md relative z-10">
+              <defs>
+                <pattern id="diagonal-stripe" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                  <rect width="4" height="8" fill="rgba(255,255,255,0.03)" />
+                </pattern>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+              </defs>
+              
+              {/* Main Compound Wall */}
+              <rect x="20" y="20" width="520" height="320" rx="6" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="3" />
+              
+              {/* Outer Prakaram (Corridor) */}
+              <rect x="50" y="50" width="460" height="260" rx="4" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" strokeDasharray="6 3" />
+              
+              {/* Inner Sanctum (Garbhagriha) */}
+              <rect x="200" y="110" width="160" height="100" rx="6" fill="rgba(245,158,11,0.05)" stroke="rgba(245,158,11,0.2)" strokeWidth="1.5" />
+              <rect x="220" y="130" width="120" height="60" rx="4" fill="url(#diagonal-stripe)" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
+              <text x="280" y="165" textAnchor="middle" fontSize="13" fontWeight="800" fill="rgba(245,158,11,0.6)" letterSpacing="3">SANCTUM</text>
+
+              {/* Mandapams / Halls */}
+              <rect x="70" y="70" width="100" height="80" rx="4" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.15)" strokeWidth="1" />
+              <text x="120" y="114" textAnchor="middle" fontSize="10" fontWeight="600" fill="rgba(59,130,246,0.5)">Annadhanam</text>
+
+              <rect x="390" y="70" width="100" height="180" rx="4" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.15)" strokeWidth="1" />
+              <text x="440" y="165" textAnchor="middle" fontSize="10" fontWeight="600" fill="rgba(16,185,129,0.5)">Queue Complex</text>
+              
+              {/* Main Gopuram (Entrance) */}
+              <rect x="240" y="10" width="80" height="20" rx="2" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+              <text x="280" y="24" textAnchor="middle" fontSize="8" fontWeight="800" fill="rgba(255,255,255,0.5)" letterSpacing="1">EAST GOPURAM</text>
+              
+              {/* South Gopuram */}
+              <rect x="10" y="150" width="20" height="60" rx="2" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+              
+              {/* Paths */}
+              <path d="M 280 30 L 280 110" stroke="rgba(255,255,255,0.05)" strokeWidth="24" strokeLinecap="round" />
+              <path d="M 360 160 L 390 160" stroke="rgba(255,255,255,0.05)" strokeWidth="24" strokeLinecap="round" />
+              
               {staffPositions.map((p, i) => {
                 const s = STAFF[i];
                 if (!s) return null;
-                const color =
-                  s.status === "duty"
-                    ? "var(--emerald)"
-                    : s.status === "break"
-                      ? "var(--status-busy)"
-                      : "var(--muted-foreground)";
                 const isSelected = selected === i;
+                const isDuty = s.status === "duty";
+                const color = isDuty ? "#10B981" : s.status === "break" ? "#F59E0B" : "#64748B";
+                
                 return (
                   <g
                     key={s.id}
                     onClick={() => setSelected(i)}
-                    className="cursor-pointer transition-opacity hover:opacity-70"
+                    className="cursor-pointer transition-opacity hover:opacity-80"
+                    style={{ transformOrigin: `${p.x}px ${p.y}px`, transition: 'transform 0.2s', transform: isSelected ? 'scale(1.25)' : 'scale(1)' }}
                   >
+                    {isDuty && (
+                      <circle 
+                        cx={p.x} 
+                        cy={p.y} 
+                        r={isSelected ? "14" : "10"} 
+                        fill={color} 
+                        fillOpacity={0.2} 
+                        filter="url(#glow)" 
+                        className={isSelected ? "" : "animate-pulse"} 
+                      />
+                    )}
                     <circle
                       cx={p.x}
                       cy={p.y}
-                      r={isSelected ? "11" : "9"}
+                      r={isSelected ? "6" : "4.5"}
                       fill={color}
-                      fillOpacity={0.2}
-                      stroke={color}
-                      strokeWidth={isSelected ? "2" : "1"}
+                      stroke="#0F172A"
+                      strokeWidth="1.5"
                     />
                     <text
                       x={p.x}
-                      y={p.y + 3}
+                      y={p.y - 12}
                       textAnchor="middle"
-                      fontSize={isSelected ? "10" : "8"}
-                      fontWeight="600"
-                      fill={color}
+                      fontSize={isSelected ? "11" : "9"}
+                      fontWeight="800"
+                      fill={isSelected ? "#FFF" : color}
+                      className="drop-shadow-md"
                     >
                       {s.id.slice(-2)}
                     </text>

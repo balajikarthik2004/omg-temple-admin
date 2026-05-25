@@ -395,19 +395,32 @@ export function CCTVSection() {
             )}
             {searchState === "scanning" && (
               <div className="flex h-full flex-col justify-center">
-                <div className="mb-8">
-                  <div className="flex items-center justify-between text-xs font-black uppercase tracking-widest text-info mb-3">
-                    <span className="flex items-center gap-2">
-                      <ScanFace size={16} className="animate-pulse" /> Deep Scanning Feeds...
-                    </span>
-                    <span className="tabular-nums text-lg">{scanProgress}%</span>
-                  </div>
-                  <div className="h-2 w-full overflow-hidden rounded-full bg-surface shadow-inner border border-border/50">
-                    <div 
-                      className="h-full bg-info transition-all duration-300 ease-out relative shadow-[0_0_12px_rgba(0,191,255,0.8)]"
-                      style={{ width: `${scanProgress}%` }}
-                    >
-                      <div className="absolute inset-0 w-full h-full bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent)] animate-scan" />
+                <div className="mb-10 relative">
+                  <div className="absolute -inset-4 bg-info/10 rounded-3xl blur-xl animate-pulse" />
+                  <div className="relative rounded-2xl bg-black border border-info/30 p-8 shadow-[0_0_40px_rgba(0,191,255,0.15)] overflow-hidden">
+                    <div className="absolute inset-0 bg-[linear-gradient(rgba(0,191,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,191,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
+                    <div className="relative flex items-center justify-between text-info mb-6">
+                      <span className="flex items-center gap-3 text-sm font-black uppercase tracking-widest drop-shadow-[0_0_8px_rgba(0,191,255,0.8)]">
+                        <ScanFace size={20} className="animate-pulse" /> AI Neural Scan in Progress
+                      </span>
+                      <span className="font-mono text-3xl font-black tabular-nums drop-shadow-[0_0_12px_rgba(0,191,255,1)]">
+                        {scanProgress.toString().padStart(2, '0')}%
+                      </span>
+                    </div>
+                    
+                    <div className="relative h-4 w-full rounded-full bg-slate-900 overflow-hidden shadow-inner ring-1 ring-white/10">
+                      <div 
+                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-info/40 via-info to-white transition-all duration-300 ease-out shadow-[0_0_20px_rgba(0,191,255,0.9)]"
+                        style={{ width: `${scanProgress}%` }}
+                      >
+                        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)] animate-scan mix-blend-screen" />
+                      </div>
+                    </div>
+                    
+                    <div className="mt-4 flex justify-between text-[10px] font-bold uppercase tracking-widest text-info/60">
+                      <span>Analyzing Node {Math.floor(scanProgress / 10)}</span>
+                      <span>{scanProgress > 50 ? 'Identifying Signatures...' : 'Isolating Variables...'}</span>
+                      <span>{scanProgress === 100 ? 'Complete' : 'Processing...'}</span>
                     </div>
                   </div>
                 </div>

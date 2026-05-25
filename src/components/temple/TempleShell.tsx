@@ -455,10 +455,10 @@ export function TempleShell() {
                 <div className="flex flex-col items-center gap-6">
                   <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl overflow-hidden bg-surface border border-border shadow-md">
                     <div className="absolute inset-0 flex items-center justify-center bg-primary/10">
-                      <span className="text-3xl font-montserrat text-primary/30">à¥</span>
+                      <span className="text-3xl font-montserrat text-primary/30">ॐ</span>
                     </div>
                     <div className="absolute inset-0 flex items-center justify-center animate-fill-up bg-gradient-to-br from-primary to-secondary">
-                      <span className="text-3xl font-montserrat text-white">à¥</span>
+                      <span className="text-3xl font-montserrat text-white">ॐ</span>
                     </div>
                   </div>
                   <div className="text-center">
