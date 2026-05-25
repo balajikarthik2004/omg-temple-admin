@@ -5,7 +5,11 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "OMG Smart Temple — Admin Dashboard" },
-      { name: "description", content: "Temple admin operations dashboard: live crowd, AI heatmap, CCTV, queues, staff and emergencies." },
+      {
+        name: "description",
+        content:
+          "Temple admin operations dashboard: live crowd, AI heatmap, CCTV, queues, staff and emergencies.",
+      },
     ],
   }),
   component: TempleShell,

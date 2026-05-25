@@ -1,23 +1,25 @@
 import { useState, useEffect } from "react";
 import {
- Home,
- Users,
- Flame,
- Video,
- Timer,
- UsersRound,
- Landmark,
- Car,
- Megaphone,
- BarChart3,
- Siren,
- Bell,
- LogOut,
- ChevronDown,
- Ticket,
- ChevronLeft,
- ChevronRight,
- Sparkles,
+  Home,
+  Users,
+  Flame,
+  Video,
+  Timer,
+  UsersRound,
+  Landmark,
+  Car,
+  Megaphone,
+  BarChart3,
+  Siren,
+  Bell,
+  LogOut,
+  ChevronDown,
+  Ticket,
+  ChevronLeft,
+  ChevronRight,
+  Sparkles,
+  MapPin,
+  IndianRupee,
 } from "lucide-react";
 import { Toaster } from "sonner";
 import { NAV_ITEMS, TEMPLES, type SectionId } from "@/lib/temple-data";
@@ -33,302 +35,463 @@ import { ParkingSection } from "./sections/ParkingSection";
 import { AnnouncementsSection } from "./sections/AnnouncementsSection";
 import { AnalyticsSection } from "./sections/AnalyticsSection";
 import { EmergencySection } from "./sections/EmergencySection";
+import { DonationSection } from "./sections/DonationSection";
 import omgLogo from "@/assets/logo.png";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string; size?: number }>> = {
- Home,
- Users,
- Flame,
- Video,
- Timer,
- UsersRound,
- Landmark,
- Car,
- Megaphone,
- BarChart3,
- Siren,
- Ticket,
+  Home,
+  Users,
+  Flame,
+  Video,
+  Timer,
+  UsersRound,
+  Landmark,
+  Car,
+  Megaphone,
+  BarChart3,
+  Siren,
+  Ticket,
+  IndianRupee,
 };
 
 export function TempleShell() {
- const [sidebarExpanded, setSidebarExpanded] = useState(true);
- const [section, setSection] = useState<SectionId>(() => {
-  if (typeof window !== "undefined") {
-   const hash = window.location.hash.replace("#", "");
-   return (NAV_ITEMS.find((n) => n.id === hash)?.id as SectionId) || "dashboard";
-  }
-  return "dashboard";
- });
- useEffect(() => {
-  window.location.hash = section;
- }, [section]);
- const [templeId, setTempleId] = useState(TEMPLES[0].id);
- const [templeOpen, setTempleOpen] = useState(false);
- const [shimmer, setShimmer] = useState(false);
- const [bellOpen, setBellOpen] = useState(false);
- const temple = TEMPLES.find((t) => t.id === templeId)!;
- const now = useLiveClock();
- const switchTemple = (id: string) => {
-  setShimmer(true);
-  setTempleId(id);
-  setTempleOpen(false);
-  setTimeout(() => setShimmer(false), 1200);
- };
- const sectionTitle = NAV_ITEMS.find((n) => n.id === section)?.label ?? "";
+  const [sidebarExpanded, setSidebarExpanded] = useState(true);
+  const [section, setSection] = useState<SectionId>(() => {
+    if (typeof window !== "undefined") {
+      const hash = window.location.hash.replace("#", "");
+      return (NAV_ITEMS.find((n) => n.id === hash)?.id as SectionId) || "dashboard";
+    }
+    return "dashboard";
+  });
+  useEffect(() => {
+    window.location.hash = section;
+  }, [section]);
+  const [templeId, setTempleId] = useState(TEMPLES[0].id);
+  const [templeOpen, setTempleOpen] = useState(false);
+  const [selectedDistrict, setSelectedDistrict] = useState<string>("All Districts");
+  const [districtOpen, setDistrictOpen] = useState(false);
+  const [shimmer, setShimmer] = useState(false);
+  const [bellOpen, setBellOpen] = useState(false);
+  const temple = TEMPLES.find((t) => t.id === templeId) || TEMPLES[0];
+  const districts = [
+    "All Districts",
+    ...Array.from(new Set(TEMPLES.map((t) => t.district))),
+  ].sort();
+  const now = useLiveClock();
+  const switchTemple = (id: string) => {
+    setShimmer(true);
+    setTempleId(id);
+    setTempleOpen(false);
+    setTimeout(() => setShimmer(false), 1200);
+  };
+  const sectionTitle = NAV_ITEMS.find((n) => n.id === section)?.label ?? "";
 
- return (
-  <div className="min-h-screen relative overflow-hidden selection:bg-primary/30" style={{ background: "linear-gradient(160deg, #F0F8FF 0%, #E6F2FF 40%, #F0F8FF 100%)" }}>
-
-   {/* ── Animated background orbs ── */}
-   <div className="orb-1 absolute top-[-15%] left-[-10%] h-[55vw] w-[55vw] rounded-full pointer-events-none z-0"
-     style={{ background: "radial-gradient(circle, rgba(245,130,10,0.13) 0%, transparent 70%)", filter: "blur(60px)" }} />
-   <div className="orb-2 absolute bottom-[-20%] right-[-10%] h-[50vw] w-[50vw] rounded-full pointer-events-none z-0"
-     style={{ background: "radial-gradient(circle, rgba(226,46,38,0.10) 0%, transparent 70%)", filter: "blur(70px)" }} />
-   <div className="orb-3 absolute top-[30%] right-[20%] h-[30vw] w-[30vw] rounded-full pointer-events-none z-0"
-     style={{ background: "radial-gradient(circle, rgba(41,48,136,0.07) 0%, transparent 70%)", filter: "blur(80px)" }} />
-
-   {/* Subtle grid overlay */}
-   <div className="absolute inset-0 pointer-events-none z-0" style={{
-    backgroundImage: "linear-gradient(to right, rgba(226,46,38,0.03) 1px, transparent 1px), linear-gradient(to bottom, rgba(226,46,38,0.03) 1px, transparent 1px)",
-    backgroundSize: "44px 44px",
-   }} />
-
-   <div className="relative z-10 flex min-h-screen">
-    <Toaster position="top-right" richColors theme="light" />
-
-    {/* ══════════════════════════════════
-        SIDEBAR
-        ══════════════════════════════════ */}
-    <aside
-     className={`bg-surface border-r border-border fixed left-0 top-0 z-30 flex h-screen flex-col text-sidebar-foreground transition-all duration-300 ${sidebarExpanded ? "w-[260px]" : "w-[72px]"}`}
-    >
-
-     {/* Logo row */}
-     <div className="relative flex flex-col px-4 py-5">
-      <div className="flex items-center gap-3">
-       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl shadow-sm transition-all duration-300 hover:-translate-y-0.5"
-        style={{ background: "rgba(226,46,38,0.08)", border: "1px solid rgba(226,46,38,0.2)" }}>
-        <img src={omgLogo} alt="OMG Logo" className="h-7 w-auto object-contain" />
-       </div>
-       {sidebarExpanded && (
-        <div>
-         <div className="text-base font-montserrat font-bold tracking-tight text-sidebar-foreground">OMG</div>
-         <div className="text-[10px] font-medium text-sidebar-muted">Admin Portal</div>
-        </div>
-       )}
-      </div>
-
-      {/* Collapse toggle */}
-      <button
-       onClick={() => setSidebarExpanded(!sidebarExpanded)}
-       className="absolute -right-3 top-7 flex h-6 w-6 items-center justify-center rounded-full z-40 transition-all hover:scale-110 bg-white"
-       style={{ border: "1px solid rgba(226,46,38,0.3)", boxShadow: "0 2px 8px rgba(226,46,38,0.15)", color: "#E22E26" }}
-      >
-       {sidebarExpanded ? <ChevronLeft size={13} /> : <ChevronRight size={13} />}
-      </button>
-     </div>
-
-     {/* Divider */}
-     <div className="mx-4 h-px" style={{ background: "rgba(242,200,168,0.5)" }} />
-
-     {/* Nav items */}
-     <nav className="relative flex-1 overflow-y-auto px-3 py-3 space-y-0.5 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      {NAV_ITEMS.map((item) => {
-       const Icon = ICONS[item.icon];
-       const active = item.id === section;
-       return (
-        <button
-         key={item.id}
-         onClick={() => setSection(item.id)}
-         className={`group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all duration-200 ${active ? "nav-active" : "hover:-translate-y-0.5 hover:bg-black/5 text-sidebar-muted"}`}
-        >
-         <Icon
-          size={18}
-          className={`shrink-0 transition-all duration-300 ${active ? "" : "group-hover:scale-110 group-hover:text-sidebar-foreground text-sidebar-muted"}`}
-         />
-         {sidebarExpanded && <span className={`truncate font-medium ${active ? "" : "group-hover:text-sidebar-foreground text-sidebar-muted"}`}>{item.label}</span>}
-        </button>
-       );
-      })}
-     </nav>
-
-     {/* Divider */}
-     <div className="mx-4 h-px" style={{ background: "rgba(242,200,168,0.5)" }} />
-
-     {/* User row */}
-     <div className="relative p-3">
+  return (
+    <div className="min-h-screen relative overflow-hidden bg-background selection:bg-primary/30">
+      {/* -- Premium Mesh Background -- */}
+      <div className="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(ellipse_at_top_right,var(--color-secondary-tint)_0%,transparent_50%),radial-gradient(ellipse_at_bottom_left,var(--color-muted)_0%,transparent_50%)] opacity-70" />
       <div
-       className="flex items-center gap-3 rounded-xl p-2.5 cursor-pointer transition-all duration-300 hover:-translate-y-0.5 group hover:bg-black/5"
-       style={{ border: "1px solid rgba(226,46,38,0.2)" }}
-      >
-       <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl text-xs font-bold"
-        style={{ background: "linear-gradient(135deg, #E22E26, #293088)", color: "#FFFFFF", boxShadow: "0 4px 12px rgba(226,46,38,0.2)" }}>
-        RK
-       </div>
-       {sidebarExpanded && (
-        <>
-         <div className="min-w-0 flex-1 text-left">
-          <div className="truncate text-sm font-semibold text-sidebar-foreground">Rajesh Kumar</div>
-          <div className="truncate text-[10px] text-sidebar-muted">Executive Officer</div>
-         </div>
-         <LogOut size={15} className="transition-colors text-sidebar-muted group-hover:text-primary" />
-        </>
-       )}
-      </div>
-     </div>
-    </aside>
+        className="orb-1 absolute top-[-10%] left-[-10%] h-[60vw] w-[60vw] rounded-full pointer-events-none z-0"
+        style={{
+          background: "radial-gradient(circle, rgba(226,46,40,0.03) 0%, transparent 60%)",
+          filter: "blur(60px)",
+        }}
+      />
+      <div
+        className="orb-2 absolute bottom-[-20%] right-[-10%] h-[50vw] w-[50vw] rounded-full pointer-events-none z-0"
+        style={{
+          background: "radial-gradient(circle, rgba(41,48,136,0.04) 0%, transparent 70%)",
+          filter: "blur(70px)",
+        }}
+      />
 
-    {/* ══════════════════════════════════
+      {/* Subtle grid overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none z-0 opacity-40"
+        style={{
+          backgroundImage:
+            "linear-gradient(to right, var(--color-border) 1px, transparent 1px), linear-gradient(to bottom, var(--color-border) 1px, transparent 1px)",
+          backgroundSize: "60px 60px",
+        }}
+      />
+
+      <div className="relative z-10 flex min-h-screen">
+        <Toaster position="top-right" richColors theme="light" />
+
+        {/* =============================
+          SIDEBAR (Deep Navy Premium)
+          ============================= */}
+        <aside
+          className={`fixed left-0 top-0 z-30 flex h-screen flex-col transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${sidebarExpanded ? "w-[260px]" : "w-[80px]"}`}
+          style={{
+            background: "linear-gradient(180deg, #293088 0%, #293088 65%, #E22E28 100%)",
+            borderRight: "1px solid rgba(255,255,255,0.03)",
+            boxShadow: "4px 0 40px rgba(0,0,0,0.25)",
+          }}
+        >
+          {/* Logo row */}
+          <div className="relative flex flex-col px-5 py-7">
+            <div className={`flex items-center ${sidebarExpanded ? "gap-4" : "justify-center"} transition-all duration-300`}>
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl shadow-[0_8px_24px_rgba(0,0,0,0.15)] transition-all duration-500 hover:scale-105 border border-white/80 bg-white relative overflow-hidden group">
+                <img
+                  src={omgLogo}
+                  alt="OMG Logo"
+                  className="h-7 w-auto object-contain transition-transform duration-500 group-hover:scale-110 relative z-10"
+                />
+              </div>
+              {sidebarExpanded && (
+                <div className="animate-in fade-in slide-in-from-left-4 duration-500 min-w-0">
+                  <div className="text-xl font-montserrat font-extrabold tracking-tight text-white drop-shadow-md truncate">
+                    OMG
+                  </div>
+                  <div className="text-[10px] font-bold text-indigo-200/90 uppercase tracking-[0.2em] mt-0.5 truncate">
+                    Admin Portal
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Collapse toggle */}
+            <button
+              onClick={() => setSidebarExpanded(!sidebarExpanded)}
+              className="absolute -right-3.5 top-10 flex h-7 w-7 items-center justify-center rounded-full z-40 transition-all duration-300 hover:scale-110 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] text-primary border border-border/10 hover:shadow-[0_6px_16px_rgba(0,0,0,0.2)]"
+            >
+              {sidebarExpanded ? <ChevronLeft size={14} strokeWidth={2.5} /> : <ChevronRight size={14} strokeWidth={2.5} />}
+            </button>
+          </div>
+
+          {/* Divider */}
+          <div className="mx-6 h-px bg-white/5" />
+
+          {/* Nav items */}
+          <nav className="relative flex-1 overflow-y-auto px-4 py-6 space-y-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none">
+            {NAV_ITEMS.map((item) => {
+              const Icon = ICONS[item.icon];
+              const active = item.id === section;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setSection(item.id)}
+                  className={`group relative flex w-full items-center ${sidebarExpanded ? "p-1.5 pr-4" : "p-1.5 justify-center"} rounded-2xl text-base transition-all duration-400 border ${
+                    active
+                      ? "bg-white/10 backdrop-blur-xl border-white/20 border-t-white/30 border-l-white/30 text-white shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
+                      : "border-transparent text-indigo-100/70 hover:bg-white/[0.06] hover:text-white"
+                  }`}
+                  title={!sidebarExpanded ? item.label : undefined}
+                >
+                  {/* Left Indicator for Active State */}
+                  {active && sidebarExpanded && (
+                    <div className="absolute left-1.5 top-1/2 -translate-y-1/2 w-1 h-7 bg-white/90 rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]" />
+                  )}
+
+                  {/* Icon Container */}
+                  <div className={`flex items-center justify-center shrink-0 h-[42px] w-[42px] rounded-[14px] transition-colors duration-400 ${
+                    active 
+                      ? "bg-white/15 ml-3 shadow-inner" 
+                      : "bg-white/5 group-hover:bg-white/10"
+                  }`}>
+                    <Icon
+                      size={18}
+                      className={active ? "text-white drop-shadow-md" : "text-indigo-200 group-hover:text-white transition-colors duration-400"}
+                    />
+                  </div>
+
+                  {/* Label */}
+                  {sidebarExpanded && (
+                    <span className={`ml-3.5 truncate transition-all duration-400 ${
+                        active ? "font-bold tracking-wide" : "font-semibold tracking-wide"
+                      }`}>
+                      {item.label}
+                    </span>
+                  )}
+
+                  {/* Right Dot for Active State */}
+                  {active && sidebarExpanded && (
+                    <div className="ml-auto w-1.5 h-1.5 rounded-full bg-white/90 shadow-[0_0_8px_rgba(255,255,255,0.9)]" />
+                  )}
+                </button>
+              );
+            })}
+          </nav>
+
+          {/* User & Logout section */}
+          <div className="relative p-5 mt-auto flex flex-col gap-6">
+            
+            {/* Profile Container */}
+            <div className={`flex items-center ${sidebarExpanded ? "gap-3.5" : "justify-center"} rounded-2xl p-2 cursor-pointer transition-all duration-400 border border-white/20 hover:bg-white/5 shadow-sm`}>
+              <div className="grid h-[42px] w-[42px] shrink-0 place-items-center rounded-full text-[16px] font-bold text-white bg-[#1A1F60] shadow-inner">
+                A
+              </div>
+              {sidebarExpanded && (
+                <div className="min-w-0 flex-1 text-left animate-in fade-in duration-500">
+                  <div className="truncate text-[14px] font-bold text-white drop-shadow-sm">
+                   Santhosh Kumar
+                  </div>
+                  <div className="truncate text-[11px] font-medium text-white/70 mt-0.5">
+                    Admin
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Logout Button */}
+            {/* <button className={`flex items-center ${sidebarExpanded ? "gap-3.5 px-3" : "justify-center"} cursor-pointer transition-all duration-300 text-white hover:text-white/80 group`}>
+               <LogOut
+                 size={20}
+                 strokeWidth={2}
+                 className="transition-transform duration-300 group-hover:translate-x-1"
+               />
+               {sidebarExpanded && (
+                 <span className="font-bold text-[15px] tracking-wide">Logout</span>
+               )}
+            </button> */}
+          </div>
+        </aside>
+
+        {/* =============================
         TOPBAR
-        ══════════════════════════════════ */}
-    <header
-     className={`topbar-glass fixed right-0 top-0 z-20 flex h-16 items-center justify-between px-6 transition-all duration-300 ${sidebarExpanded ? "left-[260px]" : "left-[72px]"}`}
-    >
-     <div className="flex items-center gap-3">
-      <div className="flex items-center gap-2">
-       <Sparkles size={14} className="text-primary" />
-       <h1 className="text-sm font-bold tracking-tight text-foreground">{sectionTitle}</h1>
-      </div>
-      {/* Live pill */}
-      <div className="hidden sm:flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-semibold"
-       style={{ background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.25)", color: "#059669" }}>
-       <span className="h-1.5 w-1.5 rounded-full bg-emerald animate-pulse" />
-       LIVE
-      </div>
-     </div>
-
-     <div className="flex items-center gap-3">
-      {/* Temple switcher */}
-      <div className="relative">
-       <button
-        onClick={() => setTempleOpen((o) => !o)}
-        className="group flex items-center gap-2 rounded-xl px-3.5 py-2 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-        style={{ background: "rgba(255,255,255,0.85)", border: "1px solid rgba(226,46,38,0.2)", boxShadow: "0 2px 8px rgba(226,46,38,0.08)", color: "#1A0800" }}
-       >
-        <Landmark size={13} className="text-primary" />
-        <span className="hidden sm:block">{temple.name}</span>
-        <ChevronDown size={13} className="text-muted-foreground transition-transform group-hover:translate-y-0.5" />
-       </button>
-       {templeOpen && (
-        <div className="absolute left-1/2 top-full z-50 mt-1 w-72 -translate-x-1/2 overflow-hidden rounded-xl shadow-xl"
-         style={{ background: "#FFFFFF", border: "1px solid rgba(226,46,38,0.2)", boxShadow: "0 12px 32px rgba(226,46,38,0.10)" }}>
-         {TEMPLES.map((t) => (
-          <button
-           key={t.id}
-           onClick={() => switchTemple(t.id)}
-           className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition-colors hover:bg-muted ${t.id === templeId ? "bg-muted font-semibold text-foreground" : "text-foreground"}`}
-          >
-           <span>{t.name}</span>
-           <span className="text-xs text-muted-foreground">{t.short}</span>
-          </button>
-         ))}
-        </div>
-       )}
-      </div>
-
-      {/* Clock + weather */}
-      <div className="hidden md:flex items-center gap-1.5 text-sm">
-       <span className="font-mono font-semibold text-foreground">
-        {now.toLocaleTimeString("en-IN", { hour12: false, hour: "2-digit", minute: "2-digit" })}
-       </span>
-       <span className="text-xs text-muted-foreground">
-        · {now.toLocaleDateString("en-IN", { weekday: "short", day: "numeric", month: "short" })}
-       </span>
-      </div>
-
-      {/* Weather */}
-      <div className="hidden sm:flex items-center gap-1.5 rounded-xl px-3 py-1.5"
-       style={{ background: "rgba(255,255,255,0.85)", border: "1px solid rgba(242,200,168,0.6)", boxShadow: "0 2px 8px rgba(0,0,0,0.04)" }}>
-       <span className="text-[10px] font-semibold text-muted-foreground">{temple.short}</span>
-       <span className="text-xs font-medium text-foreground">{temple.weather}</span>
-      </div>
-
-      {/* Bell */}
-      <div className="relative">
-       <button
-        onClick={() => setBellOpen((o) => !o)}
-        className="relative rounded-xl p-2 transition-colors hover:bg-muted"
-       >
-        <Bell size={18} className="text-muted-foreground" />
-        <span className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded-full text-[8px] font-bold text-white"
-         style={{ background: "#E22E26", boxShadow: "0 2px 8px rgba(226,46,38,0.5)" }}>
-         3
-        </span>
-       </button>
-       {bellOpen && (
-        <div className="absolute right-0 top-full z-50 mt-1 w-72 overflow-hidden rounded-xl shadow-xl"
-         style={{ background: "#FFFFFF", border: "1px solid rgba(242,200,168,0.7)", boxShadow: "0 12px 32px rgba(226,46,38,0.10)" }}>
-         <div className="px-4 py-2.5 text-xs font-bold" style={{ background: "linear-gradient(135deg, #FFF7F0, #FFF3E8)", borderBottom: "1px solid rgba(242,200,168,0.5)" }}>
-          Notifications
-         </div>
-         {[
-          { t: "Peak alert", b: "Inner sanctum approaching capacity", c: "#E22E26", dot: "#E22E26" },
-          { t: "Queue update", b: "Lane B wait time +6 min", c: "#B45309", dot: "#F59E0B" },
-          { t: "Staff", b: "8 volunteers deployed to Lane C", c: "#4F58CA", dot: "#4F58CA" },
-         ].map((n, i) => (
-          <div key={i} className="flex items-start gap-3 px-4 py-3 text-xs hover:bg-muted/50 transition-colors">
-           <span className="mt-1 h-2 w-2 shrink-0 rounded-full" style={{ background: n.dot }} />
-           <div>
-            <div className="font-semibold" style={{ color: n.c }}>{n.t}</div>
-            <div className="text-muted-foreground mt-0.5">{n.b}</div>
-           </div>
+        ============================= */}
+        <header
+          className={`fixed right-0 top-0 z-20 flex h-20 items-center justify-between px-8 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] bg-white/70 backdrop-blur-2xl border-b border-border/40 shadow-sm ${sidebarExpanded ? "left-[260px]" : "left-[80px]"}`}
+        >
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2.5">
+              <Sparkles size={18} className="text-primary drop-shadow-sm" />
+              <h1 className="text-lg font-montserrat font-extrabold tracking-tight text-foreground drop-shadow-sm">
+                {sectionTitle}
+              </h1>
+            </div>
+            {/* Live pill */}
+            <div className="hidden sm:flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-extrabold tracking-wide bg-status-normal/10 border border-status-normal/20 text-status-normal shadow-sm">
+              <span className="h-1.5 w-1.5 rounded-full bg-status-normal animate-pulse shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
+              LIVE
+            </div>
           </div>
-         ))}
-        </div>
-       )}
-      </div>
 
-      {/* Avatar */}
-      <div className="grid h-8 w-8 place-items-center rounded-xl text-xs font-bold text-white cursor-pointer transition-transform hover:scale-105"
-       style={{ background: "linear-gradient(135deg, #E22E26, #293088)", boxShadow: "0 4px 14px rgba(226,46,38,0.3)" }}>
-       RK
-      </div>
-     </div>
-    </header>
+          <div className="flex items-center gap-4">
+            {/* District filter */}
+            <div className="relative hidden lg:block">
+              <button
+                onClick={() => {
+                  setDistrictOpen((o) => !o);
+                  setTempleOpen(false);
+                  setBellOpen(false);
+                }}
+                className="group flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
+              >
+                <MapPin size={14} className="text-primary" />
+                <span className="tracking-wide">{selectedDistrict}</span>
+                <ChevronDown
+                  size={14}
+                  className="text-muted-foreground transition-transform duration-300 group-hover:translate-y-0.5"
+                />
+              </button>
+              {districtOpen && (
+                <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
+                  {districts.map((d) => (
+                    <button
+                      key={d}
+                      onClick={() => {
+                        setSelectedDistrict(d);
+                        setDistrictOpen(false);
+                        const firstTemple =
+                          d === "All Districts"
+                            ? TEMPLES[0]
+                            : TEMPLES.find((t) => t.district === d);
+                        if (firstTemple && d !== "All Districts" && temple.district !== d) {
+                          switchTemple(firstTemple.id);
+                        }
+                      }}
+                      className={`flex w-full items-center px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${d === selectedDistrict ? "bg-muted/50 font-extrabold text-foreground" : "font-semibold text-foreground"}`}
+                    >
+                      {d}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
 
-    {/* ══════════════════════════════════
+            {/* Temple switcher */}
+            <div className="relative">
+              <button
+                onClick={() => {
+                  setTempleOpen((o) => !o);
+                  setDistrictOpen(false);
+                  setBellOpen(false);
+                }}
+                className="group flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
+              >
+                <Landmark size={14} className="text-primary" />
+                <span className="hidden sm:block tracking-wide">{temple.name}</span>
+                <ChevronDown
+                  size={14}
+                  className="text-muted-foreground transition-transform duration-300 group-hover:translate-y-0.5"
+                />
+              </button>
+              {templeOpen && (
+                <div className="absolute right-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
+                  {TEMPLES.filter(
+                    (t) => selectedDistrict === "All Districts" || t.district === selectedDistrict,
+                  ).map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => switchTemple(t.id)}
+                      className={`flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-muted/50 ${t.id === templeId ? "bg-muted/50 font-extrabold text-foreground" : "font-semibold text-foreground"}`}
+                    >
+                      <span className="text-sm">{t.name}</span>
+                      <span className="text-[11px] font-bold tracking-wider text-muted-foreground">{t.short}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Clock + weather */}
+            <div className="hidden md:flex items-center gap-1.5 text-sm ml-2">
+              <span className="font-mono font-bold tracking-tight text-foreground">
+                {now.toLocaleTimeString("en-IN", {
+                  hour12: false,
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </span>
+              <span className="text-[13px] font-semibold text-muted-foreground">
+                -{" "}
+                {now.toLocaleDateString("en-IN", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                })}
+              </span>
+            </div>
+
+            {/* Weather */}
+            <div className="hidden sm:flex items-center gap-2 rounded-full px-4 py-2 bg-white border border-border/60 shadow-sm ml-2">
+              <span className="text-[11px] font-bold tracking-wider text-muted-foreground">
+                {temple.short}
+              </span>
+              <span className="text-sm font-extrabold text-foreground">{temple.weather}</span>
+            </div>
+
+            {/* Bell */}
+            <div className="relative ml-1">
+              <button
+                onClick={() => {
+                  setBellOpen((o) => !o);
+                  setDistrictOpen(false);
+                  setTempleOpen(false);
+                }}
+                className="relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:bg-white hover:shadow-sm border border-transparent hover:border-border/60"
+              >
+                <Bell size={20} className="text-muted-foreground transition-colors hover:text-foreground" />
+                <span className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded-full text-[9px] font-black text-white bg-primary shadow-sm border border-white">
+                  3
+                </span>
+              </button>
+              {bellOpen && (
+                <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl shadow-xl bg-white border border-border/50">
+                  <div className="px-5 py-3 text-[13px] font-extrabold tracking-tight bg-muted/40 border-b border-border/50">
+                    Notifications
+                  </div>
+                  {[
+                    {
+                      t: "Peak alert",
+                      b: "Inner sanctum approaching capacity",
+                      c: "var(--color-primary)",
+                      dot: "var(--color-primary)",
+                    },
+                    {
+                      t: "Queue update",
+                      b: "Lane B wait time +6 min",
+                      c: "var(--color-status-busy)",
+                      dot: "var(--color-status-busy)",
+                    },
+                    {
+                      t: "Staff",
+                      b: "8 volunteers deployed to Lane C",
+                      c: "var(--color-secondary)",
+                      dot: "var(--color-secondary)",
+                    },
+                  ].map((n, i) => (
+                    <div
+                      key={i}
+                      className="flex items-start gap-3 px-5 py-4 text-sm hover:bg-muted/40 transition-colors border-b border-border/30 last:border-0"
+                    >
+                      <span
+                        className="mt-1.5 h-2 w-2 shrink-0 rounded-full shadow-sm"
+                        style={{ background: n.dot }}
+                      />
+                      <div>
+                        <div className="font-extrabold tracking-tight" style={{ color: n.c }}>
+                          {n.t}
+                        </div>
+                        <div className="text-muted-foreground mt-1 text-[13px] font-medium leading-relaxed">{n.b}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Avatar */}
+            <div className="grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white cursor-pointer transition-all duration-300 hover:scale-105 bg-[#1A1F60] shadow-sm ml-1 border border-white/20">
+              A
+            </div>
+          </div>
+        </header>
+
+        {/* ════════════════════════════════════════════════════════════
         MAIN CONTENT
-        ══════════════════════════════════ */}
-    <main className={`flex-1 pt-16 transition-all duration-300 ${sidebarExpanded ? "ml-[260px]" : "ml-[72px]"}`}>
-     <div className="relative p-6 lg:p-8 min-h-[calc(100vh-4rem)]">
-      {/* Temple switch shimmer */}
-      {shimmer && (
-       <div className={`fixed top-16 right-0 bottom-0 z-50 ${sidebarExpanded ? "left-[260px]" : "left-[72px]"} flex flex-col items-center justify-center backdrop-blur-sm animate-in fade-in duration-300`}
-        style={{ background: "rgba(255,247,240,0.70)" }}>
-        <div className="flex flex-col items-center gap-6">
-         <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl overflow-hidden"
-          style={{ background: "rgba(255,247,240,0.9)", border: "1px solid rgba(242,200,168,0.5)", boxShadow: "0 8px 32px rgba(245,130,10,0.2)" }}>
-          <div className="absolute inset-0 flex items-center justify-center" style={{ background: "rgba(245,200,168,0.2)" }}>
-           <span className="text-3xl font-montserrat" style={{ color: "rgba(245,130,10,0.2)" }}>ॐ</span>
-          </div>
-          <div className="absolute inset-0 flex items-center justify-center animate-fill-up" style={{ background: "linear-gradient(135deg,#F5820A,#E22E26)" }}>
-           <span className="text-3xl font-montserrat text-white">ॐ</span>
-          </div>
-         </div>
-         <div className="text-center">
-          <div className="text-base font-bold text-foreground">Switching to {temple.name}</div>
-          <div className="text-sm text-muted-foreground mt-1">Connecting to live telemetry...</div>
-         </div>
-        </div>
-       </div>
-      )}
+        ════════════════════════════════════════════════════════════ */}
+        <main
+          className={`flex-1 pt-16 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${sidebarExpanded ? "ml-[260px]" : "ml-[80px]"}`}
+        >
+          <div className="relative p-6 lg:p-8 min-h-[calc(100vh-4rem)]">
+            {/* Temple switch shimmer */}
+            {shimmer && (
+              <div
+                className={`fixed top-16 right-0 bottom-0 z-50 ${sidebarExpanded ? "left-[260px]" : "left-[72px]"} flex flex-col items-center justify-center backdrop-blur-sm animate-in fade-in duration-300 bg-background/70`}
+              >
+                <div className="flex flex-col items-center gap-6">
+                  <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl overflow-hidden bg-surface border border-border shadow-md">
+                    <div className="absolute inset-0 flex items-center justify-center bg-primary/10">
+                      <span className="text-3xl font-montserrat text-primary/30">à¥</span>
+                    </div>
+                    <div className="absolute inset-0 flex items-center justify-center animate-fill-up bg-gradient-to-br from-primary to-secondary">
+                      <span className="text-3xl font-montserrat text-white">à¥</span>
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-base font-montserrat font-bold text-foreground">
+                      Switching to {temple.name}
+                    </div>
+                    <div className="text-sm text-muted-foreground mt-1">
+                      Connecting to live telemetry...
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
-      <div className={`transition-all duration-500 ${shimmer ? "opacity-30 blur-[2px] pointer-events-none translate-y-2" : "opacity-100 translate-y-0 blur-none"}`}>
-       {section === "dashboard" && <DashboardSection temple={temple} />}
-       {section === "darshan" && <DarshanSection />}
-       {section === "heatmap" && <HeatmapSection temple={temple} />}
-       {section === "cctv" && <CCTVSection />}
-       {section === "queue" && <QueueSection />}
-       {section === "staff" && <StaffSection />}
-       {section === "operations" && <OperationsSection />}
-       {section === "parking" && <ParkingSection />}
-       {/* {section === "announcements" && <AnnouncementsSection />} */}
-       {/* {section === "analytics" && <AnalyticsSection />} */}
-       {/* {section === "emergency" && <EmergencySection />} */}
+            <div
+              className={`transition-all duration-500 ${shimmer ? "opacity-30 blur-[2px] pointer-events-none translate-y-2" : "opacity-100 translate-y-0 blur-none"}`}
+            >
+              {section === "dashboard" && <DashboardSection temple={temple} />}
+              {section === "darshan" && <DarshanSection />}
+              {section === "heatmap" && <HeatmapSection temple={temple} />}
+              {section === "cctv" && <CCTVSection />}
+              {section === "queue" && <QueueSection />}
+              {section === "staff" && <StaffSection />}
+              {section === "operations" && <OperationsSection />}
+              {section === "parking" && <ParkingSection />}
+              {section === "donations" && <DonationSection />}
+              {/* {section === "announcements" && <AnnouncementsSection />} */}
+              {/* {section === "analytics" && <AnalyticsSection />} */}
+              {/* {section === "emergency" && <EmergencySection />} */}
+            </div>
+          </div>
+        </main>
       </div>
-     </div>
-    </main>
-   </div>
-  </div>
- );
+    </div>
+  );
 }

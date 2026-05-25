@@ -12,7 +12,22 @@ import {
   Legend,
 } from "recharts";
 import { toast } from "sonner";
-import { Activity, Clock, Users, Car, Gauge, TrendingUp, TrendingDown } from "lucide-react";
+import {
+  Activity,
+  Clock,
+  Users,
+  Car,
+  Gauge,
+  TrendingUp,
+  TrendingDown,
+  Plus,
+  Pause,
+  Megaphone,
+  Merge,
+  Siren,
+  AlertOctagon,
+  Timer,
+} from "lucide-react";
 import { useJitter, useLiveClock } from "@/lib/use-live";
 import type { Temple } from "@/lib/temple-data";
 import { StatCard } from "../ui/StatCard";
@@ -41,10 +56,18 @@ const queueTrend = Array.from({ length: 12 }).map((_, i) => ({
   C: 18 + Math.round(Math.sin(i / 3) * 6 + i * 0.8),
 }));
 const activityFeed = [
-  { t: "14:32", c: "emerald", msg: "Crowd normalized at South Entrance. Gate 2 queue reducing." },
-  { t: "14:28", c: "status-busy", msg: "Queue Lane B wait time increased to 52 minutes." },
+  {
+    t: "14:32",
+    c: "emerald",
+    msg: "Crowd normalized at South Entrance. Common Darshan queue reducing.",
+  },
+  { t: "14:28", c: "status-busy", msg: "₹20 Ticket Darshan wait time increased to 52 minutes." },
   { t: "14:21", c: "danger", msg: "Peak crowd alert: Inner sanctum approaching capacity limit." },
-  { t: "14:15", c: "info", msg: "8 volunteers deployed to Queue Lane C per AI recommendation." },
+  {
+    t: "14:15",
+    c: "info",
+    msg: "8 volunteers deployed to ₹100 Ticket Darshan per AI recommendation.",
+  },
   { t: "14:08", c: "emerald", msg: "Parking Lot A returned to 70% after overflow activation." },
   { t: "14:02", c: "status-busy", msg: "Kovil Nandi entrance crowd density: 78%." },
   { t: "13:55", c: "info", msg: "AI forecast: Evening rush expected at 17:30–19:00." },
@@ -62,7 +85,7 @@ const suggestions = [
     kind: "WARNING",
     border: "border-status-busy",
     title: "Deploy 6 More Volunteers",
-    body: "Queue Lane A & B understaffed. 1 volunteer per 180 devotees (optimal: 1:120).",
+    body: "Common & ₹20 Darshan understaffed. 1 volunteer per 180 devotees (optimal: 1:120).",
     action: "Notify Staff",
   },
   {
@@ -78,6 +101,54 @@ const suggestions = [
     title: "Parking Overflow Not Needed",
     body: "Current inflow rate slowing. Lot A will stabilize at ~80% capacity.",
     action: "Dismiss",
+  },
+];
+
+const lanes = [
+  {
+    name: "Common Darshan",
+    waiting: 620,
+    max: 800,
+    wait: 52,
+    vols: 8,
+    status: "ACTIVE",
+    bgTint: "bg-saffron/10",
+  },
+  {
+    name: "₹20 Darshan",
+    waiting: 540,
+    max: 800,
+    wait: 46,
+    vols: 6,
+    status: "ACTIVE",
+    bgTint: "bg-info/10",
+  },
+  {
+    name: "₹100 Darshan",
+    waiting: 280,
+    max: 500,
+    wait: 28,
+    vols: 4,
+    status: "ACTIVE",
+    bgTint: "bg-emerald/10",
+  },
+  {
+    name: "VIP Darshan",
+    waiting: 34,
+    max: 100,
+    wait: 8,
+    vols: 2,
+    status: "ACTIVE",
+    bgTint: "bg-gold/10",
+  },
+  {
+    name: "Online Pre-booked",
+    waiting: 12,
+    max: 200,
+    wait: 5,
+    vols: 1,
+    status: "LIMITED",
+    bgTint: "bg-primary/5",
   },
 ];
 
@@ -101,91 +172,99 @@ export function DashboardSection({ temple }: { temple: Temple }) {
   }, []);
   return (
     <div className="space-y-5">
-
       {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-2xl border border-indigo-deep/20 bg-gradient-to-br from-indigo-deep via-[#3a44a1] to-primary p-6 text-white shadow-lg">
+      <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br from-[#1A1F60] via-[#252A7C] to-[#1A1F60] p-6 md:p-8 text-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
         {/* Decorative shapes */}
-        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 rounded-full bg-white/10 blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 -mb-20 h-40 w-40 rounded-full bg-saffron/20 blur-2xl" />
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 rounded-full bg-white/5 blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 -mb-20 h-40 w-40 rounded-full bg-saffron/10 blur-2xl pointer-events-none" />
 
-        <div className="grid gap-5 md:grid-cols-3 md:items-center relative z-10">
-
-          <div>
-
-            <div className="text-2xl font-bold tracking-tight">{temple.name}</div>
-            <div className="text-sm text-indigo-100 mt-1 font-medium">Crowd Intelligence Dashboard</div>
-            <div className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-white/10 backdrop-blur-md px-3 py-1.5 text-xs font-medium border border-white/10">
-
-              <span className="h-2 w-2 rounded-full bg-emerald shadow-[0_0_8px_rgba(16,185,129,0.8)] animate-pulse" /> LIVE · Updated
-              {" "} {now.toLocaleTimeString("en-IN", { hour12: false })}
+        <div className="grid gap-6 lg:grid-cols-[1fr_auto_1fr] items-center relative z-10">
+          {/* Left Column */}
+          <div className="flex flex-col items-start gap-4">
+            <div>
+              <div className="text-3xl md:text-4xl font-black tracking-tight drop-shadow-md">
+                {temple.name}
+              </div>
+              <div className="text-[15px] text-indigo-200 mt-2 font-bold tracking-wide">
+                Crowd Intelligence Dashboard
+              </div>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald/10 backdrop-blur-md px-3.5 py-1.5 text-[11px] font-black tracking-widest text-emerald border border-emerald/20 shadow-sm mt-1">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+              </span>
+              LIVE <span className="opacity-60 font-bold tracking-normal">· Updated {now.toLocaleTimeString("en-IN", { hour12: false })}</span>
             </div>
           </div>
-          <div className="flex items-center justify-center gap-6">
-            <div className="relative h-32 w-32 shrink-0 drop-shadow-md">
+
+          {/* Middle Column */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-6 px-4 lg:px-8 border-y lg:border-y-0 lg:border-x border-white/10 py-6 lg:py-0">
+            <div className="relative h-[105px] w-[105px] shrink-0 drop-shadow-md">
               <svg className="h-full w-full -rotate-90 transform" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="40" stroke="rgba(0,0,0,0.2)" strokeWidth="8" fill="none" />
+                <circle cx="50" cy="50" r="42" stroke="rgba(255,255,255,0.1)" strokeWidth="10" fill="none" />
                 <circle
                   cx="50"
                   cy="50"
-                  r="40"
-                  stroke="url(#capGradient)"
-                  strokeWidth="8"
+                  r="42"
+                  stroke="#f97316"
+                  strokeWidth="10"
                   fill="none"
-                  strokeDasharray="251.2"
-                  strokeDashoffset={251.2 - (251.2 * pct) / 100}
+                  strokeDasharray="263.89"
+                  strokeDashoffset={263.89 - (263.89 * pct) / 100}
                   strokeLinecap="round"
                   className="transition-all duration-1000 ease-in-out"
                 />
-                <defs>
-                  <linearGradient id="capGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="var(--saffron)" />
-                    <stop offset="100%" stopColor="var(--emerald)" />
-                  </linearGradient>
-                </defs>
               </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-xl font-bold text-white">{pct}%</span>
+              <div className="absolute inset-0 flex flex-col items-center justify-center pt-1">
+                <span className="text-[26px] font-black text-white leading-none">{pct}%</span>
+                <span className="text-[9px] font-black tracking-widest text-indigo-200 mt-1 uppercase">Capacity</span>
               </div>
             </div>
 
-            <div className="text-left">
-              <div className="text-4xl font-bold tabular-nums text-white tracking-tight drop-shadow-sm">
+            <div className="text-center sm:text-left">
+              <div className="text-5xl font-black tabular-nums text-white tracking-tight drop-shadow-md">
                 {inside.toLocaleString("en-IN")}
               </div>
-              <div className="text-xs text-indigo-100 mt-1 font-medium">
+              <div className="text-[14px] text-indigo-200 mt-2 font-bold tracking-wide">
                 Devotees currently inside
               </div>
             </div>
           </div>
-          <div className="space-y-2 text-sm bg-black/10 backdrop-blur-sm rounded-xl p-3 border border-white/5">
 
-            <div className="flex justify-between">
-              <span className="text-indigo-100">Today's total</span>
-              <span className="font-semibold tabular-nums text-white">38,240</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-indigo-100">Peak (10:30 AM)</span>
-              <span className="font-semibold tabular-nums text-white">15,820</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-indigo-100">Darshan Flow Rate</span>
-              <span className="font-semibold text-white">1,250 / hr</span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-indigo-100">Next Peak Est.</span>
-              <span className="font-semibold text-white">5:30 PM</span>
-            </div>
+          {/* Right Column */}
+          <div className="flex flex-col justify-center">
+            {[
+              { label: "Today's total Devotees", value: "38,240" },
+              { label: "Peak (10:30 AM)", value: "15,820" },
+              { label: "Darshan Flow Rate", value: "1,250 / hr" },
+              { label: "Next Peak (5:00 PM - 6:30 PM)", value: "18,500 Expected" },
+            ].map((stat, i) => (
+              <div
+                key={stat.label}
+                className={`flex justify-between items-center py-2.5 gap-4 ${
+                  i !== 3 ? "border-b border-white/10" : ""
+                }`}
+              >
+                <span className="text-[14px] font-semibold text-indigo-200 tracking-wide">
+                  {stat.label}
+                </span>
+                <span className="font-black tabular-nums text-white text-base whitespace-nowrap text-right">
+                  {stat.value}
+                </span>
+              </div>
+            ))}
           </div>
         </div>
       </div>
       {/* KPI Row */}
       <div className="grid grid-cols-2 gap-6 md:grid-cols-5">
-
         <StatCard
           icon={Clock}
           label="Current Queue Wait"
-          value={`${wait} min`}
-          sub="Lane A & B active"
+          value={wait}
+          valueSuffix="mins"
+          sub="Common Darshan active"
           color="text-foreground"
           trend={{ up: true, text: "+8m" }}
           bgTint="bg-saffron/10"
@@ -193,7 +272,8 @@ export function DashboardSection({ temple }: { temple: Temple }) {
         <StatCard
           icon={Users}
           label="Crowd Capacity"
-          value={`${pct}%`}
+          value={pct}
+          valueSuffix="%"
           sub={`${inside.toLocaleString("en-IN")} inside`}
           color="text-status-busy"
           bgTint="bg-status-busy/10"
@@ -209,7 +289,8 @@ export function DashboardSection({ temple }: { temple: Temple }) {
         <StatCard
           icon={Car}
           label="Parking Occupancy"
-          value={`${parking}%`}
+          value={parking}
+          valueSuffix="%"
           sub={`${Math.round(parking * 15)} slots used`}
           color="text-status-busy"
           bgTint="bg-gold/10"
@@ -225,258 +306,405 @@ export function DashboardSection({ temple }: { temple: Temple }) {
       </div>
       {/* AI Smart Suggestions - Card View */}
       <div>
-
-        <div className="mb-2 flex items-center gap-2 text-sm font-bold text-foreground">
-
+        <div className="mb-4 flex items-center gap-2 text-xl font-black tracking-tight text-foreground drop-shadow-sm">
           🤖 AI Smart Suggestions
-          <span className="ml-2 text-sm font-semibold text-muted-foreground">
+          <span className="ml-2 text-sm font-bold text-muted-foreground/80 tracking-normal drop-shadow-none">
             Based on current crowd patterns
           </span>
         </div>
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {suggestions.map((s) => {
+            let kindColor = "text-muted-foreground bg-muted border-border";
+            const btnColor = "bg-[#1A1F60] hover:bg-[#252A7C] text-white shadow-[0_4px_12px_rgba(26,31,96,0.25)]";
+            
+            if (s.kind === "URGENT") kindColor = "text-danger bg-danger/10 border-danger/20";
+            if (s.kind === "WARNING") kindColor = "text-saffron bg-saffron/10 border-saffron/20";
+            if (s.kind === "INFO") kindColor = "text-info bg-info/10 border-info/20";
+            if (s.kind === "SUCCESS") kindColor = "text-emerald bg-emerald/10 border-emerald/20";
 
-          {suggestions.map((s) => (
-            <div
-              key={s.title}
-              className={`flex flex-col justify-between rounded-xl bg-card p-3 shadow-sm transition-shadow hover:shadow-md`}
-            >
-
-              <div>
-
-                <div className="mb-2 text-xs font-extrabold text-muted-foreground">
-                  {s.kind}
+            return (
+              <div
+                key={s.title}
+                className={`group flex flex-col justify-between rounded-[24px] bg-card p-6 border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-all duration-400 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 relative overflow-hidden`}
+              >
+                <div>
+                  <div className={`inline-flex items-center px-2.5 py-1 mb-4 rounded-full text-[10px] font-black tracking-widest border ${kindColor}`}>
+                    {s.kind}
+                  </div>
+                  <div className="text-[16px] font-black tracking-tight text-foreground/90">{s.title}</div>
+                  <div className="mt-2.5 text-[13px] text-muted-foreground font-semibold leading-relaxed">{s.body}</div>
                 </div>
-                <div className="text-sm font-bold text-foreground">{s.title}</div>
-                <div className="mt-1.5 text-xs text-muted-foreground leading-relaxed">
-                  {s.body}
+                <div className="mt-6 flex gap-3">
+                  <button
+                    onClick={() => toast.success(`${s.action} · action queued`)}
+                    className={`flex-1 rounded-[14px] py-2.5 text-[13px] font-extrabold transition-all hover:-translate-y-0.5 hover:shadow-md ${btnColor}`}
+                  >
+                    {s.action}
+                  </button>
+                  <button className="flex-1 rounded-[14px] bg-surface border border-border/60 py-2.5 text-[13px] font-bold text-foreground shadow-sm transition-all hover:bg-muted hover:-translate-y-0.5">
+                    Dismiss
+                  </button>
                 </div>
               </div>
-              <div className="mt-3 flex gap-2">
+            );
+          })}
+        </div>
+      </div>
+      {/* Main Dashboard Content Grid */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Left Side: Charts */}
+        <div className="lg:col-span-2 grid gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+          {/* Hourly Footfall Chart */}
+          <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+            <div className="mb-6">
+              <div className="mb-2 flex items-center justify-between">
+                <div className="text-lg font-black tracking-tight text-foreground">Today's Hourly Footfall</div>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-extrabold text-muted-foreground">
+                    Actual vs Forecast
+                  </span>
+                  <span className="rounded-full bg-emerald/10 px-2.5 py-1 text-[10px] font-black tracking-wide text-emerald border border-emerald/20">
+                    Peak: 16.4k
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="h-[280px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={footfall} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
+                      <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid
+                    strokeDasharray="4 4"
+                    stroke="var(--border)"
+                    opacity={0.5}
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="t"
+                    stroke="var(--muted-foreground)"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                    dy={10}
+                  />
+                  <YAxis
+                    stroke="var(--muted-foreground)"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                    dx={-10}
+                    tickFormatter={(v) => (v >= 1000 ? `${v / 1000}k` : v)}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: "var(--card)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "12px",
+                      fontSize: "12px",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                    }}
+                    itemStyle={{ fontWeight: 800, color: "var(--primary)" }}
+                    labelStyle={{
+                      fontWeight: "900",
+                      color: "var(--foreground)",
+                      marginBottom: "4px",
+                    }}
+                    formatter={(value: any) => [value.toLocaleString(), "Devotees"]}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="v"
+                    name="Footfall"
+                    stroke="var(--primary)"
+                    fill="url(#sg)"
+                    strokeWidth={3}
+                    activeDot={{ r: 6, fill: "var(--primary)", strokeWidth: 0 }}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
 
-                <button
-                  onClick={() => toast.success(`${s.action} · action queued`)}
-                  className="flex-1 rounded-xl bg-gradient-to-r from-primary to-secondary py-2 text-xs font-semibold text-white transition-opacity hover:opacity-90"
+          {/* Queue Wait Time Chart */}
+          <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+            <div className="mb-6 flex items-center justify-between">
+              <div className="text-lg font-black tracking-tight text-foreground">Queue Wait Time Trend</div>
+              <div className="flex items-center gap-3">
+                <span className="text-xs font-extrabold text-muted-foreground">Last 6 Hours</span>
+                <span className="rounded-full bg-[#1A1F60]/10 px-2.5 py-1 text-[10px] font-black tracking-wide text-[#1A1F60] border border-[#1A1F60]/20">
+                  Avg: 32 mins
+                </span>
+              </div>
+            </div>
+            <div className="h-[280px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={queueTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <CartesianGrid
+                    strokeDasharray="4 4"
+                    stroke="var(--border)"
+                    opacity={0.5}
+                    vertical={false}
+                  />
+                  <XAxis
+                    dataKey="t"
+                    stroke="var(--muted-foreground)"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                    dy={10}
+                  />
+                  <YAxis
+                    stroke="var(--muted-foreground)"
+                    fontSize={10}
+                    tickLine={false}
+                    axisLine={false}
+                    dx={-10}
+                    tickFormatter={(v) => `${v}m`}
+                  />
+                  <Tooltip
+                    contentStyle={{
+                      background: "var(--card)",
+                      border: "1px solid var(--border)",
+                      borderRadius: "12px",
+                      fontSize: "12px",
+                      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                    }}
+                    itemStyle={{ fontWeight: 800 }}
+                    labelStyle={{
+                      fontWeight: "900",
+                      color: "var(--foreground)",
+                      marginBottom: "4px",
+                    }}
+                  />
+                  <Legend
+                    iconType="circle"
+                    wrapperStyle={{ fontSize: 11, paddingTop: "20px", fontWeight: 800 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="A"
+                    name="Common Darshan"
+                    stroke="var(--primary)"
+                    strokeWidth={3}
+                    dot={false}
+                    activeDot={{ r: 5, strokeWidth: 0 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="B"
+                    name="₹20 Darshan"
+                    stroke="var(--info)"
+                    strokeWidth={3}
+                    dot={false}
+                    activeDot={{ r: 5, strokeWidth: 0 }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="C"
+                    name="₹100 Darshan"
+                    stroke="var(--emerald)"
+                    strokeWidth={3}
+                    dot={false}
+                    activeDot={{ r: 5, strokeWidth: 0 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Live Activity Feed */}
+        <div className="lg:col-span-1 h-full">
+          <div className="glass-card flex flex-col h-full overflow-hidden rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+            <div className="flex items-center justify-between border-b border-border/30 bg-muted/20 px-5 py-4">
+              <div className="flex items-center gap-2.5 text-[15px] font-black tracking-tight text-foreground">
+                <Activity size={16} className="text-primary" /> Live Activity Feed
+              </div>
+              <div className="flex items-center gap-1.5 rounded-full bg-emerald/10 px-2.5 py-1 text-[10px] font-black text-emerald tracking-widest uppercase border border-emerald/20">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+                </span>
+                LIVE
+              </div>
+            </div>
+            <div className="flex-1 overflow-y-auto max-h-[400px] lg:max-h-[365px] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-border/50 [&::-webkit-scrollbar-thumb]:rounded-full">
+              {feed.map((f, i) => (
+                <div
+                  key={i}
+                  className="flex items-start gap-3.5 bg-card px-5 py-4 transition-all duration-300 hover:bg-muted/30 border-b border-border/30 last:border-0"
                 >
+                  <div className="font-mono text-[11px] font-extrabold text-muted-foreground w-10 shrink-0 pt-0.5">
+                    {f.t}
+                  </div>
+                  <div className={`mt-1.5 h-2 w-2 shrink-0 rounded-full bg-${f.c} shadow-sm`} />
+                  <div className="text-[13px] font-bold leading-relaxed text-foreground/90">{f.msg}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
 
-                  {s.action}
+      {/* --- QUEUE MANAGEMENT --- */}
+      <div className="mt-10 pt-10 border-t border-border/50 space-y-6">
+        <div className="flex items-center gap-2.5 text-xl font-black tracking-tight text-foreground drop-shadow-sm">
+          <Timer size={22} className="text-primary" /> Live Queue Management
+        </div>
+
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+          {lanes.map((l) => {
+            const pct = l.waiting / l.max;
+            return (
+              <div
+                key={l.name}
+                className={`group flex flex-col justify-between p-5 bg-card border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)] rounded-[24px] transition-all duration-400 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 relative overflow-hidden`}
+              >
+                <div className="flex items-start justify-between mb-2">
+                  <div className="font-black text-[15px] tracking-tight text-foreground/90 leading-tight w-2/3">{l.name}</div>
+                  <span
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[9px] font-black tracking-widest border ${
+                      l.status === "ACTIVE" 
+                        ? "bg-emerald/10 text-emerald border-emerald/20" 
+                        : "bg-status-busy/10 text-status-busy border-status-busy/20"
+                    }`}
+                  >
+                    <span
+                      className={`h-1.5 w-1.5 rounded-full ${l.status === "ACTIVE" ? "bg-emerald animate-pulse" : "bg-status-busy"}`}
+                    />
+                    {l.status}
+                  </span>
+                </div>
+
+                <div className="mt-4 flex items-end gap-2">
+                  <span className="text-3xl font-montserrat font-black tabular-nums leading-none text-foreground tracking-tighter">
+                    {l.waiting}
+                  </span>
+                  <span className="text-xs font-bold text-muted-foreground mb-1">
+                    / {l.max} inside
+                  </span>
+                </div>
+                
+                <div className="mt-3 flex items-center gap-3">
+                  <div className="h-1.5 flex-1 rounded-full bg-black/5 dark:bg-white/5 overflow-hidden">
+                    <div className={`h-full ${l.status === "ACTIVE" ? "bg-primary" : "bg-status-busy"}`} style={{ width: `${pct * 100}%` }} />
+                  </div>
+                  <span className="text-[11px] font-extrabold text-muted-foreground w-8 text-right">
+                    {Math.round(pct * 100)}%
+                  </span>
+                </div>
+
+                <div className="mt-5 pt-4 border-t border-border/40 flex items-center justify-between">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Est. Wait Time</span>
+                    <div className="flex items-baseline gap-1 text-danger">
+                      <span className="text-[22px] font-black tracking-tighter leading-none">{l.wait}</span>
+                      <span className="text-[12px] font-extrabold">mins</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Staffing</span>
+                    <span className="text-[13px] font-extrabold text-foreground">{l.vols} <span className="text-muted-foreground/80">vols</span></span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="grid gap-6 lg:grid-cols-[1fr_280px_280px]">
+          {/* AI Optimization */}
+          <div className="rounded-2xl border border-saffron/40 bg-saffron/5 flex flex-col justify-center shadow-md transition-all hover:shadow-lg">
+            <div className="flex items-center gap-2 border-b border-saffron/20 bg-saffron/10 px-6 py-4">
+              <AlertOctagon size={18} className="text-saffron animate-pulse" />
+              <div className="text-[13px] font-black tracking-widest uppercase text-saffron drop-shadow-sm">AI Optimization Recommended</div>
+            </div>
+            <div className="p-6">
+              <div className="text-sm font-bold text-foreground">Open Special Darshan Lane</div>
+              <div className="mt-2 text-xs text-muted-foreground leading-relaxed">
+                Main queues are approaching 80% saturation. Projected wait times will exceed safety
+                thresholds (75 mins) in approximately 22 minutes.
+              </div>
+              <div className="mt-4 flex gap-2">
+                <button
+                  onClick={() => toast.success("Special Darshan Lane Opened.")}
+                  className="flex-1 rounded-lg bg-saffron py-2 text-xs font-bold text-white shadow-sm hover:bg-saffron/90 transition-all hover:-translate-y-0.5"
+                >
+                  Execute
                 </button>
-                <button className="flex-1 rounded-xl bg-surface border border-border py-2 text-xs font-bold text-foreground transition-colors hover:bg-muted">
-
+                <button className="flex-1 rounded-lg border border-border bg-surface py-2 text-xs font-bold text-foreground transition-all hover:bg-muted hover:-translate-y-0.5">
                   Dismiss
                 </button>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-      {/* Live Activity Feed - Full Width Timeline View */}
-      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
-
-        <div className="flex items-center justify-between border-b border-border bg-surface px-5 py-4">
-
-          <div className="flex items-center gap-2 font-bold text-foreground">
-
-            <Activity size={16} className="text-primary" /> Live Activity — {temple.name}
           </div>
-          <span className="flex items-center gap-1.5 text-[10px] font-bold text-emerald">
 
-            <span className="h-1.5 w-1.5 rounded-xl bg-emerald animate-pulse" /> Live Feed
-          </span>
-        </div>
-        <div className="max-h-[320px] overflow-y-auto">
-
-          {feed.map((f, i) => (
-            <div
-              key={i}
-              className="flex items-start sm:items-center gap-3 bg-card px-5 py-3.5 transition-colors hover:bg-surface/50"
-            >
-
-              <div className="font-mono text-sm font-semibold text-muted-foreground w-12 shrink-0 pt-0.5 sm:pt-0">
-                {f.t}
-              </div>
-              <div className={`mt-1.5 sm:mt-0 h-2 w-2 shrink-0 rounded-xl bg-${f.c}`} />
-              <div className="text-sm font-normal text-foreground">{f.msg}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* Charts */}
-      <div className="grid gap-5 lg:grid-cols-2">
-
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-
-          <div className="mb-4">
-
-            <div className="mb-2 flex items-center justify-between">
-
-              <div className="font-bold text-foreground">Today's Hourly Footfall</div>
-              <div className="flex items-center gap-3">
-
-                <span className="text-xs font-extrabold text-muted-foreground">
-                  Actual vs Forecast
-                </span>
-                <span className="rounded bg-emerald/10 px-2 py-0.5 text-xs font-semibold text-emerald">
-                  Peak: 16.4k
-                </span>
-              </div>
+          {/* Queue Actions */}
+          <div className="glass-card p-6 rounded-2xl border border-border/60 shadow-md hover:shadow-lg transition-all">
+            <div className="mb-5 text-base font-extrabold tracking-tight text-foreground">Queue Actions</div>
+            <div className="grid gap-2 text-xs">
+              {[
+                { i: Plus, l: "Open New Lane" },
+                { i: Pause, l: "Pause Intake" },
+                { i: Megaphone, l: "Announce Wait" },
+                { i: Merge, l: "Merge Common & ₹20" },
+                { i: Siren, l: "Emergency Clear" },
+              ].map(({ i: Icon, l }) => (
+                <button
+                  key={l}
+                  onClick={() => toast(`${l} triggered`)}
+                  className="flex items-center gap-3 rounded-lg border border-border bg-surface px-3 py-2 text-left font-semibold text-foreground hover:bg-muted transition-colors"
+                >
+                  <Icon size={14} className="text-muted-foreground" /> {l}
+                </button>
+              ))}
             </div>
           </div>
-          <div className="h-[280px]">
 
-            <ResponsiveContainer width="100%" height="100%">
-
-              <AreaChart data={footfall} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-
-                <defs>
-
-                  <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-
-                    <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
-                    <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid
-                  strokeDasharray="4 4"
-                  stroke="var(--border)"
-                  opacity={0.5}
-                  vertical={false}
-                />
-                <XAxis
-                  dataKey="t"
-                  stroke="var(--muted-foreground)"
-                  fontSize={10}
-                  tickLine={false}
-                  axisLine={false}
-                  dy={10}
-                />
-                <YAxis
-                  stroke="var(--muted-foreground)"
-                  fontSize={10}
-                  tickLine={false}
-                  axisLine={false}
-                  dx={-10}
-                  tickFormatter={(v) => (v >= 1000 ? `${v / 1000}k` : v)}
-                />
-                <Tooltip
-                  contentStyle={{
-                    background: "var(--card)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "8px",
-                    fontSize: "12px",
-                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                  }}
-                  itemStyle={{ fontWeight: 600, color: "var(--primary)" }}
-                  labelStyle={{
-                    fontWeight: "bold",
-                    color: "var(--foreground)",
-                    marginBottom: "4px",
-                  }}
-                  formatter={(value: any) => [value.toLocaleString(), "Devotees"]}
-                />
-                <Area
-                  type="monotone"
-                  dataKey="v"
-                  name="Footfall"
-                  stroke="var(--primary)"
-                  fill="url(#sg)"
-                  strokeWidth={3}
-                  activeDot={{ r: 6, fill: "var(--primary)", strokeWidth: 0 }}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-        <div className="rounded-xl border border-border bg-card p-4 shadow-sm">
-
-          <div className="mb-3 flex items-center justify-between">
-
-            <div className="font-bold text-foreground">Queue Wait Time Trend</div>
-            <div className="flex items-center gap-3">
-
-              <span className="text-xs font-extrabold text-muted-foreground">
-                Last 6 Hours
-              </span>
-              <span className="rounded bg-info/10 px-2 py-0.5 text-xs font-semibold text-info">
-                Avg: 32 min
+          {/* Queue Config */}
+          <div className="glass-card p-6 flex flex-col justify-between rounded-2xl border border-border/60 shadow-md hover:shadow-lg transition-all">
+            <div>
+              <div className="mb-5 text-base font-extrabold tracking-tight text-foreground">Queue Config</div>
+              <div className="space-y-6 text-xs">
+                <div>
+                  <div className="mb-1 flex justify-between">
+                    <span className="font-semibold text-muted-foreground">Max intake rate</span>
+                    <span className="font-mono font-bold">{Math.round(inside / 100)} ppl/m</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={50}
+                    max={400}
+                    defaultValue={200}
+                    className="w-full accent-primary cursor-pointer"
+                  />
+                </div>
+                <div>
+                  <div className="mb-1 flex justify-between">
+                    <span className="font-semibold text-muted-foreground">Target wait time</span>
+                    <span className="font-mono font-bold">45 mins</span>
+                  </div>
+                  <input
+                    type="range"
+                    min={10}
+                    max={120}
+                    defaultValue={45}
+                    className="w-full accent-primary cursor-pointer"
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center justify-between border-t border-border pt-4 mt-4">
+              <span className="text-xs font-bold text-foreground">Auto-balance</span>
+              <span className="rounded-lg bg-emerald/15 px-3 py-1 font-bold text-[10px] text-emerald border border-emerald/20 shadow-sm">
+                ● ON
               </span>
             </div>
-          </div>
-          <div className="h-[280px]">
-
-            <ResponsiveContainer width="100%" height="100%">
-
-              <LineChart data={queueTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-
-                <CartesianGrid
-                  strokeDasharray="4 4"
-                  stroke="var(--border)"
-                  opacity={0.5}
-                  vertical={false}
-                />
-                <XAxis
-                  dataKey="t"
-                  stroke="var(--muted-foreground)"
-                  fontSize={10}
-                  tickLine={false}
-                  axisLine={false}
-                  dy={10}
-                />
-                <YAxis
-                  stroke="var(--muted-foreground)"
-                  fontSize={10}
-                  tickLine={false}
-                  axisLine={false}
-                  dx={-10}
-                  tickFormatter={(v) => `${v}m`}
-                />
-                <Tooltip
-                  contentStyle={{
-                    background: "var(--card)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "8px",
-                    fontSize: "12px",
-                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                  }}
-                  itemStyle={{ fontWeight: 600 }}
-                  labelStyle={{
-                    fontWeight: "bold",
-                    color: "var(--foreground)",
-                    marginBottom: "4px",
-                  }}
-                />
-                <Legend
-                  iconType="circle"
-                  wrapperStyle={{ fontSize: 11, paddingTop: "20px", fontWeight: 600 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="A"
-                  name="Lane A"
-                  stroke="var(--primary)"
-                  strokeWidth={3}
-                  dot={false}
-                  activeDot={{ r: 5, strokeWidth: 0 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="B"
-                  name="Lane B"
-                  stroke="var(--info)"
-                  strokeWidth={3}
-                  dot={false}
-                  activeDot={{ r: 5, strokeWidth: 0 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="C"
-                  name="Lane C"
-                  stroke="var(--emerald)"
-                  strokeWidth={3}
-                  dot={false}
-                  activeDot={{ r: 5, strokeWidth: 0 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
           </div>
         </div>
       </div>
