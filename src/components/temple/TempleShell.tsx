@@ -68,14 +68,27 @@ export function TempleShell() {
   }, [section]);
   const [templeId, setTempleId] = useState(TEMPLES[0].id);
   const [templeOpen, setTempleOpen] = useState(false);
+  const [selectedState, setSelectedState] = useState<string>("All States");
+  const [stateOpen, setStateOpen] = useState(false);
   const [selectedDistrict, setSelectedDistrict] = useState<string>("All Districts");
   const [districtOpen, setDistrictOpen] = useState(false);
   const [shimmer, setShimmer] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
+  
   const temple = TEMPLES.find((t) => t.id === templeId) || TEMPLES[0];
+  
+  const states = [
+    "All States",
+    ...Array.from(new Set(TEMPLES.map((t) => t.state))),
+  ].sort();
+
+  const filteredByState = selectedState === "All States" 
+    ? TEMPLES 
+    : TEMPLES.filter(t => t.state === selectedState);
+
   const districts = [
     "All Districts",
-    ...Array.from(new Set(TEMPLES.map((t) => t.district))),
+    ...Array.from(new Set(filteredByState.map((t) => t.district))),
   ].sort();
   const now = useLiveClock();
   const switchTemple = (id: string) => {
@@ -255,12 +268,14 @@ export function TempleShell() {
           className={`fixed right-0 top-0 z-20 flex h-20 items-center justify-between px-8 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] bg-white/70 backdrop-blur-2xl border-b border-border/40 shadow-sm ${sidebarExpanded ? "left-[260px]" : "left-[80px]"}`}
         >
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2.5">
-              <Sparkles size={18} className="text-primary drop-shadow-sm" />
-              <h1 className="text-lg font-montserrat font-extrabold tracking-tight text-foreground drop-shadow-sm">
-                {sectionTitle}
-              </h1>
-            </div>
+            {section !== "dashboard" && (
+              <div className="flex items-center gap-2.5">
+                <Sparkles size={18} className="text-primary drop-shadow-sm" />
+                <h1 className="text-lg font-montserrat font-extrabold tracking-tight text-foreground drop-shadow-sm">
+                  {sectionTitle}
+                </h1>
+              </div>
+            )}
             {/* Live pill */}
             <div className="hidden sm:flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-extrabold tracking-wide bg-status-normal/10 border border-status-normal/20 text-status-normal shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-status-normal animate-pulse shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
@@ -269,11 +284,55 @@ export function TempleShell() {
           </div>
 
           <div className="flex items-center gap-4">
+            {/* State filter */}
+            <div className="relative hidden lg:block">
+              <button
+                onClick={() => {
+                  setStateOpen((o) => !o);
+                  setDistrictOpen(false);
+                  setTempleOpen(false);
+                  setBellOpen(false);
+                }}
+                className="group flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
+              >
+                <Sparkles size={14} className="text-primary" />
+                <span className="tracking-wide">{selectedState}</span>
+                <ChevronDown
+                  size={14}
+                  className="text-muted-foreground transition-transform duration-300 group-hover:translate-y-0.5"
+                />
+              </button>
+              {stateOpen && (
+                <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
+                  {states.map((s) => (
+                    <button
+                      key={s}
+                      onClick={() => {
+                        setSelectedState(s);
+                        setStateOpen(false);
+                        setSelectedDistrict("All Districts");
+                        const firstTemple = s === "All States" 
+                          ? TEMPLES[0] 
+                          : TEMPLES.find((t) => t.state === s);
+                        if (firstTemple && temple.state !== s) {
+                          switchTemple(firstTemple.id);
+                        }
+                      }}
+                      className={`flex w-full items-center px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${s === selectedState ? "bg-muted/50 font-extrabold text-foreground" : "font-semibold text-foreground"}`}
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
             {/* District filter */}
             <div className="relative hidden lg:block">
               <button
                 onClick={() => {
                   setDistrictOpen((o) => !o);
+                  setStateOpen(false);
                   setTempleOpen(false);
                   setBellOpen(false);
                 }}
@@ -296,8 +355,8 @@ export function TempleShell() {
                         setDistrictOpen(false);
                         const firstTemple =
                           d === "All Districts"
-                            ? TEMPLES[0]
-                            : TEMPLES.find((t) => t.district === d);
+                            ? filteredByState[0]
+                            : filteredByState.find((t) => t.district === d);
                         if (firstTemple && d !== "All Districts" && temple.district !== d) {
                           switchTemple(firstTemple.id);
                         }
@@ -317,6 +376,7 @@ export function TempleShell() {
                 onClick={() => {
                   setTempleOpen((o) => !o);
                   setDistrictOpen(false);
+                  setStateOpen(false);
                   setBellOpen(false);
                 }}
                 className="group flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
@@ -330,7 +390,7 @@ export function TempleShell() {
               </button>
               {templeOpen && (
                 <div className="absolute right-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
-                  {TEMPLES.filter(
+                  {filteredByState.filter(
                     (t) => selectedDistrict === "All Districts" || t.district === selectedDistrict,
                   ).map((t) => (
                     <button
@@ -379,6 +439,7 @@ export function TempleShell() {
                 onClick={() => {
                   setBellOpen((o) => !o);
                   setDistrictOpen(false);
+                  setStateOpen(false);
                   setTempleOpen(false);
                 }}
                 className="relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:bg-white hover:shadow-sm border border-transparent hover:border-border/60"
