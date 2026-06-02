@@ -55,33 +55,33 @@ export function StaffSection() {
           icon={UserCheck}
           label="On Duty"
           value={onDuty}
-          color="text-emerald"
-          bgTint="bg-emerald/10"
+          color="text-emerald-600"
+          bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100"
         />
         <StatCard
           icon={Coffee}
           label="On Break"
           value={onBreak}
-          color="text-status-busy"
-          bgTint="bg-status-busy/10"
+          color="text-amber-600"
+          bgTint="bg-amber-50 text-amber-600 border border-amber-100"
         />
         <StatCard
           icon={UserMinus}
           label="Off Duty"
           value={off}
           color="text-muted-foreground"
-          bgTint="bg-muted/30"
+          bgTint="bg-muted/30 text-muted-foreground border border-border/50"
         />
         <StatCard
           icon={Users}
           label="Total Assigned"
           value={60}
-          color="text-foreground"
-          bgTint="bg-primary/5"
+          color="text-indigo-600"
+          bgTint="bg-indigo-50 text-indigo-600 border border-indigo-100"
         />
       </div>
       <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm overflow-hidden relative flex flex-col">
+        <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm transition-shadow hover:shadow-md relative flex flex-col">
           <div className="mb-4 flex items-center justify-between">
             <div className="font-bold text-lg text-foreground tracking-tight">Staff Positions — Temple Floor</div>
             <div className="flex gap-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
@@ -97,15 +97,16 @@ export function StaffSection() {
               </span>
             </div>
           </div>
-          <div className="relative rounded-xl bg-[#0F172A] p-2 overflow-hidden border border-border/50 shadow-inner">
-            {/* Architectural Grid Background */}
-            <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:16px_16px]" />
+          <div className="relative rounded-2xl bg-white border border-border/60 overflow-hidden shadow-sm">
+            {/* Generated Temple Blueprint Image */}
+            <img 
+              src="/temple_blueprint.png" 
+              alt="Temple Layout Blueprint" 
+              className="absolute inset-0 h-full w-full object-cover opacity-50 mix-blend-multiply pointer-events-none" 
+            />
             
-            <svg viewBox="0 0 560 360" className="h-[340px] w-full drop-shadow-md relative z-10">
+            <svg viewBox="0 0 560 360" className="h-[340px] w-full relative z-10">
               <defs>
-                <pattern id="diagonal-stripe" width="8" height="8" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-                  <rect width="4" height="8" fill="rgba(255,255,255,0.03)" />
-                </pattern>
                 <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
                   <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
                   <feMerge>
@@ -115,41 +116,12 @@ export function StaffSection() {
                 </filter>
               </defs>
               
-              {/* Main Compound Wall */}
-              <rect x="20" y="20" width="520" height="320" rx="6" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="3" />
-              
-              {/* Outer Prakaram (Corridor) */}
-              <rect x="50" y="50" width="460" height="260" rx="4" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1.5" strokeDasharray="6 3" />
-              
-              {/* Inner Sanctum (Garbhagriha) */}
-              <rect x="200" y="110" width="160" height="100" rx="6" fill="rgba(245,158,11,0.05)" stroke="rgba(245,158,11,0.2)" strokeWidth="1.5" />
-              <rect x="220" y="130" width="120" height="60" rx="4" fill="url(#diagonal-stripe)" stroke="rgba(245,158,11,0.4)" strokeWidth="1" />
-              <text x="280" y="165" textAnchor="middle" fontSize="13" fontWeight="800" fill="rgba(245,158,11,0.6)" letterSpacing="3">SANCTUM</text>
-
-              {/* Mandapams / Halls */}
-              <rect x="70" y="70" width="100" height="80" rx="4" fill="rgba(59,130,246,0.05)" stroke="rgba(59,130,246,0.15)" strokeWidth="1" />
-              <text x="120" y="114" textAnchor="middle" fontSize="10" fontWeight="600" fill="rgba(59,130,246,0.5)">Annadhanam</text>
-
-              <rect x="390" y="70" width="100" height="180" rx="4" fill="rgba(16,185,129,0.05)" stroke="rgba(16,185,129,0.15)" strokeWidth="1" />
-              <text x="440" y="165" textAnchor="middle" fontSize="10" fontWeight="600" fill="rgba(16,185,129,0.5)">Queue Complex</text>
-              
-              {/* Main Gopuram (Entrance) */}
-              <rect x="240" y="10" width="80" height="20" rx="2" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
-              <text x="280" y="24" textAnchor="middle" fontSize="8" fontWeight="800" fill="rgba(255,255,255,0.5)" letterSpacing="1">EAST GOPURAM</text>
-              
-              {/* South Gopuram */}
-              <rect x="10" y="150" width="20" height="60" rx="2" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-              
-              {/* Paths */}
-              <path d="M 280 30 L 280 110" stroke="rgba(255,255,255,0.05)" strokeWidth="24" strokeLinecap="round" />
-              <path d="M 360 160 L 390 160" stroke="rgba(255,255,255,0.05)" strokeWidth="24" strokeLinecap="round" />
-              
               {staffPositions.map((p, i) => {
                 const s = STAFF[i];
                 if (!s) return null;
                 const isSelected = selected === i;
                 const isDuty = s.status === "duty";
-                const color = isDuty ? "#10B981" : s.status === "break" ? "#F59E0B" : "#64748B";
+                const color = isDuty ? "#10B981" : s.status === "break" ? "#F59E0B" : "#94A3B8";
                 
                 return (
                   <g
@@ -174,17 +146,16 @@ export function StaffSection() {
                       cy={p.y}
                       r={isSelected ? "6" : "4.5"}
                       fill={color}
-                      stroke="#0F172A"
+                      stroke="#FFFFFF"
                       strokeWidth="1.5"
                     />
                     <text
                       x={p.x}
                       y={p.y - 12}
                       textAnchor="middle"
-                      fontSize={isSelected ? "11" : "9"}
-                      fontWeight="800"
-                      fill={isSelected ? "#FFF" : color}
-                      className="drop-shadow-md"
+                      fontSize={isSelected ? "10" : "8"}
+                      fontWeight="700"
+                      fill={isSelected ? "#000" : color}
                     >
                       {s.id.slice(-2)}
                     </text>
@@ -216,7 +187,7 @@ export function StaffSection() {
           )}
         </div>
         {/* Quick Actions */}
-        <div className="rounded-xl border border-border bg-card p-8">
+        <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm transition-shadow hover:shadow-md flex flex-col">
           <div className="mb-2 font-semibold text-foreground">Quick Actions</div>
           <div className="space-y-2">
             {[
@@ -238,13 +209,13 @@ export function StaffSection() {
         </div>
       </div>
       {/* Roster Table */}
-      <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
-        <div className="border-b border-border bg-surface px-6 py-4 font-bold text-foreground">
+      <div className="rounded-3xl border border-border/40 bg-white shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+        <div className="border-b border-border/40 bg-muted/10 px-6 py-5 font-semibold text-xs uppercase tracking-wider text-muted-foreground">
           Volunteer Roster
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-surface/50 text-xs font-extrabold text-muted-foreground">
+            <thead className="bg-muted/5 text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">
               <tr>
                 {["ID", "Name", "Role", "Zone", "Status", "Since", "Action"].map((h) => (
                   <th key={h} className="px-6 py-3 text-left">
@@ -259,12 +230,12 @@ export function StaffSection() {
                 return (
                   <tr key={s.id} className="transition-colors hover:bg-surface/50">
                     <td className="px-6 py-3 font-mono text-xs text-muted-foreground">{s.id}</td>
-                    <td className="px-6 py-3 font-bold text-foreground">{s.name}</td>
-                    <td className="px-6 py-3 font-normal text-muted-foreground">{s.role}</td>
+                    <td className="px-6 py-3 font-semibold text-xs text-foreground">{s.name}</td>
+                    <td className="px-6 py-3 font-medium text-xs text-muted-foreground">{s.role}</td>
                     <td className="px-6 py-3 font-normal text-muted-foreground">{s.zone}</td>
                     <td className="px-6 py-3">
                       <span
-                        className={`inline-flex items-center rounded-xl border px-2.5 py-0.5 text-[10px] font-bold ${b.cls}`}
+                        className={`inline-flex items-center rounded-xl border px-2.5 py-0.5 text-[9px] font-semibold ${b.cls}`}
                       >
                         {b.label}
                       </span>

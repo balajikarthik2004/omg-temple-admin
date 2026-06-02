@@ -53,7 +53,7 @@ export function OperationsSection() {
     if (!newText.trim()) return;
     setBroadcasts([...broadcasts, { id: Date.now(), text: newText, targets: ["All Screens"] }]);
     setNewText("");
-    toast.success("Broadcast deployed to all screens");
+    toast.success("Broadcast Added to all screens");
   };
 
   const resolveOrder = (id: string) => {
@@ -73,48 +73,48 @@ export function OperationsSection() {
           icon={Wrench}
           label="Maintenance Work"
           value={orders.filter((o) => o.status === "open").length}
-          color="text-status-busy"
-          bgTint="bg-status-busy/10"
+          color="text-amber-600"
+          bgTint="bg-amber-50 text-amber-600 border border-amber-100"
           sub={orders.some(o => o.status === "open" && o.priority === "high") ? "High Priority issues active" : "Routine maintenance"}
         />
         <StatCard
           icon={Activity}
           label="Facility Health"
           value="94%"
-          color="text-emerald"
-          bgTint="bg-emerald/10"
-          trend={{ up: false, text: "+2% today" }} 
+          color="text-emerald-600"
+          bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100"
+          trend={{ up: false, text: "+2% today" }}
           sub="All systems operating optimally"
         />
         <StatCard
           icon={ShieldAlert}
           label="Active Rituals"
           value={1}
-          color="text-saffron"
-          bgTint="bg-saffron/10"
-          sub="Crowd control deployed"
+          color="text-indigo-600"
+          bgTint="bg-indigo-50 text-indigo-600 border border-indigo-100"
+          sub="Crowd control Added"
         />
         <StatCard
           icon={Megaphone}
           label="Active Broadcasts"
           value={broadcasts.length}
-          color="text-info"
-          bgTint="bg-info/10"
+          color="text-emerald-600"
+          bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100"
           sub="Information active on all displays"
         />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
         {/* 2. Live Ritual & Event Command */}
-        <div className="flex flex-col glass-card">
-          <div className="flex items-center justify-between border-b border-white/40 bg-white/40 px-6 py-4">
+        <div className="rounded-3xl border border-border/40 bg-white p-0 shadow-sm transition-shadow hover:shadow-md flex flex-col overflow-hidden">
+          <div className="flex items-center justify-between border-b border-border/40 bg-muted/10 px-6 py-5">
             <div>
-              <h3 className="font-bold text-foreground">Live Ritual Command Center</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">Today's Daily Pooja Schedule</p>
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Live Ritual Command Center</h3>
+              <p className="text-[13px] font-bold text-foreground mt-1">Today's Daily Pooja Schedule</p>
             </div>
-            <div className="flex items-center gap-2 rounded-full bg-saffron/10 px-3 py-1 border border-saffron/20">
-              <span className="h-1.5 w-1.5 rounded-full bg-saffron animate-pulse" />
-              <span className="text-[10px] font-bold text-saffron">LIVE TRACKING</span>
+            <div className="flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 border border-amber-100">
+              <span className="h-1.5 w-1.5 rounded-full bg-amber-600 animate-pulse" />
+              <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest">LIVE TRACKING</span>
             </div>
           </div>
           <div className="flex-1 p-8">
@@ -164,10 +164,10 @@ export function OperationsSection() {
                         {isLive && (
                           <div className="flex shrink-0 flex-col gap-2">
                             <button
-                              onClick={() => toast.success("Crowd Control Deployed")}
+                              onClick={() => toast.success("Crowd Control Added")}
                               className="flex items-center gap-2 rounded-lg bg-saffron px-3 py-1.5 text-[11px] font-bold text-white shadow-sm hover:bg-saffron/90 hover:-translate-y-0.5 transition-all"
                             >
-                              <Users size={14} /> Deploy Staff
+                              <Users size={14} /> Add Staff
                             </button>
                             <button
                               onClick={() => toast.success("Audio Broadcast Started")}
@@ -187,11 +187,11 @@ export function OperationsSection() {
         </div>
 
         {/* 3. Facility Health & Work Orders */}
-        <div className="flex flex-col glass-card">
-          <div className="flex items-center justify-between border-b border-white/40 bg-white/40 px-6 py-4">
+        <div className="rounded-3xl border border-border/40 bg-white p-0 shadow-sm transition-shadow hover:shadow-md flex flex-col overflow-hidden">
+          <div className="flex items-center justify-between border-b border-border/40 bg-muted/10 px-6 py-5">
             <div>
-              <h3 className="font-bold text-foreground">Facility Maintenance Board</h3>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Facility Maintenance Board</h3>
+              <p className="text-[13px] font-bold text-foreground mt-1">
                 Active work orders & asset health
               </p>
             </div>
@@ -262,11 +262,11 @@ export function OperationsSection() {
       </div>
 
       {/* 4. Digital Signage & Announcements */}
-      <div className="glass-card overflow-hidden">
-        <div className="border-b border-white/40 bg-white/40 px-6 py-4 flex items-center justify-between">
+      <div className="rounded-3xl border border-border/40 bg-white p-0 shadow-sm transition-shadow hover:shadow-md flex flex-col overflow-hidden">
+        <div className="flex items-center justify-between border-b border-border/40 bg-muted/10 px-6 py-5">
           <div>
-            <h3 className="font-bold text-foreground">Digital Signage Controller</h3>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Digital Signage Controller</h3>
+            <p className="text-[13px] font-bold text-foreground mt-1">
               Manage live broadcasts across temple displays
             </p>
           </div>

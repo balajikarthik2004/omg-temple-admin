@@ -182,13 +182,13 @@ export function CCTVSection() {
       {/* Top Header & Navigation */}
       <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between mb-4">
         <div className="relative z-10">
-          <div className="text-3xl font-black tracking-tight text-foreground drop-shadow-sm">
+          <div className="text-2xl font-extrabold tracking-tight text-foreground drop-shadow-sm">
             Security Command Center
           </div>
-          <div className="mt-1.5 text-[12px] font-bold text-muted-foreground tracking-widest uppercase">
+          <div className="mt-1.5 text-[10px] font-semibold text-muted-foreground tracking-widest uppercase">
             AI-Powered Surveillance & Threat Detection
           </div>
-          <div className="mt-5 flex flex-wrap items-center gap-3 text-[10px] font-black uppercase tracking-widest">
+          <div className="mt-5 flex flex-wrap items-center gap-3 text-[9px] font-bold uppercase tracking-widest">
             <div className="flex items-center gap-2 rounded-full bg-emerald/10 text-emerald px-3.5 py-1.5 border border-emerald/20 shadow-sm">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald opacity-75"></span>
@@ -209,16 +209,16 @@ export function CCTVSection() {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-1.5 rounded-[20px] border border-border/50 bg-muted/50 p-1.5 relative z-10 shadow-inner">
+        <div className="flex items-center gap-1.5 rounded-2xl border border-border/40 bg-muted/20 p-1.5 relative z-10">
           <button
             onClick={() => setTab("live")}
-            className={`flex items-center gap-2.5 rounded-[16px] px-5 py-2.5 text-xs font-black transition-all ${tab === "live" ? "bg-[#1A1F60] text-white shadow-[0_2px_8px_rgba(26,31,96,0.25)]" : "text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5"}`}
+            className={`flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-[10px] font-semibold uppercase tracking-widest transition-all ${tab === "live" ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-white/50"}`}
           >
             <Activity size={16} /> Live Grid
           </button>
           <button
             onClick={() => setTab("search")}
-            className={`flex items-center gap-2.5 rounded-[16px] px-5 py-2.5 text-xs font-black transition-all ${tab === "search" ? "bg-[#1A1F60] text-white shadow-[0_2px_8px_rgba(26,31,96,0.25)]" : "text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5"}`}
+            className={`flex items-center gap-2.5 rounded-xl px-5 py-2.5 text-[10px] font-semibold uppercase tracking-widest transition-all ${tab === "search" ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-white/50"}`}
           >
             <ScanFace size={16} /> AI Person Search
           </button>
@@ -231,37 +231,37 @@ export function CCTVSection() {
             {CCTV_CAMERAS.map((c, i) => (
               <div
                 key={c.id}
-                className="group flex flex-col justify-between rounded-[24px] border border-border/50 bg-card p-5 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-all duration-400 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)]"
+                className="group flex flex-col justify-between rounded-2xl border border-border/40 bg-white p-4 shadow-sm transition-all duration-400 hover:-translate-y-1 hover:shadow-md"
               >
                 <FakeFeed idx={i} status={c.status} />
-                <div className="mt-4 flex items-start justify-between">
+                <div className="mt-3 flex items-start justify-between">
                   <div>
-                    <div className="text-[10px] font-bold text-muted-foreground tracking-widest uppercase">{c.id}</div>
-                    <div className="mt-1 text-[15px] font-black tracking-tight text-foreground leading-tight drop-shadow-sm">
+                    <div className="text-[9px] font-semibold text-muted-foreground tracking-widest uppercase">{c.id}</div>
+                    <div className="mt-1 text-[13px] font-bold tracking-tight text-foreground leading-tight">
                       {c.name}
                     </div>
                   </div>
                   <span
-                    className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[9px] font-black uppercase tracking-widest shadow-inner ${c.status === "CROWDED" ? "bg-danger/10 text-danger border-danger/20" :
-                        c.status === "BUSY" ? "bg-saffron/10 text-saffron border-saffron/20" :
-                          "bg-emerald/10 text-emerald border-emerald/20"
+                    className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[8px] font-semibold uppercase tracking-widest ${c.status === "CROWDED" ? "bg-red-50 text-red-600 border-red-100" :
+                        c.status === "BUSY" ? "bg-amber-50 text-amber-600 border-amber-100" :
+                          "bg-emerald-50 text-emerald-600 border-emerald-100"
                       }`}
                   >
                     {c.status}
                   </span>
                 </div>
-                <div className="mt-3.5 flex items-center justify-between border-t border-border/50 pt-3.5 text-[11px] font-medium text-muted-foreground">
+                <div className="mt-2.5 flex items-center justify-between border-t border-border/50 pt-2.5 text-[11px] font-medium text-muted-foreground">
                   <span className="flex items-center gap-1.5 text-muted-foreground/80">
                     <UserSearch size={14} className="text-muted-foreground/60" />
                     {c.type === "people" ? `${c.count} detected` : `${c.count} vehicles`}
                   </span>
                   <span className="font-mono text-[10px] tracking-wider text-muted-foreground/70">{timeStr}</span>
                 </div>
-                <div className="mt-4 grid grid-cols-4 gap-3 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <div className="mt-3 grid grid-cols-4 gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   {[ZoomIn, Camera, Bell, Maximize2].map((Icon, j) => (
                     <button
                       key={j}
-                      className="flex h-10 items-center justify-center rounded-xl bg-muted/80 text-muted-foreground border border-border/50 transition-all hover:bg-surface hover:text-foreground hover:shadow-lg hover:-translate-y-0.5"
+                      className="flex h-8 items-center justify-center rounded-lg bg-muted/80 text-muted-foreground border border-border/50 transition-all hover:bg-surface hover:text-foreground hover:shadow-lg hover:-translate-y-0.5"
                     >
                       <Icon size={18} />
                     </button>
@@ -274,42 +274,42 @@ export function CCTVSection() {
           <div className="flex flex-col gap-8">
             <div className="grid grid-cols-2 gap-8">
               {[
-                { l: "Total Detected", v: "1,739", c: "text-saffron", i: Users },
-                { l: "In Queues", v: "398", c: "text-info", i: ActivityIcon },
-                { l: "Anomalies", v: "2", c: "text-danger", i: AlertTriangle },
-                { l: "Avg Density", v: "63%", c: "text-status-busy", i: Crosshair },
+                { l: "Total Detected", v: "1,739", c: "text-amber-600", i: Users },
+                { l: "In Queues", v: "398", c: "text-indigo-600", i: ActivityIcon },
+                { l: "Anomalies", v: "2", c: "text-red-600", i: AlertTriangle },
+                { l: "Avg Density", v: "63%", c: "text-amber-600", i: Crosshair },
               ].map((s) => (
                 <div
                   key={s.l}
-                  className="group rounded-[24px] border border-border/50 bg-card p-6 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-all duration-400 hover:-translate-y-1 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)]"
+                  className="group rounded-3xl border border-border/40 bg-white p-6 shadow-sm transition-all duration-400 hover:-translate-y-1 hover:shadow-md"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="text-base font-black text-muted-foreground uppercase tracking-tight">{s.l}</div>
-                    <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-surface border border-border text-muted-foreground transition-colors group-hover:text-primary">
-                      <s.i size={14} />
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="text-[9px] font-semibold text-muted-foreground uppercase tracking-widest">{s.l}</div>
+                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted/30 border border-border/50 text-muted-foreground transition-colors group-hover:text-primary group-hover:bg-primary/5">
+                      <s.i size={18} />
                     </div>
                   </div>
                   <div
-                    className={`text-2xl font-montserrat font-black tracking-tight ${s.c} tabular-nums`}
+                    className={`text-2xl font-bold tracking-tight ${s.c} tabular-nums`}
                   >
                     {s.v}
                   </div>
                 </div>
               ))}
             </div>
-            <div className="rounded-[24px] border border-border/50 bg-card p-6 shadow-[0_8px_24px_rgba(0,0,0,0.04)] flex-1">
-              <div className="mb-4 text-sm font-black tracking-tight text-foreground">Critical Alerts</div>
+            <div className="rounded-3xl border border-border/40 bg-white p-6 shadow-sm flex-1">
+              <div className="mb-6 text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">Critical Alerts</div>
               <div className="space-y-3">
                 {alerts.map((a, i) => (
                   <div
                     key={i}
-                    className={`rounded-xl border border-${a.color}/30 bg-${a.color}/10 p-8 text-xs`}
+                    className={`rounded-2xl border ${a.color === 'danger' ? 'border-red-100 bg-red-50' : 'border-amber-100 bg-amber-50'} p-6 text-[12px] font-medium`}
                   >
                     <div className="flex items-center justify-between">
-                      <span className={`font-semibold text-${a.color}`}>{a.cam}</span>
-                      <span className="font-mono text-muted-foreground">{a.time}</span>
+                      <span className={`${a.color === 'danger' ? 'text-red-600' : 'text-amber-600'} text-[10px] font-semibold uppercase tracking-widest`}>{a.cam}</span>
+                      <span className="font-mono text-[10px] text-muted-foreground">{a.time}</span>
                     </div>
-                    <div className="mt-1.5 font-normal leading-relaxed text-foreground/90">
+                    <div className="mt-1.5 leading-relaxed text-foreground/90">
                       {a.msg}
                     </div>
                   </div>
@@ -321,10 +321,10 @@ export function CCTVSection() {
       ) : (
         /* AI Person Search Tab */ <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
           {/* Upload & Controls */}
-          <div className="rounded-[24px] border border-border/50 bg-card p-8 shadow-[0_8px_24px_rgba(0,0,0,0.04)] flex flex-col">
-            <div className="mb-6">
-              <h2 className="text-base font-bold text-foreground">AI Facial Search</h2>
-              <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+          <div className="rounded-3xl border border-border/40 bg-white p-8 shadow-sm flex flex-col">
+            <div className="mb-8">
+              <h2 className="text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">AI Facial Search</h2>
+              <p className="mt-2 text-[12px] font-medium text-foreground leading-relaxed">
                 Upload a clear photo of a person. The AI will scan the last 24 hours of footage
                 across all 12 cameras.
               </p>
@@ -340,10 +340,10 @@ export function CCTVSection() {
                 <div className="rounded-xl bg-surface p-8 shadow-sm transition-transform group-hover:scale-110">
                   <UploadCloud size={32} className="text-muted-foreground group-hover:text-info" />
                 </div>
-                <div className="mt-3 text-sm font-bold text-foreground">
+                <div className="mt-3 text-[12px] font-semibold text-foreground">
                   Click to upload target photo
                 </div>
-                <div className="mt-1 text-[11px] text-muted-foreground">
+                <div className="mt-1 text-[10px] text-muted-foreground">
                   Select a JPG, PNG, or WEBP file
                 </div>
               </label>
@@ -366,8 +366,8 @@ export function CCTVSection() {
                   )}
                 </div>
                 <div className="mt-6 w-full text-center">
-                  <div className="text-sm font-bold text-foreground">Target Subject Acquired</div>
-                  <div className="mt-1 text-xs text-info font-normal">Tracking ID: SUB-8942-A</div>
+                  <div className="text-[12px] font-semibold text-foreground">Target Subject Acquired</div>
+                  <div className="mt-1 text-[10px] text-info font-normal">Tracking ID: SUB-8942-A</div>
                 </div>
                 {searchState === "results" && (
                   <button
@@ -381,14 +381,14 @@ export function CCTVSection() {
             )}
           </div>
           {/* Scanning & Results View */}
-          <div className="rounded-[24px] border border-border/50 bg-card p-8 shadow-[0_8px_24px_rgba(0,0,0,0.04)] min-h-[500px] flex flex-col">
+          <div className="rounded-3xl border border-border/40 bg-white p-8 shadow-sm min-h-[500px] flex flex-col">
             {searchState === "idle" && (
-              <div className="flex h-full flex-col items-center justify-center text-center opacity-60">
-                <Target size={48} className="mb-2 text-border" />
-                <div className="text-sm font-semibold text-muted-foreground">
+              <div className="flex h-full flex-col items-center justify-center text-center">
+                <Target size={48} className="mb-4 text-muted-foreground/30" />
+                <div className="text-[12px] font-semibold text-foreground">
                   Awaiting Target Image
                 </div>
-                <div className="mt-1 text-xs text-muted-foreground/70">
+                <div className="mt-1 text-[9px] font-medium uppercase tracking-widest text-muted-foreground">
                   Upload a photo to begin deep scanning network
                 </div>
               </div>
@@ -396,28 +396,26 @@ export function CCTVSection() {
             {searchState === "scanning" && (
               <div className="flex h-full flex-col justify-center">
                 <div className="mb-10 relative">
-                  <div className="absolute -inset-4 bg-info/10 rounded-3xl blur-xl animate-pulse" />
-                  <div className="relative rounded-2xl bg-black border border-info/30 p-8 shadow-[0_0_40px_rgba(0,191,255,0.15)] overflow-hidden">
-                    <div className="absolute inset-0 bg-[linear-gradient(rgba(0,191,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(0,191,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]" />
-                    <div className="relative flex items-center justify-between text-info mb-6">
-                      <span className="flex items-center gap-3 text-sm font-black uppercase tracking-widest drop-shadow-[0_0_8px_rgba(0,191,255,0.8)]">
-                        <ScanFace size={20} className="animate-pulse" /> AI Neural Scan in Progress
+                  <div className="relative rounded-2xl bg-white border border-border/60 p-8 shadow-sm overflow-hidden">
+                    <div className="relative flex items-center justify-between text-foreground mb-6">
+                      <span className="flex items-center gap-3 text-xs font-bold uppercase tracking-widest text-foreground/80">
+                        <ScanFace size={20} className="text-primary animate-pulse" /> Deep Neural Scan Running
                       </span>
-                      <span className="font-mono text-3xl font-black tabular-nums drop-shadow-[0_0_12px_rgba(0,191,255,1)]">
+                      <span className="font-mono text-2xl font-extrabold tabular-nums text-primary">
                         {scanProgress.toString().padStart(2, '0')}%
                       </span>
                     </div>
                     
-                    <div className="relative h-4 w-full rounded-full bg-slate-900 overflow-hidden shadow-inner ring-1 ring-white/10">
+                    <div className="relative h-3 w-full rounded-full bg-muted overflow-hidden shadow-inner border border-border/40">
                       <div 
-                        className="absolute top-0 left-0 h-full bg-gradient-to-r from-info/40 via-info to-white transition-all duration-300 ease-out shadow-[0_0_20px_rgba(0,191,255,0.9)]"
+                        className="absolute top-0 left-0 h-full bg-primary transition-all duration-300 ease-out"
                         style={{ width: `${scanProgress}%` }}
                       >
-                        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.8),transparent)] animate-scan mix-blend-screen" />
+                        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] animate-scan" />
                       </div>
                     </div>
                     
-                    <div className="mt-4 flex justify-between text-[10px] font-bold uppercase tracking-widest text-info/60">
+                    <div className="mt-4 flex justify-between text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">
                       <span>Analyzing Node {Math.floor(scanProgress / 10)}</span>
                       <span>{scanProgress > 50 ? 'Identifying Signatures...' : 'Isolating Variables...'}</span>
                       <span>{scanProgress === 100 ? 'Complete' : 'Processing...'}</span>
@@ -439,8 +437,8 @@ export function CCTVSection() {
             {searchState === "results" && (
               <div className="flex h-full flex-col">
                 <div className="mb-6 flex items-center justify-between border-b border-border pb-4">
-                  <div className="text-base font-bold text-foreground">Match Results</div>
-                  <div className="rounded-xl bg-info/10 px-3 py-1 text-xs font-semibold text-info border border-info/30">
+                  <div className="text-sm font-semibold text-foreground">Match Results</div>
+                  <div className="rounded-xl bg-info/10 px-3 py-1 text-[10px] font-medium text-info border border-info/30">
                     3 Matches Found
                   </div>
                 </div>
@@ -482,27 +480,27 @@ export function CCTVSection() {
                       <div className="flex flex-1 flex-col justify-center">
                         <div className="flex items-start justify-between">
                           <div>
-                            <div className="font-bold text-foreground text-sm">{m.name}</div>
-                            <div className="mt-1 text-xs font-mono text-muted-foreground">
+                            <div className="font-semibold text-foreground text-xs">{m.name}</div>
+                            <div className="mt-1 text-[10px] font-mono text-muted-foreground">
                               {m.cam} • {m.time}
                             </div>
                           </div>
                           <div className="flex flex-col items-end">
                             <div
-                              className={`text-base font-semibold tabular-nums ${m.conf > 90 ? "text-emerald" : m.conf > 80 ? "text-saffron" : "text-status-busy"}`}
+                              className={`text-sm font-bold tabular-nums ${m.conf > 90 ? "text-emerald" : m.conf > 80 ? "text-saffron" : "text-status-busy"}`}
                             >
                               {m.conf}%
                             </div>
-                            <div className="text-xs font-extrabold text-muted-foreground">
+                            <div className="text-[10px] font-semibold text-muted-foreground">
                               Confidence
                             </div>
                           </div>
                         </div>
                         <div className="mt-2 flex gap-2">
-                          <button className="flex items-center gap-1.5 rounded bg-info px-3 py-1.5 text-[10px] font-semibold text-white shadow-sm transition-opacity hover:opacity-90">
+                          <button className="flex items-center gap-1.5 rounded bg-info px-3 py-1.5 text-[9px] font-medium text-white shadow-sm transition-opacity hover:opacity-90">
                             <ZoomIn size={12} /> View Frame
                           </button>
-                          <button className="flex items-center gap-1.5 rounded border border-border bg-card px-3 py-1.5 text-[10px] font-bold text-foreground transition-colors hover:bg-muted">
+                          <button className="flex items-center gap-1.5 rounded border border-border bg-card px-3 py-1.5 text-[9px] font-medium text-foreground transition-colors hover:bg-muted">
                             Track Route
                           </button>
                         </div>

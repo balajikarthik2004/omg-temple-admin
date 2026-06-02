@@ -101,8 +101,8 @@ export function DonationSection() {
           label="Total Collections (Today)"
           value="₹1,24,500"
           sub="+12% vs yesterday"
-          color="text-emerald"
-          bgTint="bg-emerald/10"
+          color="text-emerald-600"
+          bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100"
           trend={{ up: true, text: "+12%" }}
         />
         <StatCard
@@ -110,16 +110,16 @@ export function DonationSection() {
           label="Annadhanam Fund"
           value="₹45,200"
           sub="320 donors today"
-          color="text-saffron"
-          bgTint="bg-saffron/10"
+          color="text-amber-600"
+          bgTint="bg-amber-50 text-amber-600 border border-amber-100"
         />
         <StatCard
           icon={QrCode}
           label="Digital Payments"
           value="₹82,400"
           sub="UPI & Cards"
-          color="text-info"
-          bgTint="bg-info/10"
+          color="text-indigo-600"
+          bgTint="bg-indigo-50 text-indigo-600 border border-indigo-100"
           trend={{ up: true, text: "+5%" }}
         />
         <StatCard
@@ -127,19 +127,19 @@ export function DonationSection() {
           label="Offline Hundi"
           value="₹42,100"
           sub="Estimated cash drop"
-          color="text-status-busy"
-          bgTint="bg-gold/10"
+          color="text-emerald-600"
+          bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100"
         />
       </div>
 
       <div className="grid gap-8 xl:grid-cols-[1fr_380px]">
         {/* Main Charts */}
         <div className="space-y-8">
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+          <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm transition-shadow hover:shadow-md">
             <div className="mb-6 flex items-center justify-between">
               <div>
-                <h3 className="text-lg font-bold text-foreground">Donation Trends</h3>
-                <p className="text-xs text-muted-foreground mt-1">
+                <h3 className="text-[13px] font-extrabold text-foreground">Donation Trends</h3>
+                <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mt-1">
                   Collection volume over the last 7 days
                 </p>
               </div>
@@ -210,9 +210,9 @@ export function DonationSection() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-border bg-card shadow-sm overflow-hidden">
-            <div className="flex items-center justify-between border-b border-border bg-surface px-6 py-4">
-              <h3 className="font-bold text-foreground flex items-center gap-2">
+          <div className="rounded-3xl border border-border/40 bg-white shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+            <div className="flex items-center justify-between border-b border-border/40 bg-muted/10 px-6 py-5">
+              <h3 className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                 <History size={16} className="text-primary" /> Recent Transactions
               </h3>
               <button className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary/80 transition-colors">
@@ -221,7 +221,7 @@ export function DonationSection() {
             </div>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-surface/50 text-xs font-extrabold text-muted-foreground border-b border-border">
+                <thead className="bg-muted/5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   <tr>
                     <th className="px-6 py-3 text-left">Transaction ID</th>
                     <th className="px-6 py-3 text-left">Donor</th>
@@ -266,8 +266,8 @@ export function DonationSection() {
 
         {/* Right Sidebar */}
         <div className="flex flex-col gap-8">
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-            <h3 className="mb-6 font-bold text-foreground">Fund Distribution</h3>
+          <div className="rounded-3xl border border-border/40 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+            <h3 className="mb-6 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Fund Distribution</h3>
             <div className="h-[240px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
@@ -323,14 +323,14 @@ export function DonationSection() {
             </div>
           </div>
 
-          <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-info/10 text-info">
+          <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm transition-shadow hover:shadow-md flex flex-col">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-indigo-50 border border-indigo-100 text-indigo-600">
                 <ArrowRightLeft size={20} />
               </div>
               <div>
-                <h3 className="font-bold text-foreground">Quick Transfer</h3>
-                <p className="text-xs text-muted-foreground mt-0.5">Move funds between accounts</p>
+                <h3 className="text-[13px] font-extrabold text-foreground">Quick Transfer</h3>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground mt-1">Move funds between accounts</p>
               </div>
             </div>
 

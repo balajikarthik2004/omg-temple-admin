@@ -10,7 +10,7 @@ const channels = [
 const history = [
   {
     t: "14:00",
-    msg: "Queue B now open — additional volunteers deployed",
+    msg: "Queue B now open — additional volunteers Added",
     channel: "App + Screens",
     to: "4,200 devices",
     status: "Delivered",

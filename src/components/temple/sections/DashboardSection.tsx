@@ -66,7 +66,7 @@ const activityFeed = [
   {
     t: "14:15",
     c: "info",
-    msg: "8 volunteers deployed to ₹100 Ticket Darshan per AI recommendation.",
+    msg: "8 volunteers Added to ₹100 Ticket Darshan per AI recommendation.",
   },
   { t: "14:08", c: "emerald", msg: "Parking Lot A returned to 70% after overflow activation." },
   { t: "14:02", c: "status-busy", msg: "Kovil Nandi entrance crowd density: 78%." },
@@ -84,7 +84,7 @@ const suggestions = [
   {
     kind: "WARNING",
     border: "border-status-busy",
-    title: "Deploy 6 More Volunteers",
+    title: "Add 6 More Volunteers",
     body: "Common & ₹20 Darshan understaffed. 1 volunteer per 180 devotees (optimal: 1:120).",
     action: "Notify Staff",
   },
@@ -182,19 +182,19 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           {/* Left Column */}
           <div className="flex flex-col items-start gap-4">
             <div>
-              <div className="text-3xl md:text-4xl font-black tracking-tight drop-shadow-md">
+              <div className="text-2xl md:text-3xl font-extrabold tracking-tight drop-shadow-md">
                 {temple.name}
               </div>
-              <div className="text-[15px] text-indigo-200 mt-2 font-bold tracking-wide">
+              <div className="text-[12px] text-indigo-200 mt-1 font-bold tracking-wide">
                 Crowd Intelligence Dashboard
               </div>
             </div>
-            <div className="inline-flex items-center gap-2 rounded-full bg-emerald/10 backdrop-blur-md px-3.5 py-1.5 text-[11px] font-black tracking-widest text-emerald border border-emerald/20 shadow-sm mt-1">
-              <span className="relative flex h-2 w-2">
+            <div className="inline-flex items-center gap-2 rounded-full bg-emerald/10 backdrop-blur-md px-3 py-1 text-[9px] font-bold tracking-widest text-emerald border border-emerald/20 shadow-sm mt-1">
+              <span className="relative flex h-1.5 w-1.5">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
               </span>
-              LIVE <span className="opacity-60 font-bold tracking-normal">· Updated {now.toLocaleTimeString("en-IN", { hour12: false })}</span>
+              LIVE <span className="opacity-80 font-medium tracking-normal">· Updated {now.toLocaleTimeString("en-IN", { hour12: false })}</span>
             </div>
           </div>
 
@@ -217,16 +217,16 @@ export function DashboardSection({ temple }: { temple: Temple }) {
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center pt-1">
-                <span className="text-[26px] font-black text-white leading-none">{pct}%</span>
-                <span className="text-[9px] font-black tracking-widest text-indigo-200 mt-1 uppercase">Capacity</span>
+                <span className="text-[22px] font-extrabold text-white leading-none">{pct}%</span>
+                <span className="text-[8px] font-bold tracking-widest text-indigo-200 mt-1 uppercase">Capacity</span>
               </div>
             </div>
 
             <div className="text-center sm:text-left">
-              <div className="text-5xl font-black tabular-nums text-white tracking-tight drop-shadow-md">
+              <div className="text-4xl font-extrabold tabular-nums text-white tracking-tight drop-shadow-md">
                 {inside.toLocaleString("en-IN")}
               </div>
-              <div className="text-[14px] text-indigo-200 mt-2 font-bold tracking-wide">
+              <div className="text-[11px] text-indigo-200 mt-1 font-bold tracking-wide">
                 Devotees currently inside
               </div>
             </div>
@@ -242,14 +242,13 @@ export function DashboardSection({ temple }: { temple: Temple }) {
             ].map((stat, i) => (
               <div
                 key={stat.label}
-                className={`flex justify-between items-center py-2.5 gap-4 ${
-                  i !== 3 ? "border-b border-white/10" : ""
-                }`}
+                className={`flex justify-between items-center py-2.5 gap-4 ${i !== 3 ? "border-b border-white/10" : ""
+                  }`}
               >
-                <span className="text-[14px] font-semibold text-indigo-200 tracking-wide">
+                <span className="text-[12px] font-medium text-indigo-200 tracking-wide">
                   {stat.label}
                 </span>
-                <span className="font-black tabular-nums text-white text-base whitespace-nowrap text-right">
+                <span className="font-bold tabular-nums text-white text-sm whitespace-nowrap text-right">
                   {stat.value}
                 </span>
               </div>
@@ -316,7 +315,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           {suggestions.map((s) => {
             let kindColor = "text-muted-foreground bg-muted border-border";
             const btnColor = "bg-[#1A1F60] hover:bg-[#252A7C] text-white shadow-[0_4px_12px_rgba(26,31,96,0.25)]";
-            
+
             if (s.kind === "URGENT") kindColor = "text-danger bg-danger/10 border-danger/20";
             if (s.kind === "WARNING") kindColor = "text-saffron bg-saffron/10 border-saffron/20";
             if (s.kind === "INFO") kindColor = "text-info bg-info/10 border-info/20";
@@ -328,20 +327,20 @@ export function DashboardSection({ temple }: { temple: Temple }) {
                 className={`group flex flex-col justify-between rounded-[24px] bg-card p-6 border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-all duration-400 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 relative overflow-hidden`}
               >
                 <div>
-                  <div className={`inline-flex items-center px-2.5 py-1 mb-4 rounded-full text-[10px] font-black tracking-widest border ${kindColor}`}>
+                  <div className={`inline-flex items-center px-2.5 py-1 mb-3 rounded-full text-[9px] font-black tracking-widest border ${kindColor}`}>
                     {s.kind}
                   </div>
-                  <div className="text-[16px] font-black tracking-tight text-foreground/90">{s.title}</div>
-                  <div className="mt-2.5 text-[13px] text-muted-foreground font-semibold leading-relaxed">{s.body}</div>
+                  <div className="text-[13px] font-black tracking-tight text-foreground/90">{s.title}</div>
+                  <div className="mt-1.5 text-[11px] text-muted-foreground font-semibold leading-relaxed">{s.body}</div>
                 </div>
-                <div className="mt-6 flex gap-3">
+                <div className="mt-5 flex gap-2">
                   <button
                     onClick={() => toast.success(`${s.action} · action queued`)}
-                    className={`flex-1 rounded-[14px] py-2.5 text-[13px] font-extrabold transition-all hover:-translate-y-0.5 hover:shadow-md ${btnColor}`}
+                    className={`flex-1 rounded-xl py-2 text-[11px] font-extrabold transition-all hover:-translate-y-0.5 hover:shadow-md ${btnColor}`}
                   >
                     {s.action}
                   </button>
-                  <button className="flex-1 rounded-[14px] bg-surface border border-border/60 py-2.5 text-[13px] font-bold text-foreground shadow-sm transition-all hover:bg-muted hover:-translate-y-0.5">
+                  <button className="flex-1 rounded-xl bg-surface border border-border/60 py-2 text-[11px] font-bold text-foreground shadow-sm transition-all hover:bg-muted hover:-translate-y-0.5">
                     Dismiss
                   </button>
                 </div>
@@ -358,12 +357,12 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
             <div className="mb-6">
               <div className="mb-2 flex items-center justify-between">
-                <div className="text-lg font-black tracking-tight text-foreground">Today's Hourly Footfall</div>
+                <div className="text-[12px] font-black tracking-tight text-foreground">Today's Hourly Footfall</div>
                 <div className="flex items-center gap-3">
-                  <span className="text-xs font-extrabold text-muted-foreground">
+                  <span className="text-[8px] uppercase tracking-widest font-extrabold text-muted-foreground">
                     Actual vs Forecast
                   </span>
-                  <span className="rounded-full bg-emerald/10 px-2.5 py-1 text-[10px] font-black tracking-wide text-emerald border border-emerald/20">
+                  <span className="rounded-full bg-emerald/10 px-2.5 py-1 text-[8px] font-black tracking-wide text-emerald border border-emerald/20">
                     Peak: 16.4k
                   </span>
                 </div>
@@ -433,10 +432,10 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           {/* Queue Wait Time Chart */}
           <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
             <div className="mb-6 flex items-center justify-between">
-              <div className="text-lg font-black tracking-tight text-foreground">Queue Wait Time Trend</div>
+              <div className="text-[12px] font-black tracking-tight text-foreground">Queue Wait Time Trend</div>
               <div className="flex items-center gap-3">
-                <span className="text-xs font-extrabold text-muted-foreground">Last 6 Hours</span>
-                <span className="rounded-full bg-[#1A1F60]/10 px-2.5 py-1 text-[10px] font-black tracking-wide text-[#1A1F60] border border-[#1A1F60]/20">
+                <span className="text-[8px] uppercase tracking-widest font-extrabold text-muted-foreground">Last 6 Hours</span>
+                <span className="rounded-full bg-[#1A1F60]/10 px-2.5 py-1 text-[8px] font-black tracking-wide text-[#1A1F60] border border-[#1A1F60]/20">
                   Avg: 32 mins
                 </span>
               </div>
@@ -522,10 +521,10 @@ export function DashboardSection({ temple }: { temple: Temple }) {
         <div className="lg:col-span-1 h-full">
           <div className="glass-card flex flex-col h-full overflow-hidden rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
             <div className="flex items-center justify-between border-b border-border/30 bg-muted/20 px-5 py-4">
-              <div className="flex items-center gap-2.5 text-[15px] font-black tracking-tight text-foreground">
+              <div className="flex items-center gap-2.5 text-[12px] font-black tracking-tight text-foreground">
                 <Activity size={16} className="text-primary" /> Live Activity Feed
               </div>
-              <div className="flex items-center gap-1.5 rounded-full bg-emerald/10 px-2.5 py-1 text-[10px] font-black text-emerald tracking-widest uppercase border border-emerald/20">
+              <div className="flex items-center gap-1.5 rounded-full bg-emerald/10 px-2.5 py-1 text-[9px] font-black text-emerald tracking-widest uppercase border border-emerald/20">
                 <span className="relative flex h-1.5 w-1.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
@@ -539,11 +538,11 @@ export function DashboardSection({ temple }: { temple: Temple }) {
                   key={i}
                   className="flex items-start gap-3.5 bg-card px-5 py-4 transition-all duration-300 hover:bg-muted/30 border-b border-border/30 last:border-0"
                 >
-                  <div className="font-mono text-[11px] font-extrabold text-muted-foreground w-10 shrink-0 pt-0.5">
+                  <div className="font-mono text-[10px] font-extrabold text-muted-foreground w-10 shrink-0 pt-0.5">
                     {f.t}
                   </div>
                   <div className={`mt-1.5 h-2 w-2 shrink-0 rounded-full bg-${f.c} shadow-sm`} />
-                  <div className="text-[13px] font-bold leading-relaxed text-foreground/90">{f.msg}</div>
+                  <div className="text-[11px] font-bold leading-relaxed text-foreground/90">{f.msg}</div>
                 </div>
               ))}
             </div>
@@ -553,8 +552,8 @@ export function DashboardSection({ temple }: { temple: Temple }) {
 
       {/* --- QUEUE MANAGEMENT --- */}
       <div className="mt-10 pt-10 border-t border-border/50 space-y-6">
-        <div className="flex items-center gap-2.5 text-xl font-black tracking-tight text-foreground drop-shadow-sm">
-          <Timer size={22} className="text-primary" /> Live Queue Management
+        <div className="flex items-center gap-2.5 text-[14px] font-black tracking-tight text-foreground drop-shadow-sm">
+          <Timer size={18} className="text-primary" /> Live Queue Management
         </div>
 
         <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
@@ -566,13 +565,12 @@ export function DashboardSection({ temple }: { temple: Temple }) {
                 className={`group flex flex-col justify-between p-5 bg-card border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)] rounded-[24px] transition-all duration-400 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 relative overflow-hidden`}
               >
                 <div className="flex items-start justify-between mb-2">
-                  <div className="font-black text-[15px] tracking-tight text-foreground/90 leading-tight w-2/3">{l.name}</div>
+                  <div className="font-bold text-[13px] tracking-tight text-foreground/90 leading-tight w-2/3">{l.name}</div>
                   <span
-                    className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[9px] font-black tracking-widest border ${
-                      l.status === "ACTIVE" 
-                        ? "bg-emerald/10 text-emerald border-emerald/20" 
-                        : "bg-status-busy/10 text-status-busy border-status-busy/20"
-                    }`}
+                    className={`flex items-center gap-1.5 px-2 py-1 rounded-full text-[8px] font-bold tracking-widest border ${l.status === "ACTIVE"
+                      ? "bg-emerald/10 text-emerald border-emerald/20"
+                      : "bg-status-busy/10 text-status-busy border-status-busy/20"
+                      }`}
                   >
                     <span
                       className={`h-1.5 w-1.5 rounded-full ${l.status === "ACTIVE" ? "bg-emerald animate-pulse" : "bg-status-busy"}`}
@@ -582,34 +580,34 @@ export function DashboardSection({ temple }: { temple: Temple }) {
                 </div>
 
                 <div className="mt-4 flex items-end gap-2">
-                  <span className="text-3xl font-montserrat font-black tabular-nums leading-none text-foreground tracking-tighter">
+                  <span className="text-2xl font-montserrat font-extrabold tabular-nums leading-none text-foreground tracking-tighter">
                     {l.waiting}
                   </span>
-                  <span className="text-xs font-bold text-muted-foreground mb-1">
+                  <span className="text-[10px] font-medium text-muted-foreground mb-0.5">
                     / {l.max} inside
                   </span>
                 </div>
-                
+
                 <div className="mt-3 flex items-center gap-3">
                   <div className="h-1.5 flex-1 rounded-full bg-black/5 dark:bg-white/5 overflow-hidden">
                     <div className={`h-full ${l.status === "ACTIVE" ? "bg-primary" : "bg-status-busy"}`} style={{ width: `${pct * 100}%` }} />
                   </div>
-                  <span className="text-[11px] font-extrabold text-muted-foreground w-8 text-right">
+                  <span className="text-[10px] font-semibold text-muted-foreground w-8 text-right">
                     {Math.round(pct * 100)}%
                   </span>
                 </div>
 
                 <div className="mt-5 pt-4 border-t border-border/40 flex items-center justify-between">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Est. Wait Time</span>
+                    <span className="text-[9px] font-semibold text-muted-foreground uppercase tracking-widest mb-1">Wait Time</span>
                     <div className="flex items-baseline gap-1 text-danger">
-                      <span className="text-[22px] font-black tracking-tighter leading-none">{l.wait}</span>
-                      <span className="text-[12px] font-extrabold">mins</span>
+                      <span className="text-[18px] font-extrabold tracking-tighter leading-none">{l.wait}</span>
+                      <span className="text-[10px] font-semibold">mins</span>
                     </div>
                   </div>
                   <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">Staffing</span>
-                    <span className="text-[13px] font-extrabold text-foreground">{l.vols} <span className="text-muted-foreground/80">vols</span></span>
+                    <span className="text-[9px] font-semibold text-muted-foreground uppercase tracking-widest mb-1">Staffing</span>
+                    <span className="text-[11px] font-bold text-foreground">{l.vols} <span className="text-muted-foreground/80 font-medium">vols</span></span>
                   </div>
                 </div>
               </div>
@@ -646,8 +644,8 @@ export function DashboardSection({ temple }: { temple: Temple }) {
 
           {/* Queue Actions */}
           <div className="glass-card p-6 rounded-2xl border border-border/60 shadow-md hover:shadow-lg transition-all">
-            <div className="mb-5 text-base font-extrabold tracking-tight text-foreground">Queue Actions</div>
-            <div className="grid gap-2 text-xs">
+            <div className="mb-5 text-[13px] font-extrabold tracking-tight text-foreground">Queue Actions</div>
+            <div className="grid gap-2 text-[11px]">
               {[
                 { i: Plus, l: "Open New Lane" },
                 { i: Pause, l: "Pause Intake" },
@@ -669,8 +667,8 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           {/* Queue Config */}
           <div className="glass-card p-6 flex flex-col justify-between rounded-2xl border border-border/60 shadow-md hover:shadow-lg transition-all">
             <div>
-              <div className="mb-5 text-base font-extrabold tracking-tight text-foreground">Queue Config</div>
-              <div className="space-y-6 text-xs">
+              <div className="mb-5 text-[13px] font-extrabold tracking-tight text-foreground">Queue Config</div>
+              <div className="space-y-6 text-[11px]">
                 <div>
                   <div className="mb-1 flex justify-between">
                     <span className="font-semibold text-muted-foreground">Max intake rate</span>

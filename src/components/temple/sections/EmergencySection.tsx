@@ -32,7 +32,7 @@ const incidents = [
     type: "Crowd Surge",
     desc: "Sudden rush at Gopuram entrance",
     resolved: "Yes",
-    actions: "Gate 3 opened, staff deployed",
+    actions: "Gate 3 opened, staff Added",
   },
   {
     d: "01 May 2026",
@@ -162,7 +162,7 @@ export function EmergencySection() {
           >
             <div className="text-base font-semibold text-danger">Activate: {confirm}?</div>
             <div className="mt-2 text-sm text-muted-foreground">
-              This will broadcast the emergency protocol to all staff, deployed channels, and notify
+              This will broadcast the emergency protocol to all staff, Added channels, and notify
               relevant authorities. Confirm to proceed.
             </div>
             <div className="mt-4 flex justify-end gap-2">

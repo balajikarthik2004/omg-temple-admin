@@ -70,14 +70,16 @@ export function ParkingSection() {
           label="Total Two-Wheelers"
           value={(lotA2W + lotB2W).toLocaleString()}
           valueSuffix="/ 1,200"
-          bgTint="bg-saffron/10"
+          color="text-amber-600"
+          bgTint="bg-amber-50 text-amber-600 border border-amber-100"
         />
         <StatCard
           icon={Car}
           label="Total Four-Wheelers"
           value={(lotA4W + lotB4W).toLocaleString()}
           valueSuffix="/ 750"
-          bgTint="bg-info/10"
+          color="text-indigo-600"
+          bgTint="bg-indigo-50 text-indigo-600 border border-indigo-100"
         />
         <StatCard
           icon={TrendingUp}
@@ -85,14 +87,14 @@ export function ParkingSection() {
           value="+18"
           color="text-primary"
           sub="more arriving/min"
-          bgTint="bg-primary/10"
+          bgTint="bg-primary/5 text-primary border border-primary/20"
         />
         <StatCard
           icon={IndianRupee}
           label="Daily Revenue (Est)"
           value="₹42.5K"
-          color="text-emerald"
-          bgTint="bg-emerald/10"
+          color="text-emerald-600"
+          bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100"
         />
       </div>
       <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
@@ -104,9 +106,9 @@ export function ParkingSection() {
               const pct2W = Math.round((l.filled2W / l.capacity2W) * 100) || 0;
               const pct4W = Math.round((l.filled4W / l.capacity4W) * 100) || 0;
               return (
-                <div key={l.name} className="kpi-card p-6">
-                  <div className="mb-2 flex items-center justify-between">
-                    <div className="font-semibold text-foreground">{l.name}</div>
+                <div key={l.name} className="bg-white rounded-3xl border border-border/40 shadow-sm p-6 hover:shadow-md transition-all">
+                  <div className="mb-4 flex items-center justify-between">
+                    <div className="text-[13px] font-extrabold text-foreground">{l.name}</div>
                     <span
                       className={`inline-flex items-center rounded-xl px-2.5 py-0.5 text-[10px] font-bold ${getStatusColor(l.status)}`}
                     >
@@ -140,8 +142,8 @@ export function ParkingSection() {
             })}
           </div>
           {/* Vehicle Flow Chart */}
-          <div className="rounded-xl border border-border bg-card p-8 shadow-sm flex-1">
-            <div className="mb-2 font-semibold text-foreground">Traffic Flow (Last 90 Mins)</div>
+          <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm flex-1 hover:shadow-md transition-all">
+            <div className="mb-6 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Traffic Flow (Last 90 Mins)</div>
             <div className="h-56">
               <ResponsiveContainer>
                 <AreaChart data={flowData}>
@@ -203,8 +205,8 @@ export function ParkingSection() {
         {/* Right Column: Alerts & Mini Map */}
         <div className="flex flex-col gap-8">
           {/* AI Alert Card */}
-          <div className="rounded-xl border border-status-crowded/30 bg-status-crowded/5 p-8 shadow-sm">
-            <div className="flex items-center gap-2 text-sm font-semibold text-status-crowded">
+          <div className="rounded-3xl border border-red-100 bg-red-50 p-6 lg:p-8 shadow-sm">
+            <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-red-600">
               <AlertCircle size={16} /> Action Required
             </div>
             <div className="mt-2 text-[13px] leading-relaxed text-foreground">
@@ -214,18 +216,18 @@ export function ParkingSection() {
             <div className="mt-3 flex flex-col gap-2">
               <button
                 onClick={() => toast.success("Overflow Grounds activated. LED signages updated.")}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-status-crowded px-4 py-2 text-xs font-medium text-white shadow-sm transition-opacity hover:opacity-90"
+                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-red-600 px-4 py-2.5 text-[11px] font-bold text-white shadow-sm transition-opacity hover:opacity-90"
               >
                 Activate Overflow Grounds
               </button>
-              <button className="flex w-full items-center justify-center gap-2 rounded-xl border border-border bg-card px-4 py-2 text-xs font-semibold text-foreground transition-colors hover:bg-muted">
+              <button className="flex w-full items-center justify-center gap-2 rounded-2xl border border-red-200 bg-white px-4 py-2.5 text-[11px] font-bold text-foreground transition-colors hover:bg-muted">
                 Dismiss Alert
               </button>
             </div>
           </div>
           {/* Realistic Aisle Map */}
-          <div className="rounded-xl border border-border bg-card p-8 shadow-sm flex-1">
-            <div className="mb-2 flex items-center justify-between text-sm font-semibold text-foreground">
+          <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm flex-1 transition-all hover:shadow-md">
+            <div className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               Live Map: Main Lot A
             </div>
             <div className="relative rounded-xl bg-surface p-8">

@@ -24,15 +24,15 @@ import {
 } from "recharts";
 import { StatCard } from "../ui/StatCard";
 
-import palaniImg from "@/assets/palani.png";
+import palaniImg from "@/assets/palani4.png";
 import maduraiImg from "@/assets/Madurai.png";
 import srirangamImg from "@/assets/Srirangam.png";
 import arunachaleswararImg from "@/assets/Arunachaleswarar.png";
 import rameswaramImg from "@/assets/Rameswaram.png";
 
 const imgMap: Record<string, string> = {
-  palani: palaniImg,
-  meenakshi: maduraiImg,
+  "palani-murugan": palaniImg,
+  "madurai-meenakshi": maduraiImg,
   srirangam: srirangamImg,
   tiruvannamalai: arunachaleswararImg,
   rameswaram: rameswaramImg,
@@ -101,8 +101,8 @@ export function HeatmapSection({ temple }: { temple?: any }) {
           icon={Users}
           label="Inside Now"
           value={inside.toLocaleString("en-IN")}
-          color="text-saffron"
-          bgTint="bg-saffron/10"
+          color="text-amber-600"
+          bgTint="bg-amber-50 text-amber-600 border border-amber-100/50"
           trend={{ up: true, text: "+12%" }}
           sub="vs. last hour"
         />
@@ -110,8 +110,8 @@ export function HeatmapSection({ temple }: { temple?: any }) {
           icon={UsersRound}
           label="In Queues"
           value={queues.toLocaleString("en-IN")}
-          color="text-info"
-          bgTint="bg-info/10"
+          color="text-indigo-600"
+          bgTint="bg-indigo-50 text-indigo-600 border border-indigo-100/50"
           trend={{ up: false, text: "-5%" }}
           sub="vs. last hour"
         />
@@ -119,8 +119,8 @@ export function HeatmapSection({ temple }: { temple?: any }) {
           icon={Car}
           label="In Parking"
           value={parking.toLocaleString("en-IN")}
-          color="text-status-busy"
-          bgTint="bg-gold/10"
+          color="text-amber-600"
+          bgTint="bg-amber-50 text-amber-600 border border-amber-100/50"
           trend={{ up: true, text: "+8%" }}
           sub="vs. last hour"
         />
@@ -128,8 +128,8 @@ export function HeatmapSection({ temple }: { temple?: any }) {
           icon={Activity}
           label="Total on premises"
           value={(inside + queues + parking).toLocaleString("en-IN")}
-          color="text-emerald"
-          bgTint="bg-emerald/10"
+          color="text-emerald-600"
+          bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100/50"
           trend={{ up: true, text: "+15%" }}
           sub="Peak expected in 1 hr"
         />
@@ -137,31 +137,31 @@ export function HeatmapSection({ temple }: { temple?: any }) {
 
       <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
         {/* Heatmap Map Area */}
-        <div className="flex flex-col gap-8 rounded-2xl bg-card p-8 border border-border shadow-sm">
+        <div className="flex flex-col gap-4 rounded-3xl bg-white p-4 lg:p-6 border border-border/40 shadow-sm transition-shadow hover:shadow-md">
           <div className="flex flex-wrap items-center justify-between gap-8">
-            <div className="flex items-center gap-1 p-1 bg-muted/50 rounded-lg border border-border/50">
+            <div className="flex items-center gap-1 p-1 bg-muted/20 rounded-xl border border-border/40">
               <button
                 onClick={() => setRealtime(true)}
-                className={`rounded-md px-5 py-1.5 text-xs font-bold transition-all ${realtime ? "bg-[#1A1F60] text-white shadow-[0_2px_8px_rgba(26,31,96,0.25)]" : "text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5"}`}
+                className={`rounded-lg px-5 py-2 text-[11px] font-bold transition-all uppercase tracking-widest ${realtime ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-muted/30"}`}
               >
                 Real-time
               </button>
               <button
                 onClick={() => setRealtime(false)}
-                className={`rounded-md px-5 py-1.5 text-xs font-bold transition-all ${!realtime ? "bg-[#1A1F60] text-white shadow-[0_2px_8px_rgba(26,31,96,0.25)]" : "text-muted-foreground hover:text-foreground hover:bg-black/5 dark:hover:bg-white/5"}`}
+                className={`rounded-lg px-5 py-2 text-[11px] font-bold transition-all uppercase tracking-widest ${!realtime ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-muted/30"}`}
               >
                 Historical
               </button>
             </div>
-            <div className="text-sm font-semibold text-muted-foreground">
+            <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               {realtime ? "Live: OMG Temple Complex" : "Replaying: Last 6 Hours"}
             </div>
           </div>
 
-          <div className="relative flex-1 rounded-xl bg-surface p-0 overflow-hidden min-h-[460px]">
+          <div className="relative flex-1 rounded-2xl bg-muted/10 p-0 overflow-hidden aspect-[4/3] lg:aspect-video border border-border/30">
             <button
               onClick={() => setFullScreen(true)}
-              className="absolute top-4 right-4 z-20 flex items-center gap-2 rounded-lg bg-white/90 backdrop-blur-md px-3.5 py-2 text-xs font-bold text-foreground shadow-[0_4px_12px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.15)] transition-all border border-black/5 hover:-translate-y-0.5"
+              className="absolute top-4 right-4 z-20 flex items-center gap-2 rounded-xl bg-white/90 backdrop-blur-md px-3.5 py-2 text-[11px] font-bold text-foreground shadow-sm hover:shadow-md transition-all border border-border/40 hover:-translate-y-0.5"
             >
               <Maximize2 size={14} className="text-primary" /> Full View
             </button>
@@ -271,16 +271,16 @@ export function HeatmapSection({ temple }: { temple?: any }) {
                 })}
               </svg>
             )}
-          </div>
+            </div>
         </div>
 
         {/* Analytics Sidebar */}
-        <div className="flex flex-col gap-8">
-          <div className="rounded-xl border border-border bg-card p-8 shadow-sm">
-            <div className="mb-2 text-sm font-semibold text-foreground">
+        <div className="flex flex-col gap-6">
+          <div className="rounded-3xl border border-border/40 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+            <div className="mb-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               AI Crowd Forecast (Next 2 Hours)
             </div>
-            <div className="mb-6 text-[11px] font-normal text-muted-foreground">
+            <div className="mb-6 text-[13px] font-bold text-foreground">
               Peak warning at +60m based on historical trends
             </div>
             <div className="h-44">
@@ -329,9 +329,9 @@ export function HeatmapSection({ temple }: { temple?: any }) {
             </div>
           </div>
 
-          <div className="rounded-xl border border-border bg-card p-8 shadow-sm flex-1">
-            <div className="mb-2 text-sm font-semibold text-foreground">Status Legend</div>
-            <div className="space-y-3 text-xs font-normal text-foreground">
+          <div className="rounded-3xl border border-border/40 bg-white p-6 shadow-sm flex-1 transition-shadow hover:shadow-md">
+            <div className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Status Legend</div>
+            <div className="space-y-4 text-[11px] font-bold text-foreground uppercase tracking-widest">
               {[
                 ["Clear / Normal", "var(--status-normal)"],
                 ["Moderate", "var(--status-busy)"],
@@ -340,29 +340,28 @@ export function HeatmapSection({ temple }: { temple?: any }) {
               ].map(([l, c]) => (
                 <div
                   key={l}
-                  className="flex items-center gap-8 rounded-lg bg-surface p-2 border border-border"
+                  className="flex items-center gap-4 rounded-xl bg-muted/10 p-3 border border-border/40"
                 >
-                  <span className="h-3 w-3 rounded-full shadow-inner" style={{ background: c }} />
+                  <span className="h-2.5 w-2.5 rounded-full" style={{ background: c }} />
                   <span>{l}</span>
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 rounded-lg border border-status-busy/30 bg-status-busy/10 p-8 text-xs leading-relaxed text-foreground">
-              <span className="font-semibold text-status-busy">AI Insight:</span> Recommend
-              activating full queue management protocols by 15:00.
+            <div className="mt-8 rounded-2xl border border-amber-100 bg-amber-50 p-6 text-[11px] leading-relaxed text-foreground/90 font-bold uppercase tracking-widest">
+              <span className="text-amber-600">AI Insight:</span> Recommend activating full queue management protocols by 15:00.
             </div>
           </div>
         </div>
       </div>
 
-      <div className="rounded-xl border border-border bg-card shadow-sm">
-        <div className="border-b border-border px-6 py-4 font-semibold text-lg text-foreground ">
+      <div className="rounded-3xl border border-border/40 bg-white shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+        <div className="border-b border-border/40 bg-muted/10 px-6 py-5 font-bold text-sm uppercase tracking-wider text-muted-foreground">
           Zone Breakdown
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-surface text-[11px] font-black uppercase tracking-widest text-foreground/80">
+            <thead className="bg-muted/5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               <tr>
                 {["Zone", "Capacity", "Current", "% Full", "Status", "Recommended Action"].map(
                   (h) => (
@@ -377,23 +376,23 @@ export function HeatmapSection({ temple }: { temple?: any }) {
               {ZONES.map((z) => {
                 const pct = z.capacity ? Math.round((z.current / z.capacity) * 100) : 0;
                 return (
-                  <tr key={z.name} className="transition-colors hover:bg-surface/50 border-b border-border/40 last:border-0">
-                    <td className="px-6 py-4 font-black text-[13px] text-foreground">{z.name}</td>
-                    <td className="px-6 py-4 tabular-nums font-bold text-muted-foreground">
+                  <tr key={z.name} className="transition-colors hover:bg-muted/10 border-b border-border/40 last:border-0">
+                    <td className="px-6 py-4 font-extrabold text-[13px] text-foreground">{z.name}</td>
+                    <td className="px-6 py-4 tabular-nums font-bold text-[11px] text-muted-foreground uppercase tracking-widest">
                       {z.capacity || "—"}
                     </td>
-                    <td className="px-6 py-4 tabular-nums font-black text-[15px] text-foreground">
+                    <td className="px-6 py-4 tabular-nums font-extrabold text-[15px] text-foreground">
                       {z.current || "Clear"}
                     </td>
                     <td className="px-6 py-4 tabular-nums">
                       <div className="flex items-center gap-2">
-                        <div className="w-16 h-2 rounded-full bg-surface overflow-hidden border border-border/50">
+                        <div className="w-16 h-1.5 rounded-full bg-muted/50 overflow-hidden">
                           <div
                             className="h-full rounded-full"
                             style={{ width: `${pct}%`, background: densityColor(pct) }}
                           />
                         </div>
-                        <span className="text-[11px] font-extrabold text-muted-foreground">
+                        <span className="text-[10px] font-bold text-muted-foreground">
                           {z.capacity ? `${pct}%` : "—"}
                         </span>
                       </div>

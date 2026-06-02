@@ -333,6 +333,7 @@ export const NAV_ITEMS = [
   { id: "operations", label: "Temple Operations", icon: "Landmark" },
   { id: "parking", label: "Parking", icon: "Car" },
   { id: "donations", label: "Donations & Funds", icon: "IndianRupee" },
+  { id: "annadhanam", label: "Annadhanam", icon: "Utensils" },
   // { id: "announcements", label: "Announcements", icon: "Megaphone" },
   // { id: "analytics", label: "Analytics", icon: "BarChart3" },
   // { id: "emergency", label: "Emergency", icon: "Siren" },

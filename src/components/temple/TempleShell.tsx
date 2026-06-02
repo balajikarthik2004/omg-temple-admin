@@ -20,6 +20,7 @@ import {
   Sparkles,
   MapPin,
   IndianRupee,
+  Utensils,
 } from "lucide-react";
 import { Toaster } from "sonner";
 import { NAV_ITEMS, TEMPLES, type SectionId } from "@/lib/temple-data";
@@ -36,6 +37,7 @@ import { AnnouncementsSection } from "./sections/AnnouncementsSection";
 import { AnalyticsSection } from "./sections/AnalyticsSection";
 import { EmergencySection } from "./sections/EmergencySection";
 import { DonationSection } from "./sections/DonationSection";
+import { AnnadhanamSection } from "./sections/AnnadhanamSection";
 import omgLogo from "@/assets/logo.png";
 
 const ICONS: Record<string, React.ComponentType<{ className?: string; size?: number }>> = {
@@ -52,6 +54,7 @@ const ICONS: Record<string, React.ComponentType<{ className?: string; size?: num
   Siren,
   Ticket,
   IndianRupee,
+  Utensils,
 };
 
 export function TempleShell() {
@@ -74,16 +77,16 @@ export function TempleShell() {
   const [districtOpen, setDistrictOpen] = useState(false);
   const [shimmer, setShimmer] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
-  
+
   const temple = TEMPLES.find((t) => t.id === templeId) || TEMPLES[0];
-  
+
   const states = [
     "All States",
     ...Array.from(new Set(TEMPLES.map((t) => t.state))),
   ].sort();
 
-  const filteredByState = selectedState === "All States" 
-    ? TEMPLES 
+  const filteredByState = selectedState === "All States"
+    ? TEMPLES
     : TEMPLES.filter(t => t.state === selectedState);
 
   const districts = [
@@ -185,11 +188,10 @@ export function TempleShell() {
                 <button
                   key={item.id}
                   onClick={() => setSection(item.id)}
-                  className={`group relative flex w-full items-center ${sidebarExpanded ? "p-1.5 pr-4" : "p-1.5 justify-center"} rounded-2xl text-base transition-all duration-400 border ${
-                    active
+                  className={`group relative flex w-full items-center ${sidebarExpanded ? "p-1.5 pr-4" : "p-1.5 justify-center"} rounded-2xl text-[14px] transition-all duration-400 border ${active
                       ? "bg-white/10 backdrop-blur-xl border-white/20 border-t-white/30 border-l-white/30 text-white shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
                       : "border-transparent text-indigo-100/70 hover:bg-white/[0.06] hover:text-white"
-                  }`}
+                    }`}
                   title={!sidebarExpanded ? item.label : undefined}
                 >
                   {/* Left Indicator for Active State */}
@@ -198,11 +200,10 @@ export function TempleShell() {
                   )}
 
                   {/* Icon Container */}
-                  <div className={`flex items-center justify-center shrink-0 h-[42px] w-[42px] rounded-[14px] transition-colors duration-400 ${
-                    active 
-                      ? "bg-white/15 ml-3 shadow-inner" 
+                  <div className={`flex items-center justify-center shrink-0 h-[42px] w-[42px] rounded-[14px] transition-colors duration-400 ${active
+                      ? "bg-white/15 ml-3 shadow-inner"
                       : "bg-white/5 group-hover:bg-white/10"
-                  }`}>
+                    }`}>
                     <Icon
                       size={18}
                       className={active ? "text-white drop-shadow-md" : "text-indigo-200 group-hover:text-white transition-colors duration-400"}
@@ -211,8 +212,7 @@ export function TempleShell() {
 
                   {/* Label */}
                   {sidebarExpanded && (
-                    <span className={`ml-3.5 truncate transition-all duration-400 ${
-                        active ? "font-bold tracking-wide" : "font-semibold tracking-wide"
+                    <span className={`ml-3.5 truncate transition-all duration-400 ${active ? "font-bold tracking-wide" : "font-semibold tracking-wide"
                       }`}>
                       {item.label}
                     </span>
@@ -229,7 +229,7 @@ export function TempleShell() {
 
           {/* User & Logout section */}
           <div className="relative p-5 mt-auto flex flex-col gap-6">
-            
+
             {/* Profile Container */}
             <div className={`flex items-center ${sidebarExpanded ? "gap-3.5" : "justify-center"} rounded-2xl p-2 cursor-pointer transition-all duration-400 border border-white/20 hover:bg-white/5 shadow-sm`}>
               <div className="grid h-[42px] w-[42px] shrink-0 place-items-center rounded-full text-[16px] font-bold text-white bg-[#1A1F60] shadow-inner">
@@ -238,7 +238,7 @@ export function TempleShell() {
               {sidebarExpanded && (
                 <div className="min-w-0 flex-1 text-left animate-in fade-in duration-500">
                   <div className="truncate text-[14px] font-bold text-white drop-shadow-sm">
-                   Santhosh Kumar
+                    Santhosh Kumar
                   </div>
                   <div className="truncate text-[11px] font-medium text-white/70 mt-0.5">
                     Admin
@@ -265,25 +265,14 @@ export function TempleShell() {
         TOPBAR
         ============================= */}
         <header
-          className={`fixed right-0 top-0 z-20 flex h-20 items-center justify-between px-8 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] bg-white/70 backdrop-blur-2xl border-b border-border/40 shadow-sm ${sidebarExpanded ? "left-[260px]" : "left-[80px]"}`}
+          className={`fixed right-0 top-0 z-20 flex h-16 items-center justify-between px-8 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] bg-white/70 backdrop-blur-2xl border-b border-border/40 shadow-sm ${sidebarExpanded ? "left-[260px]" : "left-[80px]"}`}
         >
           <div className="flex items-center gap-4">
-            {section !== "dashboard" && (
-              <div className="flex items-center gap-2.5">
-                <Sparkles size={18} className="text-primary drop-shadow-sm" />
-                <h1 className="text-lg font-montserrat font-extrabold tracking-tight text-foreground drop-shadow-sm">
-                  {sectionTitle}
-                </h1>
-              </div>
-            )}
-            {/* Live pill */}
-            <div className="hidden sm:flex items-center gap-2 rounded-full px-3 py-1.5 text-[11px] font-extrabold tracking-wide bg-status-normal/10 border border-status-normal/20 text-status-normal shadow-sm">
+            <div className="hidden sm:flex items-center gap-2 rounded-full px-3 py-1 text-[9px] font-bold tracking-wide bg-status-normal/10 border border-status-normal/20 text-status-normal shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-status-normal animate-pulse shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
               LIVE
             </div>
-          </div>
 
-          <div className="flex items-center gap-4">
             {/* State filter */}
             <div className="relative hidden lg:block">
               <button
@@ -293,7 +282,7 @@ export function TempleShell() {
                   setTempleOpen(false);
                   setBellOpen(false);
                 }}
-                className="group flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
+                className="group flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
               >
                 <Sparkles size={14} className="text-primary" />
                 <span className="tracking-wide">{selectedState}</span>
@@ -303,7 +292,7 @@ export function TempleShell() {
                 />
               </button>
               {stateOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
+                <div className="absolute left-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
                   {states.map((s) => (
                     <button
                       key={s}
@@ -311,14 +300,14 @@ export function TempleShell() {
                         setSelectedState(s);
                         setStateOpen(false);
                         setSelectedDistrict("All Districts");
-                        const firstTemple = s === "All States" 
-                          ? TEMPLES[0] 
+                        const firstTemple = s === "All States"
+                          ? TEMPLES[0]
                           : TEMPLES.find((t) => t.state === s);
                         if (firstTemple && temple.state !== s) {
                           switchTemple(firstTemple.id);
                         }
                       }}
-                      className={`flex w-full items-center px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${s === selectedState ? "bg-muted/50 font-extrabold text-foreground" : "font-semibold text-foreground"}`}
+                      className={`flex w-full items-center px-4 py-3 text-left text-xs transition-colors hover:bg-muted/50 ${s === selectedState ? "bg-muted/50 font-bold text-foreground" : "font-medium text-foreground"}`}
                     >
                       {s}
                     </button>
@@ -336,7 +325,7 @@ export function TempleShell() {
                   setTempleOpen(false);
                   setBellOpen(false);
                 }}
-                className="group flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
+                className="group flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
               >
                 <MapPin size={14} className="text-primary" />
                 <span className="tracking-wide">{selectedDistrict}</span>
@@ -346,7 +335,7 @@ export function TempleShell() {
                 />
               </button>
               {districtOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
+                <div className="absolute left-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
                   {districts.map((d) => (
                     <button
                       key={d}
@@ -361,7 +350,7 @@ export function TempleShell() {
                           switchTemple(firstTemple.id);
                         }
                       }}
-                      className={`flex w-full items-center px-4 py-3 text-left text-sm transition-colors hover:bg-muted/50 ${d === selectedDistrict ? "bg-muted/50 font-extrabold text-foreground" : "font-semibold text-foreground"}`}
+                      className={`flex w-full items-center px-4 py-3 text-left text-xs transition-colors hover:bg-muted/50 ${d === selectedDistrict ? "bg-muted/50 font-bold text-foreground" : "font-medium text-foreground"}`}
                     >
                       {d}
                     </button>
@@ -379,7 +368,7 @@ export function TempleShell() {
                   setStateOpen(false);
                   setBellOpen(false);
                 }}
-                className="group flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
+                className="group flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
               >
                 <Landmark size={14} className="text-primary" />
                 <span className="hidden sm:block tracking-wide">{temple.name}</span>
@@ -389,33 +378,37 @@ export function TempleShell() {
                 />
               </button>
               {templeOpen && (
-                <div className="absolute right-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
+                <div className="absolute left-0 top-full z-50 mt-2 w-72 overflow-hidden rounded-2xl shadow-xl max-h-[60vh] overflow-y-auto bg-white border border-border/50">
                   {filteredByState.filter(
                     (t) => selectedDistrict === "All Districts" || t.district === selectedDistrict,
                   ).map((t) => (
                     <button
                       key={t.id}
                       onClick={() => switchTemple(t.id)}
-                      className={`flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-muted/50 ${t.id === templeId ? "bg-muted/50 font-extrabold text-foreground" : "font-semibold text-foreground"}`}
+                      className={`flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-muted/50 ${t.id === templeId ? "bg-muted/50 font-bold text-foreground" : "font-medium text-foreground"}`}
                     >
-                      <span className="text-sm">{t.name}</span>
-                      <span className="text-[11px] font-bold tracking-wider text-muted-foreground">{t.short}</span>
+                      <span className="text-xs">{t.name}</span>
+                      <span className="text-[9px] font-semibold tracking-wider text-muted-foreground">{t.short}</span>
                     </button>
                   ))}
                 </div>
               )}
             </div>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {/* Empty space that was replaced by moving filters */}
 
             {/* Clock + weather */}
-            <div className="hidden md:flex items-center gap-1.5 text-sm ml-2">
-              <span className="font-mono font-bold tracking-tight text-foreground">
+            <div className="hidden md:flex items-center gap-1.5 text-xs ml-2">
+              <span className="font-mono font-semibold tracking-tight text-foreground">
                 {now.toLocaleTimeString("en-IN", {
                   hour12: false,
                   hour: "2-digit",
                   minute: "2-digit",
                 })}
               </span>
-              <span className="text-[13px] font-semibold text-muted-foreground">
+              <span className="text-[11px] font-medium text-muted-foreground">
                 -{" "}
                 {now.toLocaleDateString("en-IN", {
                   weekday: "short",
@@ -427,10 +420,10 @@ export function TempleShell() {
 
             {/* Weather */}
             <div className="hidden sm:flex items-center gap-2 rounded-full px-4 py-2 bg-white border border-border/60 shadow-sm ml-2">
-              <span className="text-[11px] font-bold tracking-wider text-muted-foreground">
+              <span className="text-[9px] font-semibold tracking-wider text-muted-foreground">
                 {temple.short}
               </span>
-              <span className="text-sm font-extrabold text-foreground">{temple.weather}</span>
+              <span className="text-xs font-bold text-foreground">{temple.weather}</span>
             </div>
 
             {/* Bell */}
@@ -445,13 +438,13 @@ export function TempleShell() {
                 className="relative flex h-10 w-10 items-center justify-center rounded-full transition-all duration-300 hover:bg-white hover:shadow-sm border border-transparent hover:border-border/60"
               >
                 <Bell size={20} className="text-muted-foreground transition-colors hover:text-foreground" />
-                <span className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded-full text-[9px] font-black text-white bg-primary shadow-sm border border-white">
+                <span className="absolute right-1 top-1 grid h-4 w-4 place-items-center rounded-full text-[8px] font-bold text-white bg-primary shadow-sm border border-white">
                   3
                 </span>
               </button>
               {bellOpen && (
                 <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl shadow-xl bg-white border border-border/50">
-                  <div className="px-5 py-3 text-[13px] font-extrabold tracking-tight bg-muted/40 border-b border-border/50">
+                  <div className="px-5 py-3 text-[11px] font-bold tracking-tight bg-muted/40 border-b border-border/50">
                     Notifications
                   </div>
                   {[
@@ -469,7 +462,7 @@ export function TempleShell() {
                     },
                     {
                       t: "Staff",
-                      b: "8 volunteers deployed to Lane C",
+                      b: "8 volunteers Added to Lane C",
                       c: "var(--color-secondary)",
                       dot: "var(--color-secondary)",
                     },
@@ -483,10 +476,10 @@ export function TempleShell() {
                         style={{ background: n.dot }}
                       />
                       <div>
-                        <div className="font-extrabold tracking-tight" style={{ color: n.c }}>
+                        <div className="font-bold text-xs tracking-tight" style={{ color: n.c }}>
                           {n.t}
                         </div>
-                        <div className="text-muted-foreground mt-1 text-[13px] font-medium leading-relaxed">{n.b}</div>
+                        <div className="text-muted-foreground mt-1 text-[10px] leading-relaxed">{n.b}</div>
                       </div>
                     </div>
                   ))}
@@ -495,7 +488,7 @@ export function TempleShell() {
             </div>
 
             {/* Avatar */}
-            <div className="grid h-10 w-10 place-items-center rounded-full text-sm font-black text-white cursor-pointer transition-all duration-300 hover:scale-105 bg-[#1A1F60] shadow-sm ml-1 border border-white/20">
+            <div className="grid h-10 w-10 place-items-center rounded-full text-xs font-bold text-white cursor-pointer transition-all duration-300 hover:scale-105 bg-[#1A1F60] shadow-sm ml-1 border border-white/20">
               A
             </div>
           </div>
@@ -546,6 +539,7 @@ export function TempleShell() {
               {section === "operations" && <OperationsSection />}
               {section === "parking" && <ParkingSection />}
               {section === "donations" && <DonationSection />}
+              {section === "annadhanam" && <AnnadhanamSection temple={temple} />}
               {/* {section === "announcements" && <AnnouncementsSection />} */}
               {/* {section === "analytics" && <AnalyticsSection />} */}
               {/* {section === "emergency" && <EmergencySection />} */}
