@@ -78,21 +78,21 @@ const suggestions = [
     kind: "URGENT",
     border: "border-danger",
     title: "Open Gate 3 — North Entrance",
-    body: "Current north queue: 580 people. Estimated overflow in 8 min.",
+    body: "580 people in North queue. Will overflow in 8 mins.",
     action: "Open Gate 3",
   },
   {
     kind: "WARNING",
     border: "border-status-busy",
     title: "Add 6 More Volunteers",
-    body: "Common & ₹20 Darshan understaffed. 1 volunteer per 180 devotees (optimal: 1:120).",
+    body: "Not enough staff at Common & ₹20 Darshan.",
     action: "Notify Staff",
   },
   {
     kind: "INFO",
     border: "border-info",
     title: "Evening Rush Preparation",
-    body: "Predicted surge at 17:30 (est. +3,200 devotees). Pre-position staff by 17:00.",
+    body: "Expect 3,200 more devotees at 05:30. Position staff by 05:00.",
     action: "Set Reminder",
   },
   {
@@ -158,18 +158,6 @@ export function DashboardSection({ temple }: { temple: Temple }) {
   const parking = useJitter(78, 2);
   const now = useLiveClock();
   const pct = Math.round((inside / 20000) * 100);
-  const [feed, setFeed] = useState(activityFeed);
-  useEffect(() => {
-    const i = setInterval(() => {
-      setFeed((f) => {
-        const next = [...f];
-        const pick = next[Math.floor(Math.random() * next.length)];
-        const time = new Date().toLocaleTimeString("en-IN", { hour12: false }).slice(0, 5);
-        return [{ ...pick, t: time }, ...next.slice(0, 7)];
-      });
-    }, 12000);
-    return () => clearInterval(i);
-  }, []);
   return (
     <div className="space-y-5">
       {/* Hero Banner */}
@@ -335,10 +323,10 @@ export function DashboardSection({ temple }: { temple: Temple }) {
                 </div>
                 <div className="mt-5 flex gap-2">
                   <button
-                    onClick={() => toast.success(`${s.action} · action queued`)}
+                    onClick={() => toast.success("Notifications sent")}
                     className={`flex-1 rounded-xl py-2 text-[11px] font-extrabold transition-all hover:-translate-y-0.5 hover:shadow-md ${btnColor}`}
                   >
-                    {s.action}
+                    Execute
                   </button>
                   <button className="flex-1 rounded-xl bg-surface border border-border/60 py-2 text-[11px] font-bold text-foreground shadow-sm transition-all hover:bg-muted hover:-translate-y-0.5">
                     Dismiss
@@ -350,204 +338,168 @@ export function DashboardSection({ temple }: { temple: Temple }) {
         </div>
       </div>
       {/* Main Dashboard Content Grid */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        {/* Left Side: Charts */}
-        <div className="lg:col-span-2 grid gap-6 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-          {/* Hourly Footfall Chart */}
-          <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
-            <div className="mb-6">
-              <div className="mb-2 flex items-center justify-between">
-                <div className="text-[12px] font-black tracking-tight text-foreground">Today's Hourly Footfall</div>
-                <div className="flex items-center gap-3">
-                  <span className="text-[8px] uppercase tracking-widest font-extrabold text-muted-foreground">
-                    Actual vs Forecast
-                  </span>
-                  <span className="rounded-full bg-emerald/10 px-2.5 py-1 text-[8px] font-black tracking-wide text-emerald border border-emerald/20">
-                    Peak: 16.4k
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="h-[280px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={footfall} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
-                      <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid
-                    strokeDasharray="4 4"
-                    stroke="var(--border)"
-                    opacity={0.5}
-                    vertical={false}
-                  />
-                  <XAxis
-                    dataKey="t"
-                    stroke="var(--muted-foreground)"
-                    fontSize={10}
-                    tickLine={false}
-                    axisLine={false}
-                    dy={10}
-                  />
-                  <YAxis
-                    stroke="var(--muted-foreground)"
-                    fontSize={10}
-                    tickLine={false}
-                    axisLine={false}
-                    dx={-10}
-                    tickFormatter={(v) => (v >= 1000 ? `${v / 1000}k` : v)}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      background: "var(--card)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "12px",
-                      fontSize: "12px",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-                    }}
-                    itemStyle={{ fontWeight: 800, color: "var(--primary)" }}
-                    labelStyle={{
-                      fontWeight: "900",
-                      color: "var(--foreground)",
-                      marginBottom: "4px",
-                    }}
-                    formatter={(value: any) => [value.toLocaleString(), "Devotees"]}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="v"
-                    name="Footfall"
-                    stroke="var(--primary)"
-                    fill="url(#sg)"
-                    strokeWidth={3}
-                    activeDot={{ r: 6, fill: "var(--primary)", strokeWidth: 0 }}
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-
-          {/* Queue Wait Time Chart */}
-          <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
-            <div className="mb-6 flex items-center justify-between">
-              <div className="text-[12px] font-black tracking-tight text-foreground">Queue Wait Time Trend</div>
+      <div className="grid gap-6 lg:grid-cols-2">
+        {/* Hourly Footfall Chart */}
+        <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+          <div className="mb-6">
+            <div className="mb-2 flex items-center justify-between">
+              <div className="text-[12px] font-black tracking-tight text-foreground">Today's Hourly Footfall</div>
               <div className="flex items-center gap-3">
-                <span className="text-[8px] uppercase tracking-widest font-extrabold text-muted-foreground">Last 6 Hours</span>
-                <span className="rounded-full bg-[#1A1F60]/10 px-2.5 py-1 text-[8px] font-black tracking-wide text-[#1A1F60] border border-[#1A1F60]/20">
-                  Avg: 32 mins
+                <span className="rounded-full bg-emerald/10 px-2.5 py-1 text-[8px] font-black tracking-wide text-emerald border border-emerald/20">
+                  Peak: 16.4k
                 </span>
               </div>
             </div>
-            <div className="h-[280px]">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={queueTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                  <CartesianGrid
-                    strokeDasharray="4 4"
-                    stroke="var(--border)"
-                    opacity={0.5}
-                    vertical={false}
-                  />
-                  <XAxis
-                    dataKey="t"
-                    stroke="var(--muted-foreground)"
-                    fontSize={10}
-                    tickLine={false}
-                    axisLine={false}
-                    dy={10}
-                  />
-                  <YAxis
-                    stroke="var(--muted-foreground)"
-                    fontSize={10}
-                    tickLine={false}
-                    axisLine={false}
-                    dx={-10}
-                    tickFormatter={(v) => `${v}m`}
-                  />
-                  <Tooltip
-                    contentStyle={{
-                      background: "var(--card)",
-                      border: "1px solid var(--border)",
-                      borderRadius: "12px",
-                      fontSize: "12px",
-                      boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
-                    }}
-                    itemStyle={{ fontWeight: 800 }}
-                    labelStyle={{
-                      fontWeight: "900",
-                      color: "var(--foreground)",
-                      marginBottom: "4px",
-                    }}
-                  />
-                  <Legend
-                    iconType="circle"
-                    wrapperStyle={{ fontSize: 11, paddingTop: "20px", fontWeight: 800 }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="A"
-                    name="Common Darshan"
-                    stroke="var(--primary)"
-                    strokeWidth={3}
-                    dot={false}
-                    activeDot={{ r: 5, strokeWidth: 0 }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="B"
-                    name="₹20 Darshan"
-                    stroke="var(--info)"
-                    strokeWidth={3}
-                    dot={false}
-                    activeDot={{ r: 5, strokeWidth: 0 }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="C"
-                    name="₹100 Darshan"
-                    stroke="var(--emerald)"
-                    strokeWidth={3}
-                    dot={false}
-                    activeDot={{ r: 5, strokeWidth: 0 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
+          </div>
+          <div className="h-[280px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={footfall} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
+                    <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid
+                  strokeDasharray="4 4"
+                  stroke="var(--border)"
+                  opacity={0.5}
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="t"
+                  stroke="var(--muted-foreground)"
+                  fontSize={10}
+                  tickLine={false}
+                  axisLine={false}
+                  dy={10}
+                />
+                <YAxis
+                  stroke="var(--muted-foreground)"
+                  fontSize={10}
+                  tickLine={false}
+                  axisLine={false}
+                  dx={-10}
+                  tickFormatter={(v) => (v >= 1000 ? `${v / 1000}k` : v)}
+                />
+                <Tooltip
+                  contentStyle={{
+                    background: "var(--card)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "12px",
+                    fontSize: "12px",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  }}
+                  itemStyle={{ fontWeight: 800, color: "var(--primary)" }}
+                  labelStyle={{
+                    fontWeight: "900",
+                    color: "var(--foreground)",
+                    marginBottom: "4px",
+                  }}
+                  formatter={(value: any) => [value.toLocaleString(), "Devotees"]}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="v"
+                  name="Footfall"
+                  stroke="var(--primary)"
+                  fill="url(#sg)"
+                  strokeWidth={3}
+                  activeDot={{ r: 6, fill: "var(--primary)", strokeWidth: 0 }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
-        {/* Right Side: Live Activity Feed */}
-        <div className="lg:col-span-1 h-full">
-          <div className="glass-card flex flex-col h-full overflow-hidden rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
-            <div className="flex items-center justify-between border-b border-border/30 bg-muted/20 px-5 py-4">
-              <div className="flex items-center gap-2.5 text-[12px] font-black tracking-tight text-foreground">
-                <Activity size={16} className="text-primary" /> Live Activity Feed
-              </div>
-              <div className="flex items-center gap-1.5 rounded-full bg-emerald/10 px-2.5 py-1 text-[9px] font-black text-emerald tracking-widest uppercase border border-emerald/20">
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald shadow-[0_0_8px_rgba(16,185,129,0.8)]"></span>
-                </span>
-                LIVE
-              </div>
-            </div>
-            <div className="flex-1 overflow-y-auto max-h-[400px] lg:max-h-[365px] [&::-webkit-scrollbar]:w-1 [&::-webkit-scrollbar-thumb]:bg-border/50 [&::-webkit-scrollbar-thumb]:rounded-full">
-              {feed.map((f, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-3.5 bg-card px-5 py-4 transition-all duration-300 hover:bg-muted/30 border-b border-border/30 last:border-0"
-                >
-                  <div className="font-mono text-[10px] font-extrabold text-muted-foreground w-10 shrink-0 pt-0.5">
-                    {f.t}
-                  </div>
-                  <div className={`mt-1.5 h-2 w-2 shrink-0 rounded-full bg-${f.c} shadow-sm`} />
-                  <div className="text-[11px] font-bold leading-relaxed text-foreground/90">{f.msg}</div>
-                </div>
-              ))}
+        {/* Queue Wait Time Chart */}
+        <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+          <div className="mb-6 flex items-center justify-between">
+            <div className="text-[12px] font-black tracking-tight text-foreground">Queue Wait Time Trend</div>
+            <div className="flex items-center gap-3">
+              <span className="text-[8px] uppercase tracking-widest font-extrabold text-muted-foreground">Last 6 Hours</span>
+              <span className="rounded-full bg-[#1A1F60]/10 px-2.5 py-1 text-[8px] font-black tracking-wide text-[#1A1F60] border border-[#1A1F60]/20">
+                Avg: 32 mins
+              </span>
             </div>
           </div>
+          <div className="h-[280px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={queueTrend} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <CartesianGrid
+                  strokeDasharray="4 4"
+                  stroke="var(--border)"
+                  opacity={0.5}
+                  vertical={false}
+                />
+                <XAxis
+                  dataKey="t"
+                  stroke="var(--muted-foreground)"
+                  fontSize={10}
+                  tickLine={false}
+                  axisLine={false}
+                  dy={10}
+                />
+                <YAxis
+                  stroke="var(--muted-foreground)"
+                  fontSize={10}
+                  tickLine={false}
+                  axisLine={false}
+                  dx={-10}
+                  tickFormatter={(v) => `${v}m`}
+                />
+                <Tooltip
+                  contentStyle={{
+                    background: "var(--card)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "12px",
+                    fontSize: "12px",
+                    boxShadow: "0 8px 24px rgba(0,0,0,0.12)",
+                  }}
+                  itemStyle={{ fontWeight: 800 }}
+                  labelStyle={{
+                    fontWeight: "900",
+                    color: "var(--foreground)",
+                    marginBottom: "4px",
+                  }}
+                />
+                <Legend
+                  iconType="circle"
+                  wrapperStyle={{ fontSize: 11, paddingTop: "20px", fontWeight: 800 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="A"
+                  name="Common Darshan"
+                  stroke="var(--primary)"
+                  strokeWidth={3}
+                  dot={false}
+                  activeDot={{ r: 5, strokeWidth: 0 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="B"
+                  name="₹20 Darshan"
+                  stroke="var(--info)"
+                  strokeWidth={3}
+                  dot={false}
+                  activeDot={{ r: 5, strokeWidth: 0 }}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="C"
+                  name="₹100 Darshan"
+                  stroke="var(--emerald)"
+                  strokeWidth={3}
+                  dot={false}
+                  activeDot={{ r: 5, strokeWidth: 0 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </div>
+
+
       </div>
 
       {/* --- QUEUE MANAGEMENT --- */}

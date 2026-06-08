@@ -8,6 +8,7 @@ interface StatCardProps {
   sub?: string;
   trend?: { up: boolean; text: string };
   valueSuffix?: React.ReactNode;
+  bgTint?: string;
 }
 
 export function StatCard({
@@ -18,6 +19,7 @@ export function StatCard({
   sub,
   trend,
   valueSuffix,
+  bgTint,
 }: StatCardProps) {
   return (
     <div
@@ -40,11 +42,10 @@ export function StatCard({
 
           {trend && (
             <div
-              className={`mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${
-                trend.up
+              className={`mt-2 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-medium ${trend.up
                   ? "bg-red-50 text-red-600"
                   : "bg-blue-50 text-blue-600"
-              }`}
+                }`}
             >
               {trend.up ? (
                 <TrendingUp size={10} />
@@ -56,8 +57,8 @@ export function StatCard({
           )}
         </div>
 
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-slate-50">
-          <Icon size={18} className="text-slate-700" />
+        <div className={`flex h-10 w-10 items-center justify-center rounded-xl border ${bgTint || 'border-slate-200 bg-slate-50'}`}>
+          <Icon size={18} className={bgTint ? "" : "text-slate-700"} />
         </div>
       </div>
 

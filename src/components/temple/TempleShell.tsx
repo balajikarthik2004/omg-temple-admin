@@ -69,7 +69,7 @@ export function TempleShell() {
   useEffect(() => {
     window.location.hash = section;
   }, [section]);
-  const [templeId, setTempleId] = useState(TEMPLES[0].id);
+  const [templeId, setTempleId] = useState<string | null>(null);
   const [templeOpen, setTempleOpen] = useState(false);
   const [selectedState, setSelectedState] = useState<string>("All States");
   const [stateOpen, setStateOpen] = useState(false);
@@ -78,12 +78,12 @@ export function TempleShell() {
   const [shimmer, setShimmer] = useState(false);
   const [bellOpen, setBellOpen] = useState(false);
 
-  const temple = TEMPLES.find((t) => t.id === templeId) || TEMPLES[0];
+  const temple = templeId ? TEMPLES.find((t) => t.id === templeId) : undefined;
 
-  const states = [
-    "All States",
-    ...Array.from(new Set(TEMPLES.map((t) => t.state))),
-  ].sort();
+  const otherStates = Array.from(new Set(TEMPLES.map((t) => t.state)))
+    .filter(s => s !== "Tamil Nadu")
+    .sort();
+  const states = ["All States", "Tamil Nadu", ...otherStates];
 
   const filteredByState = selectedState === "All States"
     ? TEMPLES
@@ -303,7 +303,7 @@ export function TempleShell() {
                         const firstTemple = s === "All States"
                           ? TEMPLES[0]
                           : TEMPLES.find((t) => t.state === s);
-                        if (firstTemple && temple.state !== s) {
+                        if (firstTemple && temple?.state !== s) {
                           switchTemple(firstTemple.id);
                         }
                       }}
@@ -346,7 +346,7 @@ export function TempleShell() {
                           d === "All Districts"
                             ? filteredByState[0]
                             : filteredByState.find((t) => t.district === d);
-                        if (firstTemple && d !== "All Districts" && temple.district !== d) {
+                        if (firstTemple && d !== "All Districts" && temple?.district !== d) {
                           switchTemple(firstTemple.id);
                         }
                       }}
@@ -371,7 +371,7 @@ export function TempleShell() {
                 className="group flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md bg-white border border-border/60 text-foreground"
               >
                 <Landmark size={14} className="text-primary" />
-                <span className="hidden sm:block tracking-wide">{temple.name}</span>
+                <span className="hidden sm:block tracking-wide">{temple?.name || "Select Temple"}</span>
                 <ChevronDown
                   size={14}
                   className="text-muted-foreground transition-transform duration-300 group-hover:translate-y-0.5"
@@ -419,12 +419,14 @@ export function TempleShell() {
             </div>
 
             {/* Weather */}
-            <div className="hidden sm:flex items-center gap-2 rounded-full px-4 py-2 bg-white border border-border/60 shadow-sm ml-2">
-              <span className="text-[9px] font-semibold tracking-wider text-muted-foreground">
-                {temple.short}
-              </span>
-              <span className="text-xs font-bold text-foreground">{temple.weather}</span>
-            </div>
+            {temple && (
+              <div className="hidden sm:flex items-center gap-2 rounded-full px-4 py-2 bg-white border border-border/60 shadow-sm ml-2">
+                <span className="text-[9px] font-semibold tracking-wider text-muted-foreground">
+                  {temple.short}
+                </span>
+                <span className="text-xs font-bold text-foreground">{temple.weather}</span>
+              </div>
+            )}
 
             {/* Bell */}
             <div className="relative ml-1">
@@ -517,7 +519,7 @@ export function TempleShell() {
                   </div>
                   <div className="text-center">
                     <div className="text-base font-montserrat font-bold text-foreground">
-                      Switching to {temple.name}
+                      Switching to {temple?.name || "Temple"}
                     </div>
                     <div className="text-sm text-muted-foreground mt-1">
                       Connecting to live telemetry...
@@ -530,16 +532,28 @@ export function TempleShell() {
             <div
               className={`transition-all duration-500 ${shimmer ? "opacity-30 blur-[2px] pointer-events-none translate-y-2" : "opacity-100 translate-y-0 blur-none"}`}
             >
-              {section === "dashboard" && <DashboardSection temple={temple} />}
-              {section === "darshan" && <DarshanSection />}
-              {section === "heatmap" && <HeatmapSection temple={temple} />}
-              {section === "cctv" && <CCTVSection />}
-              {section === "queue" && <QueueSection />}
-              {section === "staff" && <StaffSection />}
-              {section === "operations" && <OperationsSection />}
-              {section === "parking" && <ParkingSection />}
-              {section === "donations" && <DonationSection />}
-              {section === "annadhanam" && <AnnadhanamSection temple={temple} />}
+              {!temple ? (
+                <div className="flex h-[70vh] flex-col items-center justify-center text-center">
+                  <div className="bg-white/5 p-6 rounded-full border border-white/10 shadow-lg mb-6">
+                    <Landmark size={48} className="text-muted-foreground/50" />
+                  </div>
+                  <h2 className="text-2xl font-bold tracking-tight text-foreground/80">No Temple Selected</h2>
+                  <p className="text-muted-foreground mt-2 max-w-sm">Please select a temple from the dropdown in the top navigation bar to view its dashboard.</p>
+                </div>
+              ) : (
+                <>
+                  {section === "dashboard" && <DashboardSection temple={temple} />}
+                  {section === "darshan" && <DarshanSection />}
+                  {section === "heatmap" && <HeatmapSection temple={temple} />}
+                  {section === "cctv" && <CCTVSection />}
+                  {section === "queue" && <QueueSection />}
+                  {section === "staff" && <StaffSection />}
+                  {section === "operations" && <OperationsSection />}
+                  {section === "parking" && <ParkingSection />}
+                  {section === "donations" && <DonationSection />}
+                  {section === "annadhanam" && <AnnadhanamSection temple={temple} />}
+                </>
+              )}
               {/* {section === "announcements" && <AnnouncementsSection />} */}
               {/* {section === "analytics" && <AnalyticsSection />} */}
               {/* {section === "emergency" && <EmergencySection />} */}
