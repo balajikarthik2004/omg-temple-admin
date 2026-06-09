@@ -196,7 +196,7 @@ export function HeatmapSection({ temple }: { temple?: any }) {
             {(!temple || !imgMap[temple.id]) && (
               <svg
                 viewBox="0 0 600 360"
-                className="absolute inset-0 w-full h-full pointer-events-none drop-shadow-sm"
+                className="absolute inset-0 w-full h-full pointer-events-none drop-shadow-sm z-10"
               >
                 <defs>
                   <marker

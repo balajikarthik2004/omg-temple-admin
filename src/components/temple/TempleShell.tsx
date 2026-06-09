@@ -98,7 +98,7 @@ export function TempleShell() {
     setShimmer(true);
     setTempleId(id);
     setTempleOpen(false);
-    setTimeout(() => setShimmer(false), 1200);
+    setTimeout(() => setShimmer(false), 1000);
   };
   const sectionTitle = NAV_ITEMS.find((n) => n.id === section)?.label ?? "";
 
@@ -495,10 +495,7 @@ export function TempleShell() {
             </div>
           </div>
         </header>
-
-        {/* ════════════════════════════════════════════════════════════
-        MAIN CONTENT
-        ════════════════════════════════════════════════════════════ */}
+        
         <main
           className={`flex-1 pt-16 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${sidebarExpanded ? "ml-[260px]" : "ml-[80px]"}`}
         >
@@ -506,24 +503,12 @@ export function TempleShell() {
             {/* Temple switch shimmer */}
             {shimmer && (
               <div
-                className={`fixed top-16 right-0 bottom-0 z-50 ${sidebarExpanded ? "left-[260px]" : "left-[72px]"} flex flex-col items-center justify-center backdrop-blur-sm animate-in fade-in duration-300 bg-background/70`}
+                className={`fixed top-16 right-0 bottom-0 z-50 ${sidebarExpanded ? "left-[260px]" : "left-[72px]"} flex items-center justify-center backdrop-blur-md animate-in fade-in duration-200 bg-background/70`}
               >
-                <div className="flex flex-col items-center gap-6">
-                  <div className="relative flex h-20 w-20 items-center justify-center rounded-2xl overflow-hidden bg-surface border border-border shadow-md">
-                    <div className="absolute inset-0 flex items-center justify-center bg-primary/10">
-                      <span className="text-3xl font-montserrat text-primary/30">ॐ</span>
-                    </div>
-                    <div className="absolute inset-0 flex items-center justify-center animate-fill-up bg-gradient-to-br from-primary to-secondary">
-                      <span className="text-3xl font-montserrat text-white">ॐ</span>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-base font-montserrat font-bold text-foreground">
-                      Switching to {temple?.name || "Temple"}
-                    </div>
-                    <div className="text-sm text-muted-foreground mt-1">
-                      Connecting to live telemetry...
-                    </div>
+                <div className="relative flex h-32 w-32 items-center justify-center rounded-full bg-red-500/5 backdrop-blur-xl shadow-[0_0_50px_rgba(239,68,68,0.15)] transform scale-110">
+                  <span className="text-7xl font-montserrat text-primary/15 relative z-10">ॐ</span>
+                  <div className="absolute inset-0 flex items-center justify-center animate-fill-up z-20" style={{ animationDuration: '0.5s' }}>
+                    <span className="text-7xl font-montserrat text-primary drop-shadow-xl">ॐ</span>
                   </div>
                 </div>
               </div>

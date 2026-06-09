@@ -7,6 +7,7 @@ import {
   QrCode,
   ArrowRightLeft,
   Download,
+  User,
 } from "lucide-react";
 import {
   AreaChart,
@@ -377,7 +378,6 @@ export function DonationSection() {
             <table className="w-full text-sm">
               <thead className="bg-muted/5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border/50">
                 <tr>
-                  <th className="px-6 py-4 text-left whitespace-nowrap">Transaction ID</th>
                   <th className="px-6 py-4 text-left whitespace-nowrap">Donor</th>
                   <th className="px-6 py-4 text-left whitespace-nowrap">Fund Category</th>
                   <th className="px-6 py-4 text-right whitespace-nowrap">Amount</th>
@@ -388,17 +388,10 @@ export function DonationSection() {
               <tbody className="divide-y divide-border/50">
                 {recentTransactions.map((trx) => (
                   <tr key={trx.id} className="transition-colors hover:bg-muted/30 group">
-                    <td className="px-6 py-4.5 font-mono text-xs text-muted-foreground whitespace-nowrap">
-                      {trx.id}
-                    </td>
                     <td className="px-6 py-4.5 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                          trx.donor === "Anonymous" 
-                            ? "bg-muted text-muted-foreground" 
-                            : "bg-primary/10 text-primary"
-                        }`}>
-                          {trx.donor === "Anonymous" ? "?" : trx.donor.charAt(0)}
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold bg-primary/10 text-primary">
+                          {trx.donor.charAt(0)}
                         </div>
                         <span className="font-bold text-foreground">{trx.donor}</span>
                       </div>

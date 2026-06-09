@@ -1,5 +1,5 @@
 import { POOJAS } from "@/lib/temple-data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import {
   AlertCircle,
@@ -48,6 +48,23 @@ export function OperationsSection() {
   const [broadcasts, setBroadcasts] = useState(announcements);
   const [newText, setNewText] = useState("");
   const [orders, setOrders] = useState(workOrders);
+
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 10000); // Check every 10s
+    return () => clearInterval(timer);
+  }, []);
+
+  const parseTime = (timeStr: string) => {
+    const [time, period] = timeStr.split(" ");
+    let [hours, minutes] = time.split(":").map(Number);
+    if (period === "PM" && hours !== 12) hours += 12;
+    if (period === "AM" && hours === 12) hours = 0;
+    const d = new Date(currentTime);
+    d.setHours(hours, minutes, 0, 0);
+    return d.getTime();
+  };
 
   const handleBroadcast = () => {
     if (!newText.trim()) return;
@@ -117,11 +134,21 @@ export function OperationsSection() {
               <span className="text-[10px] font-bold text-amber-600 uppercase tracking-widest">LIVE TRACKING</span>
             </div>
           </div>
-          <div className="flex-1 p-8">
-            <ol className="relative space-y-3 border-l-2 border-border/50 pl-6 ml-2">
+          <div className="flex-1 p-6">
+            <ol className="relative space-y-2 border-l-2 border-border/50 pl-4 ml-1">
               {POOJAS.map((p, i) => {
-                const isLive = p.status === "live";
-                const isDone = p.status === "done";
+                const pTime = parseTime(p.time);
+                const nextPTime = i < POOJAS.length - 1 ? parseTime(POOJAS[i+1].time) : pTime + 2 * 60 * 60 * 1000;
+                
+                let dynamicStatus = "upcoming";
+                if (currentTime.getTime() >= pTime && currentTime.getTime() < nextPTime) {
+                  dynamicStatus = "live";
+                } else if (currentTime.getTime() >= nextPTime) {
+                  dynamicStatus = "done";
+                }
+
+                const isLive = dynamicStatus === "live";
+                const isDone = dynamicStatus === "done";
                 const dotColor = isDone
                   ? "bg-emerald border-emerald"
                   : isLive
@@ -131,13 +158,13 @@ export function OperationsSection() {
                 return (
                   <li key={i} className="relative group">
                     <span
-                      className={`absolute -left-[31px] top-2 flex h-3 w-3 items-center justify-center rounded-full border-2 ${dotColor} transition-all`}
+                      className={`absolute -left-[23px] top-2 flex h-3 w-3 items-center justify-center rounded-full border-2 ${dotColor} transition-all`}
                     >
                       {isDone && <CheckCircle2 size={10} className="text-white" />}
                     </span>
 
                     <div
-                      className={`group rounded-xl border p-4 transition-all duration-300 ${isLive ? "border-saffron/40 bg-gradient-to-br from-saffron/10 to-amber-500/5 shadow-md scale-[1.02]" : isDone ? "border-white/60 bg-white/40 opacity-70" : "border-white/40 bg-white/20 hover:bg-white/60 hover:shadow-sm"}`}
+                      className={`group rounded-xl border p-3 transition-all duration-300 ${isLive ? "border-saffron/40 bg-gradient-to-br from-saffron/10 to-amber-500/5 shadow-md scale-[1.01]" : isDone ? "border-white/60 bg-white/40 opacity-70" : "border-white/40 bg-white/20 hover:bg-white/60 hover:shadow-sm"}`}
                     >
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div className="max-w-md">
