@@ -64,7 +64,7 @@ function FakeFeed({
   status: string;
   scanOverlay?: boolean;
 }) {
-  const boxes = Array.from({ length: status === "CROWDED" ? 8 : status === "BUSY" ? 5 : 3 }).map(
+  const boxes = Array.from({ length: status === "CRITICAL" ? 6 : status === "CROWDED" ? 8 : status === "BUSY" ? 5 : 3 }).map(
     (_, i) => ({
       x: 10 + ((idx * 17 + i * 23) % 75),
       y: 15 + ((idx * 11 + i * 19) % 60),
@@ -102,10 +102,11 @@ function FakeFeed({
         }}
       />
       {boxes.map((b, i) => {
+        const isSuspicious = status === "CRITICAL" && i === 2; // Make the 3rd person the suspicious one so it's mixed in
         return (
           <div
             key={i}
-            className="animate-track absolute border border-danger/70"
+            className={`animate-track absolute border-[0.5px] ${isSuspicious ? "border-danger/80 shadow-[0_0_8px_rgba(255,0,0,0.5)] z-10" : "border-emerald/50"}`}
             style={{
               left: `${b.x}%`,
               top: `${b.y}%`,
@@ -115,9 +116,8 @@ function FakeFeed({
               animationDuration: `${5 + (i % 4)}s`,
             }}
           >
-            <div className="absolute -top-3 left-0 bg-danger/90 px-1 py-[1px] text-[6px] font-semibold text-white whitespace-nowrap">
-              ID:{idx}
-              {i}
+            <div className={`absolute -top-3 left-0 px-1 py-[1px] text-[6px] font-semibold text-white whitespace-nowrap ${isSuspicious ? "bg-danger/90 animate-pulse" : "bg-emerald/70"}`}>
+              ID:{idx}{i} {isSuspicious ? "⚠️ SUSPECT" : ""}
             </div>
           </div>
         );
@@ -129,7 +129,7 @@ function FakeFeed({
         </div>
       )}
       <div className="absolute left-2 top-2 flex items-center gap-1.5 rounded-sm bg-black/80 px-2 py-0.5 text-[9px] font-semibold text-white backdrop-blur-md ring-1 ring-white/10">
-        <span className="blink-rec h-1.5 w-1.5 rounded-xl bg-danger shadow-[0_0_5px_rgba(255,0,0,0.8)]" />
+        <span className={`blink-rec h-1.5 w-1.5 rounded-xl ${status === "CRITICAL" ? "bg-danger shadow-[0_0_5px_rgba(255,0,0,0.8)]" : "bg-emerald shadow-[0_0_5px_rgba(16,185,129,0.8)]"}`} />
         REC
       </div>
       {/* <div className="absolute right-2 top-2 rounded-sm bg-emerald/90 px-1.5 py-0.5 text-[8px] font-semibold text-white shadow-sm"> AI TRACKING </div> */}
@@ -216,10 +216,15 @@ export function CCTVSection() {
     }
   }, [searchState]);
 
+  const [activeAlert, setActiveAlert] = useState<string | null>(null);
+
   // Simulate a suspicious person entering while viewing the live recording feeds
   useEffect(() => {
     if (tab === "live") {
       const timer = setTimeout(() => {
+        const targetCam = "CAM-P04";
+        setActiveAlert(targetCam);
+        
         // --- Play Dramatic Alert Sound Effect ---
         const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
         const ctx = new AudioContext();
@@ -263,12 +268,13 @@ export function CCTVSection() {
         }
         // ----------------------------------------
 
-        toast.error("Critical Alert! Suspicious person detected on CAM-P04.");
+        toast.error(`Critical Alert! Suspicious person detected on ${targetCam}.`);
 
         // Delay the voice announcement slightly so the dramatic sound hits first
         setTimeout(() => {
           if ("speechSynthesis" in window) {
-            const utterance = new SpeechSynthesisUtterance("Alert! Suspicious person detected on Camera 4. Security team, please respond immediately.");
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(`Alert! Suspicious activity detected on camera ${targetCam.replace('CAM-P0', '')}. Security team, please respond immediately.`);
             utterance.pitch = 1.1;
             utterance.rate = 1.05;
             const voices = window.speechSynthesis.getVoices();
@@ -279,7 +285,10 @@ export function CCTVSection() {
         }, 800); // 800ms delay
       }, 6000); // Trigger 6 seconds after opening the live tab
 
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(timer);
+        setActiveAlert(null);
+      };
     }
   }, [tab]);
 
@@ -416,16 +425,22 @@ export function CCTVSection() {
         <div className="grid gap-8 xl:grid-cols-[1fr_320px]">
           {/* Camera Grid */}
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {CCTV_CAMERAS.map((c, i) => (
+            {CCTV_CAMERAS.map((c, i) => {
+              const isAlert = c.id === activeAlert;
+              return (
               <div
                 key={c.id}
-                className="group flex flex-col justify-between rounded-xl border border-border/50 bg-white/60 backdrop-blur-xl p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden"
+                className={`group flex flex-col justify-between rounded-xl border p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden ${
+                  isAlert 
+                    ? "border-danger ring-2 ring-danger/50 shadow-[0_0_30px_rgba(255,0,0,0.4)] animate-pulse bg-danger/5" 
+                    : "border-border/50 bg-white/60 backdrop-blur-xl"
+                }`}
               >
-                <FakeFeed idx={i} status={c.status} />
+                <FakeFeed idx={i} status={isAlert ? "CRITICAL" : c.status} scanOverlay={isAlert} />
                 <div className="mt-3 flex items-start justify-between">
                   <div>
-                    <div className="text-[9px] font-semibold text-muted-foreground tracking-widest uppercase">{c.id}</div>
-                    <div className="mt-1 text-[13px] font-bold tracking-tight text-foreground leading-tight">
+                    <div className={`text-[9px] font-semibold tracking-widest uppercase ${isAlert ? "text-danger" : "text-muted-foreground"}`}>{c.id}</div>
+                    <div className={`mt-1 text-[13px] font-bold tracking-tight leading-tight ${isAlert ? "text-danger" : "text-foreground"}`}>
                       {c.name}
                     </div>
                   </div>
@@ -456,7 +471,8 @@ export function CCTVSection() {
                   ))}
                 </div>
               </div>
-            ))}
+            );
+            })}
           </div>
           {/* Analytics Sidebar */}
           <div className="flex flex-col gap-8">
