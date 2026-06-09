@@ -325,13 +325,13 @@ export type Temple = (typeof TEMPLES)[number];
 
 export const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard", icon: "Home" },
-  { id: "darshan", label: "Bookings", icon: "Ticket" },
   { id: "heatmap", label: "AI Heatmap", icon: "Flame" },
   { id: "cctv", label: "CCTV Monitor", icon: "Video" },
   // { id: "queue", label: "Queue Management", icon: "Timer" },
   { id: "staff", label: "Volunteer Staff", icon: "UsersRound" },
   { id: "operations", label: "Temple Operations", icon: "Landmark" },
   { id: "parking", label: "Parking", icon: "Car" },
+  { id: "darshan", label: "Bookings", icon: "Ticket" },
   { id: "donations", label: "Donations & Funds", icon: "IndianRupee" },
   { id: "annadhanam", label: "Annadhanam", icon: "Utensils" },
   // { id: "announcements", label: "Announcements", icon: "Megaphone" },
