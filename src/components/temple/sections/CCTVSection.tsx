@@ -163,20 +163,208 @@ export function CCTVSection() {
   };
   useEffect(() => {
     if (searchState === "scanning") {
+      const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+      const ctx = new AudioContext();
+
+      const playBeep = (freq = 880, vol = 0.05, duration = 0.1) => {
+        try {
+          if (ctx.state === "suspended") ctx.resume();
+          const osc = ctx.createOscillator();
+          const gainNode = ctx.createGain();
+
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(freq, ctx.currentTime);
+
+          gainNode.gain.setValueAtTime(vol, ctx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+          osc.connect(gainNode);
+          gainNode.connect(ctx.destination);
+
+          osc.start();
+          osc.stop(ctx.currentTime + duration);
+        } catch (e) {
+          console.error("Audio error:", e);
+        }
+      };
+
       const interval = setInterval(() => {
         setScanProgress((p) => {
           if (p >= 100) {
             clearInterval(interval);
-            setSearchState("results");
-            toast.success("Scan complete. 3 potential matches found.");
             return 100;
           }
-          return Math.min(100, p + Math.floor(Math.random() * 12) + 4);
+          const next = p + Math.floor(Math.random() * 12) + 4;
+          if (next >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+              setSearchState("results");
+              toast.success("Scan complete. 3 potential matches found.");
+              playBeep(1200, 0.1, 0.3); // Success beep
+            }, 0);
+            return 100;
+          }
+          // Simple progress beep
+          playBeep();
+          return next;
         });
       }, 400);
-      return () => clearInterval(interval);
+      return () => {
+        clearInterval(interval);
+        ctx.close().catch(() => { });
+      };
     }
   }, [searchState]);
+
+  // Simulate a suspicious person entering while viewing the live recording feeds
+  useEffect(() => {
+    if (tab === "live") {
+      const timer = setTimeout(() => {
+        // --- Play Dramatic Alert Sound Effect ---
+        const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+        const ctx = new AudioContext();
+        try {
+          if (ctx.state === "suspended") ctx.resume();
+          // Create a dramatic heavy alarm / brass hit
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const gain = ctx.createGain();
+
+          osc1.type = "sawtooth";
+          osc2.type = "square";
+
+          // Low pitch for dramatic tension
+          osc1.frequency.setValueAtTime(55, ctx.currentTime);
+          osc1.frequency.exponentialRampToValueAtTime(30, ctx.currentTime + 1.5);
+
+          osc2.frequency.setValueAtTime(56, ctx.currentTime); // Slightly detuned
+          osc2.frequency.exponentialRampToValueAtTime(31, ctx.currentTime + 1.5);
+
+          gain.gain.setValueAtTime(0, ctx.currentTime);
+          gain.gain.linearRampToValueAtTime(0.3, ctx.currentTime + 0.1); // Sharp attack
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2);
+
+          const filter = ctx.createBiquadFilter();
+          filter.type = "lowpass";
+          filter.frequency.setValueAtTime(2000, ctx.currentTime);
+          filter.frequency.exponentialRampToValueAtTime(100, ctx.currentTime + 1.5);
+
+          osc1.connect(filter);
+          osc2.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+
+          osc1.start(ctx.currentTime);
+          osc2.start(ctx.currentTime);
+          osc1.stop(ctx.currentTime + 2);
+          osc2.stop(ctx.currentTime + 2);
+        } catch (e) {
+          console.error("Audio playback error", e);
+        }
+        // ----------------------------------------
+
+        toast.error("Critical Alert! Suspicious person detected on CAM-P04.");
+
+        // Delay the voice announcement slightly so the dramatic sound hits first
+        setTimeout(() => {
+          if ("speechSynthesis" in window) {
+            const utterance = new SpeechSynthesisUtterance("Alert! Suspicious person detected on Camera 4. Security team, please respond immediately.");
+            utterance.pitch = 1.1;
+            utterance.rate = 1.05;
+            const voices = window.speechSynthesis.getVoices();
+            const englishVoice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Female'));
+            if (englishVoice) utterance.voice = englishVoice;
+            window.speechSynthesis.speak(utterance);
+          }
+        }, 800); // 800ms delay
+      }, 6000); // Trigger 6 seconds after opening the live tab
+
+      return () => clearTimeout(timer);
+    }
+  }, [tab]);
+
+  // CCTV Recorder Ambient Sound (tape hiss + motor hum)
+  useEffect(() => {
+    if (tab !== "live") return;
+
+    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+    const ctx = new AudioContext();
+
+    let humOsc: OscillatorNode;
+    let noiseSource: AudioBufferSourceNode;
+
+    const startCCTVSound = () => {
+      try {
+        if (ctx.state === "suspended") ctx.resume();
+
+        const mainGain = ctx.createGain();
+        mainGain.gain.value = 0.05; // Keep it very quiet and ambient
+        mainGain.connect(ctx.destination);
+
+        // 1. Motor Hum (Low frequency)
+        humOsc = ctx.createOscillator();
+        humOsc.type = "triangle";
+        humOsc.frequency.value = 60; // 60Hz low hum
+        const humGain = ctx.createGain();
+        humGain.gain.value = 0.2;
+        humOsc.connect(humGain);
+        humGain.connect(mainGain);
+        humOsc.start();
+
+        // 2. Film Projector Click (24 frames per second)
+        const frameRate = 24;
+        const frameSamples = Math.floor(ctx.sampleRate / frameRate);
+        const clickBuffer = ctx.createBuffer(1, frameSamples, ctx.sampleRate);
+        const clickData = clickBuffer.getChannelData(0);
+
+        // Fill the first 5% of the frame with noise to simulate the mechanical click of the film advancing
+        const clickLength = Math.floor(frameSamples * 0.05);
+        for (let i = 0; i < clickLength; i++) {
+          // Add a decaying burst of noise
+          clickData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (clickLength / 5));
+        }
+
+        noiseSource = ctx.createBufferSource();
+        noiseSource.buffer = clickBuffer;
+        noiseSource.loop = true;
+
+        const noiseFilter = ctx.createBiquadFilter();
+        noiseFilter.type = "highpass"; // highpass makes it sound more like a mechanical click
+        noiseFilter.frequency.value = 1000;
+
+        const noiseGain = ctx.createGain();
+        noiseGain.gain.value = 0.5; // Make the clicking distinct
+
+        noiseSource.connect(noiseFilter);
+        noiseFilter.connect(noiseGain);
+        noiseGain.connect(mainGain);
+        noiseSource.start();
+
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    startCCTVSound();
+
+    // Handle browsers that block autoplay
+    const handleInteraction = () => {
+      if (ctx.state === "suspended") ctx.resume();
+    };
+    window.addEventListener("click", handleInteraction);
+
+    return () => {
+      window.removeEventListener("click", handleInteraction);
+      if (humOsc) {
+        try { humOsc.stop(); } catch (e) { }
+      }
+      if (noiseSource) {
+        try { noiseSource.stop(); } catch (e) { }
+      }
+      ctx.close().catch(() => { });
+    };
+  }, [tab]);
+
   return (
     <div className="space-y-8">
       {/* Top Header & Navigation */}
@@ -243,8 +431,8 @@ export function CCTVSection() {
                   </div>
                   <span
                     className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[8px] font-semibold uppercase tracking-widest ${c.status === "CROWDED" ? "bg-red-50 text-red-600 border-red-100" :
-                        c.status === "BUSY" ? "bg-amber-50 text-amber-600 border-amber-100" :
-                          "bg-emerald-50 text-emerald-600 border-emerald-100"
+                      c.status === "BUSY" ? "bg-amber-50 text-amber-600 border-amber-100" :
+                        "bg-emerald-50 text-emerald-600 border-emerald-100"
                       }`}
                   >
                     {c.status}
@@ -405,16 +593,16 @@ export function CCTVSection() {
                         {scanProgress.toString().padStart(2, '0')}%
                       </span>
                     </div>
-                    
+
                     <div className="relative h-3 w-full rounded-full bg-muted overflow-hidden shadow-inner border border-border/40">
-                      <div 
+                      <div
                         className="absolute top-0 left-0 h-full bg-primary transition-all duration-300 ease-out"
                         style={{ width: `${scanProgress}%` }}
                       >
                         <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent)] animate-scan" />
                       </div>
                     </div>
-                    
+
                     <div className="mt-4 flex justify-between text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">
                       <span>Analyzing Node {Math.floor(scanProgress / 10)}</span>
                       <span>{scanProgress > 50 ? 'Identifying Signatures...' : 'Isolating Variables...'}</span>
