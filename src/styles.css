@@ -8,9 +8,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: "Roboto", system-ui, sans-serif;
+  --font-sans: "Montserrat", system-ui, sans-serif;
   --font-montserrat: "Montserrat", sans-serif;
-  --font-roboto: "Roboto", sans-serif;
+  --font-roboto: "Montserrat", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
