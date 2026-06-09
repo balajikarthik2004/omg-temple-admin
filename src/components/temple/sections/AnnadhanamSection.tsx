@@ -64,7 +64,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* DINING HALLS */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="overflow-hidden rounded-3xl bg-white shadow-sm border border-border/40">
+          <div className="overflow-hidden rounded-xl bg-white/60 backdrop-blur-xl shadow-sm border border-border/50 hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
             <div className="border-b border-border/40 bg-muted/10 px-6 py-5 flex items-center justify-between">
               <h3 className="font-extrabold text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                 <Utensils size={16} className="text-primary" /> Dining Hall Live Status
@@ -77,7 +77,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
 
             <div className="p-6 grid gap-6 sm:grid-cols-2">
               {/* Hall A */}
-              <div className="group rounded-3xl border border-border/40 bg-surface/30 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:bg-white relative overflow-hidden">
+              <div className="group rounded-xl border border-border/40 bg-white/40 p-6 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:bg-white/80 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-red-500/5 to-transparent rounded-bl-full pointer-events-none" />
                 <div className="flex justify-between items-start mb-5 relative z-10">
                   <div className="flex gap-3">
@@ -85,7 +85,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
                       <Utensils className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-extrabold text-foreground tracking-tight">Hall A (General)</h4>
+                      <h4 className="text-sm font-extrabold text-foreground tracking-tight">Hall A</h4>
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mt-0.5">Capacity: {200 * capacityMultiplier} seats</p>
                     </div>
                   </div>
@@ -107,7 +107,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
               </div>
 
               {/* Hall B */}
-              <div className="group rounded-3xl border border-border/40 bg-surface/30 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:bg-white relative overflow-hidden">
+              <div className="group rounded-xl border border-border/40 bg-white/40 p-6 transition-all duration-500 hover:-translate-y-1 hover:shadow-lg hover:bg-white/80 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-bl from-amber-500/5 to-transparent rounded-bl-full pointer-events-none" />
                 <div className="flex justify-between items-start mb-5 relative z-10">
                   <div className="flex gap-3">
@@ -115,7 +115,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
                       <Utensils className="w-5 h-5" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-extrabold text-foreground tracking-tight">Hall B (Fast-Track)</h4>
+                      <h4 className="text-sm font-extrabold text-foreground tracking-tight">Hall B</h4>
                       <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mt-0.5">Capacity: {150 * capacityMultiplier} seats</p>
                     </div>
                   </div>
@@ -141,7 +141,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
           {/* SPONSORSHIP AND MENU */}
           <div className="grid gap-6 sm:grid-cols-2">
             {/* Today's Menu */}
-            <div className="overflow-hidden rounded-3xl bg-white shadow-sm border border-border/40 flex flex-col">
+            <div className="overflow-hidden rounded-xl bg-white/60 backdrop-blur-xl shadow-sm border border-border/50 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
               <div className="border-b border-border/40 bg-muted/10 px-6 py-5 flex items-center justify-between">
                 <h3 className="font-extrabold text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                   <ChefHat size={16} className="text-primary" /> Today's Menu
@@ -152,7 +152,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
               </div>
               <div className="p-6 flex-1 flex flex-col justify-center">
                 <ul className="space-y-4">
-                  <li className="flex items-center gap-4 p-3 rounded-2xl border border-border/20 bg-muted/5 hover:bg-primary/5 hover:border-primary/20 transition-all duration-300 group">
+                  <li className="flex items-center gap-4 p-3 rounded-xl border border-border/20 bg-muted/5 hover:bg-primary/5 hover:border-primary/20 transition-all duration-300 group">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-orange-50 border border-orange-100 text-orange-500 group-hover:scale-110 transition-transform">
                       <Flame size={18} />
                     </div>
@@ -164,7 +164,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
                       <p className="text-[10px] text-muted-foreground mt-0.5 font-medium leading-relaxed">Freshly prepared with country vegetables</p>
                     </div>
                   </li>
-                  <li className="flex items-center gap-4 p-3 rounded-2xl border border-border/20 bg-muted/5 hover:bg-emerald/5 hover:border-emerald/20 transition-all duration-300 group">
+                  <li className="flex items-center gap-4 p-3 rounded-xl border border-border/20 bg-muted/5 hover:bg-emerald/5 hover:border-emerald/20 transition-all duration-300 group">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-600 group-hover:scale-110 transition-transform">
                       <Leaf size={18} />
                     </div>
@@ -176,7 +176,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
                       <p className="text-[10px] text-muted-foreground mt-0.5 font-medium leading-relaxed">With pomegranate and local pickle</p>
                     </div>
                   </li>
-                  <li className="flex items-center gap-4 p-3 rounded-2xl border border-border/20 bg-muted/5 hover:bg-amber/5 hover:border-amber/20 transition-all duration-300 group">
+                  <li className="flex items-center gap-4 p-3 rounded-xl border border-border/20 bg-muted/5 hover:bg-amber/5 hover:border-amber/20 transition-all duration-300 group">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-amber-50 border border-amber-100 text-amber-500 group-hover:scale-110 transition-transform">
                       <Utensils size={18} />
                     </div>
@@ -193,7 +193,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
             </div>
 
             {/* Sponsorships */}
-            <div className="overflow-hidden rounded-3xl bg-white shadow-sm border border-border/40 flex flex-col">
+            <div className="overflow-hidden rounded-xl bg-white/60 backdrop-blur-xl shadow-sm border border-border/50 flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
               <div className="border-b border-border/40 bg-muted/10 px-6 py-5 flex items-center justify-between">
                 <h3 className="font-extrabold text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2">
                   <HeartHandshake size={16} className="text-primary" /> Today's Sponsors
@@ -201,7 +201,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
               </div>
 
               <div className="p-6 flex-1 flex flex-col justify-between">
-                <div className="rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent border border-amber-100 p-5 relative overflow-hidden mb-4">
+                <div className="rounded-xl bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent border border-amber-100 p-5 relative overflow-hidden mb-4">
                   <div className="absolute top-0 right-0 w-12 h-12 bg-amber-500/5 rounded-bl-full pointer-events-none" />
                   <div className="text-[9px] font-semibold uppercase tracking-widest text-muted-foreground mb-1">Total Funds Raised</div>
                   <div className="flex items-baseline gap-1.5">
@@ -242,7 +242,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
         </div>
 
         {/* RIGHT COLUMN: INVENTORY */}
-        <div className="overflow-hidden rounded-3xl bg-white shadow-sm border border-border/40 flex flex-col h-full">
+        <div className="overflow-hidden rounded-xl bg-white/60 backdrop-blur-xl shadow-sm border border-border/50 flex flex-col h-full hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
           <div className="border-b border-border/40 bg-muted/10 px-6 py-5 flex items-center justify-between">
             <h3 className="font-extrabold text-xs uppercase tracking-widest text-muted-foreground flex items-center gap-2">
               <Package size={16} className="text-primary" /> Kitchen Inventory
@@ -253,7 +253,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
           </div>
           <div className="p-5 flex-1 flex flex-col gap-2.5 overflow-y-auto">
             {/* Item 1 */}
-            <div className="group p-3 rounded-2xl border border-border/40 bg-surface/30 hover:bg-white hover:shadow-md hover:border-emerald-500/25 transition-all duration-300 relative overflow-hidden">
+            <div className="group p-3 rounded-xl border border-border/40 bg-white/40 hover:bg-white/80 hover:shadow-md hover:border-emerald-500/25 transition-all duration-300 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-emerald-500/5 to-transparent rounded-bl-full pointer-events-none" />
               <div className="flex justify-between items-start mb-1.5 relative z-10">
                 <div className="flex items-center gap-2">
@@ -284,7 +284,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
             </div>
 
             {/* Item 2 */}
-            <div className="group p-3 rounded-2xl border border-border/40 bg-surface/30 hover:bg-white hover:shadow-md hover:border-emerald-500/25 transition-all duration-300 relative overflow-hidden">
+            <div className="group p-3 rounded-xl border border-border/40 bg-white/40 hover:bg-white/80 hover:shadow-md hover:border-emerald-500/25 transition-all duration-300 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-emerald-500/5 to-transparent rounded-bl-full pointer-events-none" />
               <div className="flex justify-between items-start mb-1.5 relative z-10">
                 <div className="flex items-center gap-2">
@@ -315,7 +315,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
             </div>
 
             {/* Item 3 */}
-            <div className="group p-3 rounded-2xl border border-border/40 bg-surface/30 hover:bg-white hover:shadow-md hover:border-amber-500/25 transition-all duration-300 relative overflow-hidden">
+            <div className="group p-3 rounded-xl border border-border/40 bg-white/40 hover:bg-white/80 hover:shadow-md hover:border-amber-500/25 transition-all duration-300 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-amber-500/5 to-transparent rounded-bl-full pointer-events-none" />
               <div className="flex justify-between items-start mb-1.5 relative z-10">
                 <div className="flex items-center gap-2">
@@ -346,7 +346,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
             </div>
 
             {/* Item 4 */}
-            <div className="group p-3 rounded-2xl border border-red-100 bg-red-50/20 hover:bg-red-50/40 hover:shadow-md hover:border-red-500/25 transition-all duration-300 relative overflow-hidden">
+            <div className="group p-3 rounded-xl border border-red-100 bg-red-50/40 hover:bg-red-50/80 hover:shadow-md hover:border-red-500/25 transition-all duration-300 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-red-500/5 to-transparent rounded-bl-full pointer-events-none" />
               <div className="flex justify-between items-start mb-1.5 relative z-10">
                 <div className="flex items-center gap-2">
@@ -379,7 +379,7 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
 
 
             <div className="mt-auto pt-3">
-              <button className="w-full rounded-2xl bg-primary hover:bg-primary/95 text-white py-3 font-bold text-[13px] hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all duration-300 border border-primary/20 cursor-pointer flex items-center justify-center gap-2">
+              <button className="w-full rounded-xl bg-primary hover:bg-primary/95 text-white py-3 font-bold text-[13px] hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all duration-300 border border-primary/20 cursor-pointer flex items-center justify-center gap-2">
                 <TrendingUp size={16} /> Generate Indent Request
               </button>
             </div>

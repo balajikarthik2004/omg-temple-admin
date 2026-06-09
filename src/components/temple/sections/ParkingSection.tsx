@@ -106,7 +106,7 @@ export function ParkingSection() {
               const pct2W = Math.round((l.filled2W / l.capacity2W) * 100) || 0;
               const pct4W = Math.round((l.filled4W / l.capacity4W) * 100) || 0;
               return (
-                <div key={l.name} className="bg-white rounded-3xl border border-border/40 shadow-sm p-6 hover:shadow-md transition-all">
+                <div key={l.name} className="bg-white/60 backdrop-blur-xl rounded-xl border border-border/50 shadow-sm p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
                   <div className="mb-4 flex items-center justify-between">
                     <div className="text-[13px] font-extrabold text-foreground">{l.name}</div>
                     <span
@@ -142,7 +142,7 @@ export function ParkingSection() {
             })}
           </div>
           {/* Vehicle Flow Chart */}
-          <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm flex-1 hover:shadow-md transition-all">
+          <div className="rounded-xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm flex-1 hover:shadow-xl hover:-translate-y-1 transition-all duration-500">
             <div className="mb-6 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Traffic Flow (Last 90 Mins)</div>
             <div className="h-56">
               <ResponsiveContainer>
@@ -205,7 +205,7 @@ export function ParkingSection() {
         {/* Right Column: Alerts & Mini Map */}
         <div className="flex flex-col gap-8">
           {/* AI Alert Card */}
-          <div className="rounded-3xl border border-red-100 bg-red-50 p-6 lg:p-8 shadow-sm">
+          <div className="rounded-xl border border-red-200 bg-red-50/80 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
             <div className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-red-600">
               <AlertCircle size={16} /> Action Required
             </div>
@@ -226,7 +226,7 @@ export function ParkingSection() {
             </div>
           </div>
           {/* Realistic Aisle Map */}
-          <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm flex-1 transition-all hover:shadow-md">
+          <div className="rounded-xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm flex-1 transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
             <div className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               Live Map: Main Lot A
             </div>
