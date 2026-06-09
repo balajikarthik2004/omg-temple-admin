@@ -118,7 +118,7 @@ export function OperationsSection() {
             </div>
           </div>
           <div className="flex-1 p-8">
-            <ol className="relative space-y-6 border-l-2 border-border/50 pl-8 ml-2">
+            <ol className="relative space-y-3 border-l-2 border-border/50 pl-6 ml-2">
               {POOJAS.map((p, i) => {
                 const isLive = p.status === "live";
                 const isDone = p.status === "done";
@@ -131,13 +131,13 @@ export function OperationsSection() {
                 return (
                   <li key={i} className="relative group">
                     <span
-                      className={`absolute -left-[39px] top-1 flex h-4 w-4 items-center justify-center rounded-full border-2 ${dotColor} transition-all`}
+                      className={`absolute -left-[31px] top-2 flex h-3 w-3 items-center justify-center rounded-full border-2 ${dotColor} transition-all`}
                     >
                       {isDone && <CheckCircle2 size={10} className="text-white" />}
                     </span>
 
                     <div
-                      className={`group rounded-2xl border p-5 transition-all duration-300 ${isLive ? "border-saffron/40 bg-gradient-to-br from-saffron/10 to-amber-500/5 shadow-md scale-[1.02]" : isDone ? "border-white/60 bg-white/40 opacity-70" : "border-white/40 bg-white/20 hover:bg-white/60 hover:shadow-sm"}`}
+                      className={`group rounded-xl border p-4 transition-all duration-300 ${isLive ? "border-saffron/40 bg-gradient-to-br from-saffron/10 to-amber-500/5 shadow-md scale-[1.02]" : isDone ? "border-white/60 bg-white/40 opacity-70" : "border-white/40 bg-white/20 hover:bg-white/60 hover:shadow-sm"}`}
                     >
                       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                         <div className="max-w-md">

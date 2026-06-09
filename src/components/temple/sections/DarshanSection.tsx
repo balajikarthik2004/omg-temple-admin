@@ -73,12 +73,12 @@ const hourlyFlow = Array.from({ length: 13 }).map((_, i) => ({
 }));
 
 const recentBookings = [
-  { id: "BKG-8910", name: "Ramesh K.", category: "₹300 VIP", amount: "₹300", time: "10:15 AM", date: "09 Jun 2026", status: "Confirmed" },
-  { id: "BKG-8911", name: "Lakshmi S.", category: "General Darshan", amount: "Free", time: "11:05 AM", date: "09 Jun 2026", status: "Checked In" },
-  { id: "BKG-8912", name: "Suresh P.", category: "₹100 Special", amount: "₹100", time: "01:30 PM", date: "09 Jun 2026", status: "Confirmed" },
-  { id: "BKG-8913", name: "Deepa M.", category: "₹200 Quick", amount: "₹400", time: "04:12 PM", date: "10 Jun 2026", status: "Pending" },
-  { id: "BKG-8914", name: "Karthik R.", category: "₹300 VIP", amount: "₹600", time: "05:45 PM", date: "10 Jun 2026", status: "Confirmed" },
-  { id: "BKG-8915", name: "Anitha V.", category: "₹100 Special", amount: "₹300", time: "06:20 PM", date: "10 Jun 2026", status: "Confirmed" },
+  { id: "BKG-8910", name: "Ramesh K.", category: "₹300 VIP", amount: "₹300", time: "10:15 AM", date: "09 Jun 2026", status: "Confirmed", mode: "UPI" },
+  { id: "BKG-8911", name: "Lakshmi S.", category: "General Darshan", amount: "Free", time: "11:05 AM", date: "09 Jun 2026", status: "Checked In", mode: "-" },
+  { id: "BKG-8912", name: "Suresh P.", category: "₹100 Special", amount: "₹100", time: "01:30 PM", date: "09 Jun 2026", status: "Confirmed", mode: "Cash" },
+  { id: "BKG-8913", name: "Deepa M.", category: "₹200 Quick", amount: "₹400", time: "04:12 PM", date: "10 Jun 2026", status: "Pending", mode: "Card" },
+  { id: "BKG-8914", name: "Karthik R.", category: "₹300 VIP", amount: "₹600", time: "05:45 PM", date: "10 Jun 2026", status: "Confirmed", mode: "UPI" },
+  { id: "BKG-8915", name: "Anitha V.", category: "₹100 Special", amount: "₹300", time: "06:20 PM", date: "10 Jun 2026", status: "Confirmed", mode: "Cash" },
 ];
 
 export function DarshanSection() {
@@ -248,6 +248,7 @@ export function DarshanSection() {
                 <th className="px-6 py-4 text-left whitespace-nowrap">Category Mode</th>
                 <th className="px-6 py-4 text-left whitespace-nowrap">Date</th>
                 <th className="px-6 py-4 text-left whitespace-nowrap">Paid Timing</th>
+                <th className="px-6 py-4 text-left whitespace-nowrap">Payment Mode</th>
                 <th className="px-6 py-4 text-right whitespace-nowrap">Amount Paid</th>
               </tr>
             </thead>
@@ -280,6 +281,17 @@ export function DarshanSection() {
                   </td>
                   <td className="px-6 py-4.5 whitespace-nowrap text-xs font-medium text-muted-foreground">{bk.date}</td>
                   <td className="px-6 py-4.5 whitespace-nowrap text-xs font-medium text-muted-foreground">{bk.time}</td>
+                  <td className="px-6 py-4.5 whitespace-nowrap text-xs font-medium text-foreground">
+                    {bk.mode === "UPI" ? (
+                      <span className="inline-flex items-center gap-1 text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md border border-indigo-100 font-bold uppercase tracking-widest text-[9px]">UPI</span>
+                    ) : bk.mode === "Card" ? (
+                      <span className="inline-flex items-center gap-1 text-blue-600 bg-blue-50 px-2.5 py-1 rounded-md border border-blue-100 font-bold uppercase tracking-widest text-[9px]">Card</span>
+                    ) : bk.mode === "Cash" ? (
+                      <span className="inline-flex items-center gap-1 text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-100 font-bold uppercase tracking-widest text-[9px]">Cash</span>
+                    ) : (
+                      <span className="text-muted-foreground ml-2">-</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4.5 text-right font-black tabular-nums text-foreground whitespace-nowrap">{bk.amount}</td>
                 </tr>
               ))}
