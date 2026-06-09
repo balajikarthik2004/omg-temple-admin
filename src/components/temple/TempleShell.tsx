@@ -69,7 +69,7 @@ export function TempleShell() {
   useEffect(() => {
     window.location.hash = section;
   }, [section]);
-  const [templeId, setTempleId] = useState<string | null>(null);
+  const [templeId, setTempleId] = useState<string | null>("palani-murugan");
   const [templeOpen, setTempleOpen] = useState(false);
   const [selectedState, setSelectedState] = useState<string>("All States");
   const [stateOpen, setStateOpen] = useState(false);
@@ -532,15 +532,7 @@ export function TempleShell() {
             <div
               className={`transition-all duration-500 ${shimmer ? "opacity-30 blur-[2px] pointer-events-none translate-y-2" : "opacity-100 translate-y-0 blur-none"}`}
             >
-              {!temple ? (
-                <div className="flex h-[70vh] flex-col items-center justify-center text-center">
-                  <div className="bg-white/5 p-6 rounded-full border border-white/10 shadow-lg mb-6">
-                    <Landmark size={48} className="text-muted-foreground/50" />
-                  </div>
-                  <h2 className="text-2xl font-bold tracking-tight text-foreground/80">No Temple Selected</h2>
-                  <p className="text-muted-foreground mt-2 max-w-sm">Please select a temple from the dropdown in the top navigation bar to view its dashboard.</p>
-                </div>
-              ) : (
+              {temple && (
                 <>
                   {section === "dashboard" && <DashboardSection temple={temple} />}
                   {section === "darshan" && <DarshanSection />}
