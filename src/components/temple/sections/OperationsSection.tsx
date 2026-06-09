@@ -170,7 +170,26 @@ export function OperationsSection() {
                               <Users size={14} /> Add Staff
                             </button>
                             <button
-                              onClick={() => toast.success("Audio Broadcast Started")}
+                              onClick={() => {
+                                // Since network TTS and local voices are blocked, we use pre-generated static audio files
+                                const filename = p.name.replace(/[^a-zA-Z0-9]/g, '_') + '.mp3';
+                                const url = `/audio/${filename}`;
+                                
+                                let audioEl = document.getElementById("temple-announcement-audio") as HTMLAudioElement;
+                                if (!audioEl) {
+                                  audioEl = document.createElement("audio");
+                                  audioEl.id = "temple-announcement-audio";
+                                  document.body.appendChild(audioEl);
+                                }
+                                
+                                audioEl.src = url;
+                                audioEl.play().then(() => {
+                                  toast.success("Tamil Audio Broadcast Started");
+                                }).catch(err => {
+                                  console.error("Static audio playback error:", err);
+                                  toast.error("Browser blocked audio. Click to interact with the page first.");
+                                });
+                              }}
                               className="flex items-center justify-center gap-2 rounded-xl border border-white/60 bg-white/50 backdrop-blur-sm px-4 py-2 text-[11px] font-extrabold tracking-wide text-foreground hover:bg-white hover:shadow-sm hover:-translate-y-0.5 transition-all"
                             >
                               <Megaphone size={14} /> Announce
