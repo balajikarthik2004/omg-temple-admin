@@ -376,7 +376,36 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
               </div>
             </div>
 
-
+            {/* Item 5 */}
+            <div className="group p-3 rounded-2xl border border-border/40 bg-surface/30 hover:bg-white hover:shadow-md hover:border-emerald-500/25 transition-all duration-300 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-12 h-12 bg-gradient-to-bl from-emerald-500/5 to-transparent rounded-bl-full pointer-events-none" />
+              <div className="flex justify-between items-start mb-1.5 relative z-10">
+                <div className="flex items-center gap-2">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 shadow-sm transition-transform group-hover:scale-110">
+                    <Salad className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <span className="font-extrabold text-xs text-foreground tracking-tight block">Vegetables</span>
+                    <span className="text-[8px] font-bold text-muted-foreground uppercase tracking-widest mt-0.5 block">Rate: ~60kg/day</span>
+                  </div>
+                </div>
+                <div className="text-right flex flex-col items-end">
+                  <span className="text-xs font-extrabold text-foreground tracking-tight block">200 kg</span>
+                  <span className="inline-flex items-center gap-1 text-[7px] font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 border border-emerald-100 rounded-full px-1.5 py-0.5 mt-0.5 shadow-sm">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Sufficient
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-1 relative z-10">
+                <div className="flex justify-between items-center text-[9px] font-bold text-muted-foreground uppercase tracking-wider">
+                  <span>Stock Level</span>
+                  <span className="text-emerald-600 font-extrabold">90%</span>
+                </div>
+                <div className="h-1.5 w-full bg-muted/60 rounded-full overflow-hidden border border-border/20 shadow-inner">
+                  <div className="h-full bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full w-[90%] shadow-[0_0_8px_rgba(16,185,129,0.3)] transition-all duration-500" />
+                </div>
+              </div>
+            </div>
 
             <div className="mt-auto pt-3">
               <button className="w-full rounded-2xl bg-primary hover:bg-primary/95 text-white py-3 font-bold text-[13px] hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-0.5 transition-all duration-300 border border-primary/20 cursor-pointer flex items-center justify-center gap-2">

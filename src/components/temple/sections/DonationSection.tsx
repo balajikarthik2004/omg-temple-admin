@@ -19,6 +19,7 @@ import {
   Tooltip,
   CartesianGrid,
   Cell,
+  LabelList,
 } from "recharts";
 import { StatCard } from "../ui/StatCard";
 
@@ -251,10 +252,16 @@ export function DonationSection() {
         <div className="lg:col-span-1 rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md h-full">
           <div className="mb-8 flex items-center justify-between">
             <h3 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
               Distribution
             </h3>
-            <span className="rounded-md bg-primary/10 px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-primary border border-primary/20">
+            <span className={`rounded-lg px-3 py-1.5 text-[10px] font-extrabold uppercase tracking-widest border shadow-sm transition-colors ${
+              period === "daily" 
+                ? "bg-blue-50 text-blue-600 border-blue-100" 
+                : period === "weekly" 
+                  ? "bg-red-50 text-red-600 border-red-100" 
+                  : "bg-emerald-50 text-emerald-600 border-emerald-100"
+            }`}>
               {period}
             </span>
           </div>
@@ -263,23 +270,41 @@ export function DonationSection() {
               <BarChart
                 data={breakdownData}
                 layout="vertical"
-                margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+                margin={{ top: 10, right: 65, left: 10, bottom: 10 }}
               >
+                <defs>
+                  <linearGradient id="annadhanamGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#f97316" />
+                    <stop offset="100%" stopColor="#f59e0b" />
+                  </linearGradient>
+                  <linearGradient id="hundiGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#10b981" />
+                    <stop offset="100%" stopColor="#34d399" />
+                  </linearGradient>
+                  <linearGradient id="buildingGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#3b82f6" />
+                    <stop offset="100%" stopColor="#60a5fa" />
+                  </linearGradient>
+                  <linearGradient id="generalGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stopColor="#ef4444" />
+                    <stop offset="100%" stopColor="#f87171" />
+                  </linearGradient>
+                </defs>
                 <CartesianGrid
-                  strokeDasharray="3 3"
-                  horizontal={true}
-                  vertical={false}
+                  strokeDasharray="4 4"
+                  horizontal={false}
+                  vertical={true}
                   stroke="var(--border)"
-                  opacity={0.4}
+                  opacity={0.3}
                 />
                 <XAxis type="number" hide />
                 <YAxis
                   dataKey="name"
                   type="category"
-                  width={100}
+                  width={90}
                   axisLine={false}
                   tickLine={false}
-                  tick={{ fill: "var(--foreground)", fontSize: 11, fontWeight: 700 }}
+                  tick={{ fill: "var(--foreground)", fontSize: 12, fontWeight: 800 }}
                 />
                 <Tooltip
                   contentStyle={{
@@ -289,29 +314,35 @@ export function DonationSection() {
                     fontSize: "13px",
                     boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
                   }}
-                  cursor={{ fill: "var(--muted)", opacity: 0.5 }}
+                  cursor={{ fill: "var(--muted)", opacity: 0.15 }}
                   formatter={(value: any) => [`₹${value.toLocaleString()}`, "Amount"]}
                 />
                 <Bar 
                   dataKey="amount" 
-                  fill="var(--primary)" 
-                  radius={[0, 6, 6, 0]} 
-                  barSize={28}
+                  radius={[0, 999, 999, 0]} 
+                  barSize={18}
                 >
                   {breakdownData.map((entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={
-                        index === 0
-                          ? "var(--saffron)"
-                          : index === 1
-                            ? "var(--emerald)"
-                            : index === 2
-                              ? "var(--info)"
-                              : "var(--primary)"
+                        entry.name === "Annadhanam"
+                          ? "url(#annadhanamGrad)"
+                          : entry.name === "Hundi"
+                            ? "url(#hundiGrad)"
+                            : entry.name === "Building"
+                              ? "url(#buildingGrad)"
+                              : "url(#generalGrad)"
                       }
                     />
                   ))}
+                  <LabelList
+                    dataKey="amount"
+                    position="right"
+                    formatter={(v: number) => `₹${v >= 100000 ? (v / 100000).toFixed(1) + 'L' : (v / 1000).toFixed(0) + 'k'}`}
+                    style={{ fill: "var(--foreground)", fontSize: 10, fontWeight: 800 }}
+                    offset={8}
+                  />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
