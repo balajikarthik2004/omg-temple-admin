@@ -244,44 +244,53 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           label="Current Queue Wait"
           value={wait}
           valueSuffix="mins"
-          sub="Common Darshan active"
+          sub={`Common Darshan · ${wait > 50 ? 'High' : wait > 30 ? 'Moderate' : 'Low'} load`}
           color="text-foreground"
-          trend={{ up: true, text: "+8m" }}
+          trend={{ up: wait > 45, text: wait > 45 ? "+surge" : "Normal" }}
           bgTint="bg-saffron/10 text-saffron border border-saffron/20"
+          progress={Math.min(100, Math.round((wait / 90) * 100))}
         />
         <StatCard
           icon={Users}
           label="Crowd Capacity"
           value={pct}
           valueSuffix="%"
-          sub={`${inside.toLocaleString("en-IN")} inside`}
+          sub={`${inside.toLocaleString("en-IN")} inside · Max 20k`}
           color="text-status-busy"
           bgTint="bg-status-busy/10 text-status-busy border border-status-busy/20"
+          progress={pct}
+          trend={{ up: pct > 80, text: pct > 80 ? "Near full" : "Stable" }}
         />
         <StatCard
           icon={Activity}
           label="Volunteers On Duty"
           value="48 / 60"
-          sub="12 on break"
+          sub="12 on break · 0 absent"
           color="text-info"
           bgTint="bg-info/10 text-info border border-info/20"
+          progress={80}
+          trend={{ up: true, text: "80% staffed" }}
         />
         <StatCard
           icon={Car}
           label="Parking Occupancy"
           value={parking}
           valueSuffix="%"
-          sub={`${Math.round(parking * 15)} slots used`}
+          sub={`${Math.round(parking * 15)} slots used · ${Math.round((100 - parking) * 15)} free`}
           color="text-status-busy"
           bgTint="bg-gold/10 text-gold border border-gold/20"
+          progress={parking}
+          trend={{ up: parking > 85, text: parking > 85 ? "Near full" : "Available" }}
         />
         <StatCard
           icon={Gauge}
           label="Congestion Level"
           value="BUSY"
-          sub="Since 9:15 AM"
+          sub="Since 9:15 AM · Improving"
           color="text-status-crowded"
           bgTint="bg-status-crowded/10 text-status-crowded border border-status-crowded/20"
+          progress={72}
+          trend={{ up: false, text: "72% density" }}
         />
       </div>
       {/* AI Smart Suggestions - Card View */}

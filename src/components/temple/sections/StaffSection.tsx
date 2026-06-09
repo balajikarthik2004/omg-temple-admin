@@ -57,6 +57,9 @@ export function StaffSection() {
           value={onDuty}
           color="text-emerald-600"
           bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100"
+          progress={Math.round((onDuty / STAFF.length) * 100)}
+          sub={`${Math.round((onDuty / STAFF.length) * 100)}% of total staff`}
+          trend={{ up: true, text: "Active" }}
         />
         <StatCard
           icon={Coffee}
@@ -64,6 +67,9 @@ export function StaffSection() {
           value={onBreak}
           color="text-amber-600"
           bgTint="bg-amber-50 text-amber-600 border border-amber-100"
+          progress={Math.round((onBreak / STAFF.length) * 100)}
+          sub={`${onBreak} staff resting`}
+          trend={{ up: false, text: "On rest" }}
         />
         <StatCard
           icon={UserMinus}
@@ -71,6 +77,7 @@ export function StaffSection() {
           value={off}
           color="text-muted-foreground"
           bgTint="bg-muted/30 text-muted-foreground border border-border/50"
+          sub={`${STAFF.length - off} reporting today`}
         />
         <StatCard
           icon={Users}
@@ -78,6 +85,8 @@ export function StaffSection() {
           value={STAFF.length}
           color="text-indigo-600"
           bgTint="bg-indigo-50 text-indigo-600 border border-indigo-100"
+          sub={`${onDuty} active · ${onBreak} on break`}
+          trend={{ up: true, text: "Full roster" }}
         />
       </div>
       <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr]">

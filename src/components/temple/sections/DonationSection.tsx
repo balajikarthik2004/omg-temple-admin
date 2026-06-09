@@ -132,35 +132,41 @@ export function DonationSection() {
           icon={IndianRupee}
           label="Total Collections (Today)"
           value="₹1,24,500"
-          sub="+12% vs yesterday"
+          sub="+12% vs yesterday · Target ₹1.5L"
           color="text-emerald-600"
           bgTint="bg-emerald-50 text-emerald-600 border-emerald-100/50"
           trend={{ up: true, text: "+12%" }}
+          progress={83}
         />
         <StatCard
           icon={HeartHandshake}
           label="Annadhanam Fund"
           value="₹45,200"
-          sub="320 donors today"
+          sub="320 donors today · Goal: ₹60k"
           color="text-amber-600"
           bgTint="bg-amber-50 text-amber-600 border-amber-100/50"
+          progress={75}
+          trend={{ up: true, text: "75% goal" }}
         />
         <StatCard
           icon={QrCode}
           label="Digital Payments"
           value="₹82,400"
-          sub="UPI & Cards"
+          sub="UPI & Cards · 66% of total"
           color="text-indigo-600"
           bgTint="bg-indigo-50 text-indigo-600 border-indigo-100/50"
           trend={{ up: true, text: "+5%" }}
+          progress={66}
         />
         <StatCard
           icon={PiggyBank}
           label="Offline Hundi"
           value="₹42,100"
-          sub="Estimated cash drop"
+          sub="Estimated cash drop · 34% of total"
           color="text-emerald-600"
           bgTint="bg-emerald-50 text-emerald-600 border-emerald-100/50"
+          progress={34}
+          trend={{ up: false, text: "34% share" }}
         />
       </div>
 

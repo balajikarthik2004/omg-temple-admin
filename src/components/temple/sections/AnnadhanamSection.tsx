@@ -34,6 +34,8 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
           color="text-emerald-600"
           bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100"
           trend={{ up: true, text: "+12%" }}
+          sub={`Target: ${(mealsServed * 1.1).toFixed(0)} · 92% achieved`}
+          progress={92}
         />
         <StatCard
           icon={Users}
@@ -41,7 +43,9 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
           value={waitingCrowd}
           color="text-amber-600"
           bgTint="bg-amber-50 text-amber-600 border border-amber-100/50"
-          sub="~24 mins wait"
+          sub="~24 mins wait · 2 halls open"
+          progress={Math.min(100, Math.round((waitingCrowd / (500 * capacityMultiplier)) * 100))}
+          trend={{ up: waitingCrowd > 200, text: waitingCrowd > 200 ? "High queue" : "Manageable" }}
         />
         <StatCard
           icon={Flame}
@@ -49,7 +53,8 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
           value="Cooking Dinner"
           color="text-orange-600"
           bgTint="bg-orange-50 text-orange-600 border border-orange-100/50"
-          sub="Live Operations"
+          sub="Live Operations · Batch 3/4"
+          trend={{ up: true, text: "On track" }}
         />
         <StatCard
           icon={HeartHandshake}
@@ -57,7 +62,9 @@ export function AnnadhanamSection({ temple }: { temple: Temple }) {
           value={12 * capacityMultiplier}
           color="text-indigo-600"
           bgTint="bg-indigo-50 text-indigo-600 border border-indigo-100/50"
-          sub="Serving Now"
+          sub={`Serving now · ${4 * capacityMultiplier} on break`}
+          progress={Math.round(((12 * capacityMultiplier) / (16 * capacityMultiplier)) * 100)}
+          trend={{ up: true, text: "Fully staffed" }}
         />
       </div>
 

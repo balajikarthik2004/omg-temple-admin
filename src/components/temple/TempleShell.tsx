@@ -546,7 +546,7 @@ export function TempleShell() {
                   {section === "darshan" && <DarshanSection />}
                   {section === "heatmap" && <HeatmapSection temple={temple} />}
                   {section === "cctv" && <CCTVSection />}
-                  {section === "queue" && <QueueSection />}
+                  {(section as string) === "queue" && <QueueSection />}
                   {section === "staff" && <StaffSection />}
                   {section === "operations" && <OperationsSection />}
                   {section === "parking" && <ParkingSection />}

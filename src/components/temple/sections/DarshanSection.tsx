@@ -101,10 +101,11 @@ export function DarshanSection() {
             icon={c.icon}
             label={c.name}
             value={c.wait}
-            sub={`${c.sold.toLocaleString()} sold`}
+            sub={`${c.sold.toLocaleString()} sold today · ${c.price === 'Free' ? 'No charge' : c.price}`}
             color={c.color}
             bgTint={`${c.bgTint} ${c.color} border border-border/50`}
             trend={{ up: true, text: c.price }}
+            progress={c.id === 'gen' ? 85 : c.id === '100' ? 64 : c.id === '200' ? 37 : 8}
           />
         ))}
       </div>

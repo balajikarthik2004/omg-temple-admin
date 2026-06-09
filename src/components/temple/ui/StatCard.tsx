@@ -9,6 +9,7 @@ interface StatCardProps {
   trend?: { up: boolean; text: string };
   valueSuffix?: React.ReactNode;
   bgTint?: string;
+  progress?: number;
 }
 
 export function StatCard({

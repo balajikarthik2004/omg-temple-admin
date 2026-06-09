@@ -103,7 +103,8 @@ export function HeatmapSection({ temple }: { temple?: any }) {
           color="text-amber-600"
           bgTint="bg-amber-50 text-amber-600 border border-amber-100/50"
           trend={{ up: true, text: "+12%" }}
-          sub="vs. last hour"
+          sub={`${Math.round((inside / 20000) * 100)}% of max capacity`}
+          progress={Math.round((inside / 20000) * 100)}
         />
         <StatCard
           icon={UsersRound}
@@ -112,7 +113,8 @@ export function HeatmapSection({ temple }: { temple?: any }) {
           color="text-indigo-600"
           bgTint="bg-indigo-50 text-indigo-600 border border-indigo-100/50"
           trend={{ up: false, text: "-5%" }}
-          sub="vs. last hour"
+          sub={`${Math.round((queues / 8000) * 100)}% queue capacity · 4 active lanes`}
+          progress={Math.round((queues / 8000) * 100)}
         />
         <StatCard
           icon={Car}
@@ -121,16 +123,18 @@ export function HeatmapSection({ temple }: { temple?: any }) {
           color="text-amber-600"
           bgTint="bg-amber-50 text-amber-600 border border-amber-100/50"
           trend={{ up: true, text: "+8%" }}
-          sub="vs. last hour"
+          sub={`${Math.round((parking / 5000) * 100)}% of total capacity`}
+          progress={Math.round((parking / 5000) * 100)}
         />
         <StatCard
           icon={Activity}
-          label="Total on premises"
+          label="Total on Premises"
           value={(inside + queues + parking).toLocaleString("en-IN")}
           color="text-emerald-600"
           bgTint="bg-emerald-50 text-emerald-600 border border-emerald-100/50"
           trend={{ up: true, text: "+15%" }}
           sub="Peak expected in 1 hr"
+          progress={Math.round(((inside + queues + parking) / 33000) * 100)}
         />
       </div>
 
