@@ -24,7 +24,7 @@ import {
 } from "recharts";
 import { StatCard } from "../ui/StatCard";
 
-import palaniImg from "@/assets/palani4.png";
+import palaniImg from "@/assets/palani5.png";
 import maduraiImg from "@/assets/Madurai.png";
 import srirangamImg from "@/assets/Srirangam.png";
 import arunachaleswararImg from "@/assets/Arunachaleswarar.png";
