@@ -419,7 +419,7 @@ export function CCTVSection() {
             {CCTV_CAMERAS.map((c, i) => (
               <div
                 key={c.id}
-                className="group flex flex-col justify-between rounded-2xl border border-border/40 bg-white p-4 shadow-sm transition-all duration-400 hover:-translate-y-1 hover:shadow-md"
+                className="group flex flex-col justify-between rounded-xl border border-border/50 bg-white/60 backdrop-blur-xl p-5 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl relative overflow-hidden"
               >
                 <FakeFeed idx={i} status={c.status} />
                 <div className="mt-3 flex items-start justify-between">
@@ -469,11 +469,11 @@ export function CCTVSection() {
               ].map((s) => (
                 <div
                   key={s.l}
-                  className="group rounded-3xl border border-border/40 bg-white p-6 shadow-sm transition-all duration-400 hover:-translate-y-1 hover:shadow-md"
+                  className="group rounded-xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl"
                 >
                   <div className="flex items-start justify-between mb-4">
                     <div className="text-[9px] font-semibold text-muted-foreground uppercase tracking-widest">{s.l}</div>
-                    <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-muted/30 border border-border/50 text-muted-foreground transition-colors group-hover:text-primary group-hover:bg-primary/5">
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-2xl bg-muted/30 border border-border/50 transition-colors group-hover:opacity-80 ${s.c}`}>
                       <s.i size={18} />
                     </div>
                   </div>
@@ -485,7 +485,7 @@ export function CCTVSection() {
                 </div>
               ))}
             </div>
-            <div className="rounded-3xl border border-border/40 bg-white p-6 shadow-sm flex-1">
+            <div className="rounded-xl border border-border/50 bg-white/60 backdrop-blur-xl p-8 shadow-sm flex-1 transition-all duration-500 hover:shadow-xl">
               <div className="mb-6 text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">Critical Alerts</div>
               <div className="space-y-3">
                 {alerts.map((a, i) => (
@@ -509,7 +509,7 @@ export function CCTVSection() {
       ) : (
         /* AI Person Search Tab */ <div className="grid gap-8 lg:grid-cols-[380px_1fr]">
           {/* Upload & Controls */}
-          <div className="rounded-3xl border border-border/40 bg-white p-8 shadow-sm flex flex-col">
+          <div className="rounded-xl border border-border/50 bg-white/60 backdrop-blur-xl p-8 shadow-sm flex flex-col transition-all duration-500 hover:shadow-xl">
             <div className="mb-8">
               <h2 className="text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">AI Facial Search</h2>
               <p className="mt-2 text-[12px] font-medium text-foreground leading-relaxed">
@@ -569,7 +569,7 @@ export function CCTVSection() {
             )}
           </div>
           {/* Scanning & Results View */}
-          <div className="rounded-3xl border border-border/40 bg-white p-8 shadow-sm min-h-[500px] flex flex-col">
+          <div className="rounded-xl border border-border/50 bg-white/60 backdrop-blur-xl p-8 shadow-sm min-h-[500px] flex flex-col transition-all duration-500 hover:shadow-xl">
             {searchState === "idle" && (
               <div className="flex h-full flex-col items-center justify-center text-center">
                 <Target size={48} className="mb-4 text-muted-foreground/30" />

@@ -154,7 +154,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
   return (
     <div className="space-y-5">
       {/* Hero Banner */}
-      <div className="relative overflow-hidden rounded-[24px] border border-white/10 bg-gradient-to-br from-[#1A1F60] via-[#252A7C] to-[#1A1F60] p-6 md:p-8 text-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
+      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-gradient-to-br from-[#1A1F60] via-[#252A7C] to-[#1A1F60] p-6 md:p-8 text-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
         {/* Decorative shapes */}
         <div className="absolute top-0 right-0 -mt-20 -mr-20 h-64 w-64 rounded-full bg-white/5 blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-1/4 -mb-20 h-40 w-40 rounded-full bg-saffron/10 blur-2xl pointer-events-none" />
@@ -305,7 +305,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
             return (
               <div
                 key={s.title}
-                className={`group flex flex-col justify-between rounded-[24px] bg-card p-6 border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)] transition-all duration-400 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 relative overflow-hidden`}
+                className={`group flex flex-col justify-between rounded-xl bg-white/60 backdrop-blur-xl p-6 border border-border/50 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden`}
               >
                 <div>
                   <div className={`inline-flex items-center px-2.5 py-1 mb-3 rounded-full text-[9px] font-black tracking-widest border ${kindColor}`}>
@@ -333,7 +333,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
       {/* Main Dashboard Content Grid */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Hourly Footfall Chart */}
-        <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+        <div className="rounded-xl bg-white/60 backdrop-blur-xl p-8 border border-border/50 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5">
           <div className="mb-6">
             <div className="mb-2 flex items-center justify-between">
               <div className="text-[12px] font-black tracking-tight text-foreground">Today's Hourly Footfall</div>
@@ -406,7 +406,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
         </div>
 
         {/* Queue Wait Time Chart */}
-        <div className="glass-card p-6 rounded-[24px] border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)]">
+        <div className="rounded-xl bg-white/60 backdrop-blur-xl p-8 border border-border/50 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-0.5">
           <div className="mb-6 flex items-center justify-between">
             <div className="text-[12px] font-black tracking-tight text-foreground">Queue Wait Time Trend</div>
             <div className="flex items-center gap-3">
@@ -507,7 +507,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
             return (
               <div
                 key={l.name}
-                className={`group flex flex-col justify-between p-5 bg-card border border-border/50 shadow-[0_8px_24px_rgba(0,0,0,0.04)] rounded-[24px] transition-all duration-400 hover:shadow-[0_16px_40px_rgba(0,0,0,0.08)] hover:-translate-y-0.5 relative overflow-hidden`}
+                className={`group flex flex-col justify-between p-6 bg-white/60 backdrop-blur-xl border border-border/50 shadow-sm rounded-xl transition-all duration-500 hover:shadow-xl hover:-translate-y-1 relative overflow-hidden`}
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="font-bold text-[13px] tracking-tight text-foreground/90 leading-tight w-2/3">{l.name}</div>
@@ -562,7 +562,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
 
         <div className="grid gap-6 lg:grid-cols-[1fr_280px_280px]">
           {/* AI Optimization */}
-          <div className="rounded-2xl border border-saffron/40 bg-saffron/5 flex flex-col justify-center shadow-md transition-all hover:shadow-lg">
+          <div className="rounded-xl border border-saffron/30 bg-gradient-to-b from-saffron/10 to-white/40 backdrop-blur-xl flex flex-col justify-center shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1 overflow-hidden">
             <div className="flex items-center gap-2 border-b border-saffron/20 bg-saffron/10 px-6 py-4">
               <AlertOctagon size={18} className="text-saffron animate-pulse" />
               <div className="text-[13px] font-black tracking-widest uppercase text-saffron drop-shadow-sm">AI Optimization Recommended</div>
@@ -588,7 +588,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           </div>
 
           {/* Queue Actions */}
-          <div className="glass-card p-6 rounded-2xl border border-border/60 shadow-md hover:shadow-lg transition-all">
+          <div className="rounded-xl bg-white/60 backdrop-blur-xl p-8 border border-border/50 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
             <div className="mb-5 text-[13px] font-extrabold tracking-tight text-foreground">Queue Actions</div>
             <div className="grid gap-2 text-[11px]">
               {[
@@ -610,7 +610,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           </div>
 
           {/* Queue Config */}
-          <div className="glass-card p-6 flex flex-col justify-between rounded-2xl border border-border/60 shadow-md hover:shadow-lg transition-all">
+          <div className="rounded-xl bg-white/60 backdrop-blur-xl p-8 flex flex-col justify-between border border-border/50 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
             <div>
               <div className="mb-5 text-[13px] font-extrabold tracking-tight text-foreground">Queue Config</div>
               <div className="space-y-6 text-[11px]">
