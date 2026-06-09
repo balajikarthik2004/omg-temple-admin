@@ -162,92 +162,92 @@ export function DonationSection() {
         />
       </div>
 
-      {/* Donation Trends Full Width Section */}
-      <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md">
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h3 className="text-sm font-extrabold text-foreground tracking-tight">Donation Trends</h3>
-            <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mt-1.5">
-              Collection volume over the last {period === "daily" ? "24 hours" : period === "weekly" ? "7 days" : "30 days"}
-            </p>
+      {/* Chart & Fund Distribution Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        {/* Donation Trends */}
+        <div className="lg:col-span-2 rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md h-full">
+          <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-sm font-extrabold text-foreground tracking-tight">Donation Trends</h3>
+              <p className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground mt-1.5">
+                Collection volume over the last {period === "daily" ? "24 hours" : period === "weekly" ? "7 days" : "30 days"}
+              </p>
+            </div>
+            <div className="flex rounded-xl border border-border/50 bg-surface/50 p-1 shadow-sm backdrop-blur-md">
+              {(["daily", "weekly", "monthly"] as const).map((p) => (
+                <button
+                  key={p}
+                  onClick={() => setPeriod(p)}
+                  className={`rounded-lg px-4 py-1.5 text-xs font-bold capitalize transition-all duration-200 ${
+                    period === p 
+                      ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
           </div>
-          <div className="flex rounded-xl border border-border/50 bg-surface/50 p-1 shadow-sm backdrop-blur-md">
-            {(["daily", "weekly", "monthly"] as const).map((p) => (
-              <button
-                key={p}
-                onClick={() => setPeriod(p)}
-                className={`rounded-lg px-4 py-1.5 text-xs font-bold capitalize transition-all duration-200 ${
-                  period === p 
-                    ? "bg-primary text-primary-foreground shadow-md scale-[1.02]" 
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
-                }`}
+
+          <div className="h-[280px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={chartData}
+                margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
               >
-                {p}
-              </button>
-            ))}
+                <defs>
+                  <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="var(--emerald)" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="var(--emerald)" stopOpacity={0} />
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="4 4" stroke="var(--border)" opacity={0.5} vertical={false} />
+                <XAxis
+                  dataKey="time"
+                  stroke="var(--muted-foreground)"
+                  fontSize={11}
+                  fontWeight={500}
+                  tickLine={false}
+                  axisLine={false}
+                  dy={12}
+                />
+                <YAxis
+                  stroke="var(--muted-foreground)"
+                  fontSize={11}
+                  fontWeight={500}
+                  tickLine={false}
+                  axisLine={false}
+                  dx={-12}
+                  tickFormatter={(v) => `₹${v / 1000}k`}
+                />
+                <Tooltip
+                  contentStyle={{
+                    background: "var(--card)",
+                    border: "1px solid var(--border)",
+                    borderRadius: "12px",
+                    fontSize: "13px",
+                    boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+                  }}
+                  itemStyle={{ fontWeight: 700, color: "var(--emerald)" }}
+                  formatter={(value: any) => [`₹${value.toLocaleString()}`, "Collection"]}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="amount"
+                  stroke="var(--emerald)"
+                  strokeWidth={4}
+                  fillOpacity={1}
+                  fill="url(#colorAmount)"
+                  activeDot={{ r: 6, strokeWidth: 0, fill: "var(--emerald)" }}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
           </div>
         </div>
 
-        <div className="h-[360px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart
-              data={chartData}
-              margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-            >
-              <defs>
-                <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="var(--emerald)" stopOpacity={0.4} />
-                  <stop offset="95%" stopColor="var(--emerald)" stopOpacity={0} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="4 4" stroke="var(--border)" opacity={0.5} vertical={false} />
-              <XAxis
-                dataKey="time"
-                stroke="var(--muted-foreground)"
-                fontSize={11}
-                fontWeight={500}
-                tickLine={false}
-                axisLine={false}
-                dy={12}
-              />
-              <YAxis
-                stroke="var(--muted-foreground)"
-                fontSize={11}
-                fontWeight={500}
-                tickLine={false}
-                axisLine={false}
-                dx={-12}
-                tickFormatter={(v) => `₹${v / 1000}k`}
-              />
-              <Tooltip
-                contentStyle={{
-                  background: "var(--card)",
-                  border: "1px solid var(--border)",
-                  borderRadius: "12px",
-                  fontSize: "13px",
-                  boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-                }}
-                itemStyle={{ fontWeight: 700, color: "var(--emerald)" }}
-                formatter={(value: any) => [`₹${value.toLocaleString()}`, "Collection"]}
-              />
-              <Area
-                type="monotone"
-                dataKey="amount"
-                stroke="var(--emerald)"
-                strokeWidth={4}
-                fillOpacity={1}
-                fill="url(#colorAmount)"
-                activeDot={{ r: 6, strokeWidth: 0, fill: "var(--emerald)" }}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* Two Column Grid for Distribution & Transfer */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         {/* Fund Distribution */}
-        <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md h-full">
+        <div className="lg:col-span-1 rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md h-full">
           <div className="mb-8 flex items-center justify-between">
             <h3 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
@@ -316,9 +316,88 @@ export function DonationSection() {
             </ResponsiveContainer>
           </div>
         </div>
+      </div>
+
+      {/* Transactions & Quick Transfer Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        
+        {/* Recent Transactions */}
+        <div className="lg:col-span-2 rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl shadow-sm overflow-hidden transition-all hover:shadow-md h-full flex flex-col">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border/50 bg-muted/20 px-6 py-5 gap-4">
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2.5">
+              <div className="p-1.5 rounded-md bg-primary/10">
+                <History size={14} className="text-primary" />
+              </div>
+              Recent Transactions
+            </h3>
+            <button className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors bg-primary/5 px-3 py-1.5 rounded-lg border border-primary/10 hover:bg-primary/10">
+              <Download size={14} /> Export CSV
+            </button>
+          </div>
+          
+          <div className="overflow-x-auto flex-1">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border/50">
+                <tr>
+                  <th className="px-6 py-4 text-left whitespace-nowrap">Transaction ID</th>
+                  <th className="px-6 py-4 text-left whitespace-nowrap">Donor</th>
+                  <th className="px-6 py-4 text-left whitespace-nowrap">Fund Category</th>
+                  <th className="px-6 py-4 text-right whitespace-nowrap">Amount</th>
+                  <th className="px-6 py-4 text-center whitespace-nowrap">Method</th>
+                  <th className="px-6 py-4 text-right whitespace-nowrap">Time</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border/50">
+                {recentTransactions.map((trx) => (
+                  <tr key={trx.id} className="transition-colors hover:bg-muted/30 group">
+                    <td className="px-6 py-4.5 font-mono text-xs text-muted-foreground whitespace-nowrap">
+                      {trx.id}
+                    </td>
+                    <td className="px-6 py-4.5 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                          trx.donor === "Anonymous" 
+                            ? "bg-muted text-muted-foreground" 
+                            : "bg-primary/10 text-primary"
+                        }`}>
+                          {trx.donor === "Anonymous" ? "?" : trx.donor.charAt(0)}
+                        </div>
+                        <span className="font-bold text-foreground">{trx.donor}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4.5 text-muted-foreground whitespace-nowrap">
+                      <span className="inline-flex items-center rounded-lg bg-surface border border-border/50 px-2.5 py-1 text-[11px] font-bold shadow-sm">
+                        {trx.fund}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4.5 text-right font-black tabular-nums text-foreground whitespace-nowrap">
+                      ₹{trx.amount.toLocaleString()}
+                    </td>
+                    <td className="px-6 py-4.5 text-center whitespace-nowrap">
+                      <span
+                        className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
+                          trx.type === "UPI" 
+                            ? "bg-info/10 text-info border border-info/20" 
+                            : trx.type === "Cash" 
+                              ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" 
+                              : "bg-emerald/10 text-emerald border border-emerald/20"
+                        }`}
+                      >
+                        {trx.type}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4.5 text-right text-xs font-medium text-muted-foreground whitespace-nowrap group-hover:text-foreground transition-colors">
+                      {trx.time}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
 
         {/* Quick Transfer Widget */}
-        <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md flex flex-col relative overflow-hidden group h-full">
+        <div className="lg:col-span-1 rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md flex flex-col relative overflow-hidden group h-full">
           {/* Decorative background glow */}
           <div className="absolute -right-20 -top-20 h-48 w-48 rounded-full bg-indigo-500/10 blur-[50px] transition-all group-hover:bg-indigo-500/20" />
           
@@ -379,81 +458,6 @@ export function DonationSection() {
               <ArrowRightLeft size={16} />
             </button>
           </div>
-        </div>
-      </div>
-
-      {/* Recent Transactions Full Width Section */}
-      <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl shadow-sm overflow-hidden transition-all hover:shadow-md">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border/50 bg-muted/20 px-6 py-5 gap-4">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2.5">
-            <div className="p-1.5 rounded-md bg-primary/10">
-              <History size={14} className="text-primary" />
-            </div>
-            Recent Transactions
-          </h3>
-          <button className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-primary hover:text-primary/80 transition-colors bg-primary/5 px-3 py-1.5 rounded-lg border border-primary/10 hover:bg-primary/10">
-            <Download size={14} /> Export CSV
-          </button>
-        </div>
-        
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-muted/5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground border-b border-border/50">
-              <tr>
-                <th className="px-6 py-4 text-left whitespace-nowrap">Transaction ID</th>
-                <th className="px-6 py-4 text-left whitespace-nowrap">Donor</th>
-                <th className="px-6 py-4 text-left whitespace-nowrap">Fund Category</th>
-                <th className="px-6 py-4 text-right whitespace-nowrap">Amount</th>
-                <th className="px-6 py-4 text-center whitespace-nowrap">Method</th>
-                <th className="px-6 py-4 text-right whitespace-nowrap">Time</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border/50">
-              {recentTransactions.map((trx) => (
-                <tr key={trx.id} className="transition-colors hover:bg-muted/30 group">
-                  <td className="px-6 py-4.5 font-mono text-xs text-muted-foreground whitespace-nowrap">
-                    {trx.id}
-                  </td>
-                  <td className="px-6 py-4.5 whitespace-nowrap">
-                    <div className="flex items-center gap-3">
-                      <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                        trx.donor === "Anonymous" 
-                          ? "bg-muted text-muted-foreground" 
-                          : "bg-primary/10 text-primary"
-                      }`}>
-                        {trx.donor === "Anonymous" ? "?" : trx.donor.charAt(0)}
-                      </div>
-                      <span className="font-bold text-foreground">{trx.donor}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4.5 text-muted-foreground whitespace-nowrap">
-                    <span className="inline-flex items-center rounded-lg bg-surface border border-border/50 px-2.5 py-1 text-[11px] font-bold shadow-sm">
-                      {trx.fund}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4.5 text-right font-black tabular-nums text-foreground whitespace-nowrap">
-                    ₹{trx.amount.toLocaleString()}
-                  </td>
-                  <td className="px-6 py-4.5 text-center whitespace-nowrap">
-                    <span
-                      className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${
-                        trx.type === "UPI" 
-                          ? "bg-info/10 text-info border border-info/20" 
-                          : trx.type === "Cash" 
-                            ? "bg-amber-500/10 text-amber-600 border border-amber-500/20" 
-                            : "bg-emerald/10 text-emerald border border-emerald/20"
-                      }`}
-                    >
-                      {trx.type}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4.5 text-right text-xs font-medium text-muted-foreground whitespace-nowrap group-hover:text-foreground transition-colors">
-                    {trx.time}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
         </div>
       </div>
     </div>
