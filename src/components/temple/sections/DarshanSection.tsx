@@ -113,8 +113,8 @@ export function DarshanSection() {
         <div className="lg:col-span-2 rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md h-full">
           <div className="mb-8 flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-extrabold text-foreground tracking-tight">Hourly Entry Flow</h3>
-              <p className="mt-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+              <h3 className="text-sm font-extrabold text-foreground tracking-tight font-montserrat">Hourly Entry Flow</h3>
+              <p className="mt-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground font-montserrat">
                 Devotees processed by ticket tier
               </p>
             </div>
