@@ -75,25 +75,30 @@ export function StaffSection() {
         <StatCard
           icon={Users}
           label="Total Assigned"
-          value={60}
+          value={STAFF.length}
           color="text-indigo-600"
           bgTint="bg-indigo-50 text-indigo-600 border border-indigo-100"
         />
       </div>
-      <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-        <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm transition-shadow hover:shadow-md relative flex flex-col">
-          <div className="mb-4 flex items-center justify-between">
-            <div className="font-bold text-lg text-foreground tracking-tight">Staff Positions — Temple Floor</div>
-            <div className="flex gap-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+      <div className="grid gap-8 lg:grid-cols-[1.5fr_1fr]">
+        <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md relative flex flex-col h-full">
+          <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 className="text-sm font-extrabold text-foreground tracking-tight">Staff Positions — Temple Floor</h3>
+              <p className="mt-1.5 text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                Live location of volunteer and security staff
+              </p>
+            </div>
+            <div className="flex gap-4 text-xs font-semibold uppercase tracking-widest text-muted-foreground bg-surface/50 p-2 rounded-xl border border-border/50 backdrop-blur-md">
               <span className="flex items-center gap-2">
-                <span className="relative flex h-2.5 w-2.5">
+                <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald"></span>
                 </span>
-                Active Patrol
+                Active
               </span>
               <span className="flex items-center gap-2">
-                <div className="h-2.5 w-2.5 rounded-full bg-status-busy" /> Break/Stationary
+                <div className="h-2 w-2 rounded-full bg-status-busy" /> Break
               </span>
             </div>
           </div>
@@ -165,7 +170,7 @@ export function StaffSection() {
             </svg>
           </div>
           {selected !== null && STAFF[selected] && (
-            <div className="mt-3 flex items-center justify-between rounded-xl border border-info/30 bg-info/5 p-8 shadow-sm">
+            <div className="mt-6 flex items-center justify-between rounded-2xl border border-info/30 bg-info/5 p-6 shadow-sm backdrop-blur-sm">
               <div>
                 <div className="font-bold text-foreground text-sm">
                   {STAFF[selected].name}
@@ -187,9 +192,16 @@ export function StaffSection() {
           )}
         </div>
         {/* Quick Actions */}
-        <div className="rounded-3xl border border-border/40 bg-white p-6 lg:p-8 shadow-sm transition-shadow hover:shadow-md flex flex-col">
-          <div className="mb-2 font-semibold text-foreground">Quick Actions</div>
-          <div className="space-y-2">
+        <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 lg:p-8 shadow-sm transition-all hover:shadow-md flex flex-col h-full">
+          <div className="mb-8">
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2.5">
+              <div className="p-1.5 rounded-md bg-primary/10">
+                <Megaphone size={14} className="text-primary" />
+              </div>
+              Quick Actions
+            </h3>
+          </div>
+          <div className="space-y-3">
             {[
               { i: Megaphone, l: "Broadcast Message to All Staff" },
               { i: UserPlus, l: "Add Volunteer" },
@@ -199,9 +211,11 @@ export function StaffSection() {
               <button
                 key={l}
                 onClick={() => toast.success(`${l} triggered`)}
-                className={`flex w-full items-center gap-2.5 rounded-xl border border-border bg-surface px-3 py-2 text-left text-sm font-normal transition-colors hover:bg-muted ${critical ? "text-danger" : "text-foreground"}`}
+                className={`group flex w-full items-center gap-3 rounded-2xl border border-white/60 bg-white/40 px-4 py-3.5 text-left text-sm font-bold transition-all hover:-translate-y-0.5 hover:shadow-sm ${critical ? "text-danger hover:border-danger/30 hover:bg-danger/5" : "text-foreground hover:border-primary/20 hover:bg-primary/5"}`}
               >
-                <Icon size={14} className={critical ? "text-danger" : "text-muted-foreground"} />
+                <div className={`p-2 rounded-xl transition-colors ${critical ? "bg-danger/10 text-danger group-hover:bg-danger/20" : "bg-muted text-muted-foreground group-hover:bg-primary/10 group-hover:text-primary"}`}>
+                  <Icon size={16} />
+                </div>
                 {l}
               </button>
             ))}
@@ -209,44 +223,58 @@ export function StaffSection() {
         </div>
       </div>
       {/* Roster Table */}
-      <div className="rounded-3xl border border-border/40 bg-white shadow-sm overflow-hidden transition-shadow hover:shadow-md">
-        <div className="border-b border-border/40 bg-muted/10 px-6 py-5 font-semibold text-xs uppercase tracking-wider text-muted-foreground">
-          Volunteer Roster
+      <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl shadow-sm overflow-hidden transition-all hover:shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border/50 bg-muted/20 px-6 py-5 gap-4">
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2.5">
+            <div className="p-1.5 rounded-md bg-primary/10">
+              <Users size={14} className="text-primary" />
+            </div>
+            Volunteer Roster
+          </h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-muted/5 text-[9px] font-semibold uppercase tracking-widest text-muted-foreground">
+            <thead className="bg-primary/5 text-[10px] font-bold uppercase tracking-widest text-primary border-y border-primary/20">
               <tr>
-                {["ID", "Name", "Role", "Zone", "Status", "Since", "Action"].map((h) => (
-                  <th key={h} className="px-6 py-3 text-left">
-                    {h}
-                  </th>
-                ))}
+                <th className="px-6 py-4 text-left whitespace-nowrap">ID</th>
+                <th className="px-6 py-4 text-left whitespace-nowrap">Name</th>
+                <th className="px-6 py-4 text-left whitespace-nowrap">Role</th>
+                <th className="px-6 py-4 text-left whitespace-nowrap">Zone</th>
+                <th className="px-6 py-4 text-center whitespace-nowrap">Status</th>
+                <th className="px-6 py-4 text-right whitespace-nowrap">Since</th>
+                <th className="px-6 py-4 text-right whitespace-nowrap">Action</th>
               </tr>
             </thead>
-            <tbody className="">
+            <tbody className="divide-y divide-border/50">
               {STAFF.map((s) => {
                 const b = statusBadge(s.status);
                 return (
-                  <tr key={s.id} className="transition-colors hover:bg-surface/50">
-                    <td className="px-6 py-3 font-mono text-xs text-muted-foreground">{s.id}</td>
-                    <td className="px-6 py-3 font-semibold text-xs text-foreground">{s.name}</td>
-                    <td className="px-6 py-3 font-medium text-xs text-muted-foreground">{s.role}</td>
-                    <td className="px-6 py-3 font-normal text-muted-foreground">{s.zone}</td>
-                    <td className="px-6 py-3">
+                  <tr key={s.id} className="transition-colors hover:bg-muted/30 group">
+                    <td className="px-6 py-4.5 font-mono text-xs text-muted-foreground whitespace-nowrap">{s.id}</td>
+                    <td className="px-6 py-4.5 whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                          {s.name.charAt(0)}
+                        </div>
+                        <span className="font-bold text-foreground">{s.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4.5 font-bold text-xs text-muted-foreground whitespace-nowrap">{s.role}</td>
+                    <td className="px-6 py-4.5 text-muted-foreground whitespace-nowrap">{s.zone}</td>
+                    <td className="px-6 py-4.5 text-center whitespace-nowrap">
                       <span
-                        className={`inline-flex items-center rounded-xl border px-2.5 py-0.5 text-[9px] font-semibold ${b.cls}`}
+                        className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider ${b.cls}`}
                       >
                         {b.label}
                       </span>
                     </td>
-                    <td className="px-6 py-3 font-mono text-xs text-muted-foreground">{s.since}</td>
-                    <td className="px-6 py-3">
-                      <div className="flex gap-2">
+                    <td className="px-6 py-4.5 font-mono text-xs text-right text-muted-foreground whitespace-nowrap">{s.since}</td>
+                    <td className="px-6 py-4.5 whitespace-nowrap">
+                      <div className="flex justify-end gap-2 transition-opacity">
                         {s.status === "break" ? (
                           <button
                             onClick={() => toast(`${s.name} called back`)}
-                            className="rounded-xl bg-status-busy/10 border border-status-busy/20 px-3 py-1.5 text-xs font-semibold text-status-busy transition-colors hover:bg-status-busy/20"
+                            className="rounded-lg bg-status-busy/10 border border-status-busy/20 px-3 py-1.5 text-[10px] uppercase tracking-wider font-bold text-status-busy transition-colors hover:bg-status-busy/20"
                           >
                             Call Back
                           </button>
@@ -254,13 +282,13 @@ export function StaffSection() {
                           <>
                             <button
                               onClick={() => toast(`Message sent to ${s.name}`)}
-                              className="rounded-xl border border-border bg-surface px-3 py-1.5 text-xs font-bold text-foreground transition-colors hover:bg-muted"
+                              className="rounded-lg border border-border/50 bg-white px-3 py-1.5 text-[10px] uppercase tracking-wider font-bold text-foreground transition-colors hover:bg-muted"
                             >
                               Message
                             </button>
                             <button
                               onClick={() => toast(`Reassign ${s.name}`)}
-                              className="rounded-xl border border-border bg-surface px-3 py-1.5 text-xs font-bold text-foreground transition-colors hover:bg-muted"
+                              className="rounded-lg border border-border/50 bg-white px-3 py-1.5 text-[10px] uppercase tracking-wider font-bold text-foreground transition-colors hover:bg-muted"
                             >
                               Reassign
                             </button>

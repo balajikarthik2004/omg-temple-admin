@@ -32,6 +32,7 @@ import { useJitter, useLiveClock } from "@/lib/use-live";
 import type { Temple } from "@/lib/temple-data";
 import { StatCard } from "../ui/StatCard";
 const footfall = [
+  { t: "5 AM", v: 300 },
   { t: "6 AM", v: 800 },
   { t: "7 AM", v: 2400 },
   { t: "8 AM", v: 6800 },
@@ -215,9 +216,9 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           {/* Right Column */}
           <div className="flex flex-col justify-center">
             {[
-              { label: "Today's total Devotees", value: "38,240" },
-              { label: "Peak (10:30 AM)", value: "15,820" },
-              { label: "Darshan Flow Rate", value: "1,250 / hr" },
+              { label: "Today's total Devotees", value: "76,480" },
+              { label: "Peak (10:30 AM)", value: "31,640" },
+              { label: "Darshan Flow Rate", value: "2,500 / hr" },
               { label: "Next Peak (5:00 PM - 6:30 PM)", value: "18,500 Expected" },
             ].map((stat, i) => (
               <div
@@ -246,7 +247,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           sub="Common Darshan active"
           color="text-foreground"
           trend={{ up: true, text: "+8m" }}
-          bgTint="bg-saffron/10"
+          bgTint="bg-saffron/10 text-saffron border border-saffron/20"
         />
         <StatCard
           icon={Users}
@@ -255,7 +256,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           valueSuffix="%"
           sub={`${inside.toLocaleString("en-IN")} inside`}
           color="text-status-busy"
-          bgTint="bg-status-busy/10"
+          bgTint="bg-status-busy/10 text-status-busy border border-status-busy/20"
         />
         <StatCard
           icon={Activity}
@@ -263,7 +264,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           value="48 / 60"
           sub="12 on break"
           color="text-info"
-          bgTint="bg-info/10"
+          bgTint="bg-info/10 text-info border border-info/20"
         />
         <StatCard
           icon={Car}
@@ -272,7 +273,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           valueSuffix="%"
           sub={`${Math.round(parking * 15)} slots used`}
           color="text-status-busy"
-          bgTint="bg-gold/10"
+          bgTint="bg-gold/10 text-gold border border-gold/20"
         />
         <StatCard
           icon={Gauge}
@@ -280,7 +281,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           value="BUSY"
           sub="Since 9:15 AM"
           color="text-status-crowded"
-          bgTint="bg-status-crowded/10"
+          bgTint="bg-status-crowded/10 text-status-crowded border border-status-crowded/20"
         />
       </div>
       {/* AI Smart Suggestions - Card View */}
