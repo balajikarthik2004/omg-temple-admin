@@ -64,7 +64,6 @@ const forecast = [
 ];
 
 export function HeatmapSection({ temple }: { temple?: any }) {
-  const [realtime, setRealtime] = useState(true);
   const [playing, setPlaying] = useState(true);
   const [fullScreen, setFullScreen] = useState(false);
 
@@ -81,7 +80,7 @@ export function HeatmapSection({ temple }: { temple?: any }) {
   );
 
   useEffect(() => {
-    if (!realtime || !playing) return;
+    if (!playing) return;
     const t = setInterval(() => {
       setZoneData((prev) =>
         prev.map((z) => {
@@ -92,7 +91,7 @@ export function HeatmapSection({ temple }: { temple?: any }) {
       );
     }, 2000);
     return () => clearInterval(t);
-  }, [realtime, playing]);
+  }, [playing]);
 
   return (
     <div className="space-y-8">
@@ -137,24 +136,14 @@ export function HeatmapSection({ temple }: { temple?: any }) {
 
       <div className="grid gap-8 xl:grid-cols-[1fr_340px]">
         {/* Heatmap Map Area */}
-        <div className="flex flex-col gap-4 rounded-3xl bg-white p-4 lg:p-6 border border-border/40 shadow-sm transition-shadow hover:shadow-md">
-          <div className="flex flex-wrap items-center justify-between gap-8">
-            <div className="flex items-center gap-1 p-1 bg-muted/20 rounded-xl border border-border/40">
-              <button
-                onClick={() => setRealtime(true)}
-                className={`rounded-lg px-5 py-2 text-[11px] font-bold transition-all uppercase tracking-widest ${realtime ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-muted/30"}`}
-              >
-                Real-time
-              </button>
-              <button
-                onClick={() => setRealtime(false)}
-                className={`rounded-lg px-5 py-2 text-[11px] font-bold transition-all uppercase tracking-widest ${!realtime ? "bg-primary text-white shadow-sm" : "text-muted-foreground hover:text-foreground hover:bg-muted/30"}`}
-              >
-                Historical
-              </button>
+        <div className="flex flex-col gap-4 rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-4 lg:p-6 shadow-sm transition-all hover:shadow-md h-full">
+          <div className="flex flex-wrap items-center justify-between gap-8 mb-2">
+            <div className="flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1.5 border border-primary/20">
+              <span className="h-2 w-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_var(--primary)]" />
+              <span className="text-[10px] font-extrabold text-primary uppercase tracking-widest">LIVE TRACKING</span>
             </div>
             <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
-              {realtime ? "Live: OMG Temple Complex" : "Replaying: Last 6 Hours"}
+              Live: OMG Temple Complex
             </div>
           </div>
 
@@ -276,7 +265,7 @@ export function HeatmapSection({ temple }: { temple?: any }) {
 
         {/* Analytics Sidebar */}
         <div className="flex flex-col gap-6">
-          <div className="rounded-3xl border border-border/40 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
+          <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 shadow-sm transition-all hover:shadow-md">
             <div className="mb-1 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
               AI Crowd Forecast (Next 2 Hours)
             </div>
@@ -329,7 +318,7 @@ export function HeatmapSection({ temple }: { temple?: any }) {
             </div>
           </div>
 
-          <div className="rounded-3xl border border-border/40 bg-white p-6 shadow-sm flex-1 transition-shadow hover:shadow-md">
+          <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl p-6 shadow-sm flex-1 transition-all hover:shadow-md">
             <div className="mb-4 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Status Legend</div>
             <div className="space-y-4 text-[11px] font-bold text-foreground uppercase tracking-widest">
               {[
@@ -355,56 +344,60 @@ export function HeatmapSection({ temple }: { temple?: any }) {
         </div>
       </div>
 
-      <div className="rounded-3xl border border-border/40 bg-white shadow-sm overflow-hidden transition-shadow hover:shadow-md">
-        <div className="border-b border-border/40 bg-muted/10 px-6 py-5 font-bold text-sm uppercase tracking-wider text-muted-foreground">
-          Zone Breakdown
+      <div className="rounded-3xl border border-border/50 bg-white/60 backdrop-blur-xl shadow-sm overflow-hidden transition-all hover:shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-border/50 bg-muted/20 px-6 py-5 gap-4">
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground flex items-center gap-2.5">
+            <div className="p-1.5 rounded-md bg-primary/10">
+              <Activity size={14} className="text-primary" />
+            </div>
+            Zone Breakdown
+          </h3>
         </div>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead className="bg-muted/5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
+            <thead className="bg-primary/5 text-[10px] font-bold uppercase tracking-widest text-primary border-y border-primary/20">
               <tr>
-                {["Zone", "Capacity", "Current", "% Full", "Status", "Recommended Action"].map(
-                  (h) => (
-                    <th key={h} className="px-6 py-3 text-left">
-                      {h}
-                    </th>
-                  ),
-                )}
+                <th className="px-6 py-4 text-left whitespace-nowrap">Zone</th>
+                <th className="px-6 py-4 text-right whitespace-nowrap">Capacity</th>
+                <th className="px-6 py-4 text-right whitespace-nowrap">Current</th>
+                <th className="px-6 py-4 text-left whitespace-nowrap">% Full</th>
+                <th className="px-6 py-4 text-center whitespace-nowrap">Status</th>
+                <th className="px-6 py-4 text-left whitespace-nowrap">Recommended Action</th>
               </tr>
             </thead>
-            <tbody className="">
+            <tbody className="divide-y divide-border/50">
               {ZONES.map((z) => {
                 const pct = z.capacity ? Math.round((z.current / z.capacity) * 100) : 0;
                 return (
-                  <tr key={z.name} className="transition-colors hover:bg-muted/10 border-b border-border/40 last:border-0">
-                    <td className="px-6 py-4 font-extrabold text-[13px] text-foreground">{z.name}</td>
-                    <td className="px-6 py-4 tabular-nums font-bold text-[11px] text-muted-foreground uppercase tracking-widest">
+                  <tr key={z.name} className="transition-colors hover:bg-muted/30 group">
+                    <td className="px-6 py-4.5 font-extrabold text-[13px] text-foreground whitespace-nowrap">{z.name}</td>
+                    <td className="px-6 py-4.5 tabular-nums font-bold text-[11px] text-right text-muted-foreground uppercase tracking-widest whitespace-nowrap">
                       {z.capacity || "—"}
                     </td>
-                    <td className="px-6 py-4 tabular-nums font-extrabold text-[15px] text-foreground">
+                    <td className="px-6 py-4.5 tabular-nums font-extrabold text-[15px] text-right text-foreground whitespace-nowrap">
                       {z.current || "Clear"}
                     </td>
-                    <td className="px-6 py-4 tabular-nums">
-                      <div className="flex items-center gap-2">
-                        <div className="w-16 h-1.5 rounded-full bg-muted/50 overflow-hidden">
+                    <td className="px-6 py-4.5 tabular-nums whitespace-nowrap">
+                      <div className="flex items-center gap-3">
+                        <div className="w-16 h-2 rounded-full bg-muted/50 overflow-hidden shadow-inner">
                           <div
-                            className="h-full rounded-full"
+                            className="h-full rounded-full transition-all duration-1000"
                             style={{ width: `${pct}%`, background: densityColor(pct) }}
                           />
                         </div>
-                        <span className="text-[10px] font-bold text-muted-foreground">
+                        <span className="text-[11px] font-extrabold text-foreground tracking-wide">
                           {z.capacity ? `${pct}%` : "—"}
                         </span>
                       </div>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4.5 text-center whitespace-nowrap">
                       <span
                         className={`inline-flex items-center rounded-full border px-2.5 py-1 text-[10px] font-black tracking-wider uppercase ${statusColor(z.status)}`}
                       >
                         {z.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-[13px] font-bold text-muted-foreground/90">
+                    <td className="px-6 py-4.5 text-[13px] font-bold text-muted-foreground/90 whitespace-nowrap">
                       {z.action}
                     </td>
                   </tr>

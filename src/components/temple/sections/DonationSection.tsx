@@ -33,6 +33,7 @@ const donationTrendWeekly = [
 ];
 
 const donationTrendDaily = [
+  { time: "5 AM", amount: 1500 },
   { time: "6 AM", amount: 5000 },
   { time: "9 AM", amount: 12000 },
   { time: "12 PM", amount: 28000 },
