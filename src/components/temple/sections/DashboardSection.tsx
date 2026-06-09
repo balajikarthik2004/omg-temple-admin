@@ -141,15 +141,7 @@ const lanes = [
     status: "ACTIVE",
     bgTint: "bg-gold/10",
   },
-  {
-    name: "Online Pre-booked",
-    waiting: 12,
-    max: 200,
-    wait: 5,
-    vols: 1,
-    status: "LIMITED",
-    bgTint: "bg-primary/5",
-  },
+
 ];
 
 export function DashboardSection({ temple }: { temple: Temple }) {
@@ -508,7 +500,7 @@ export function DashboardSection({ temple }: { temple: Temple }) {
           <Timer size={18} className="text-primary" /> Live Queue Management
         </div>
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {lanes.map((l) => {
             const pct = l.waiting / l.max;
             return (
