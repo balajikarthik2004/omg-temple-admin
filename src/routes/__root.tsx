@@ -59,7 +59,9 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
-export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+import { AuthContextType } from "../hooks/use-auth";
+
+export const Route = createRootRouteWithContext<{ queryClient: QueryClient; auth: AuthContextType }>()({
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,

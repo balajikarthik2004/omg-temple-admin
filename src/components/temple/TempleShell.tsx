@@ -25,6 +25,8 @@ import {
 import { Toaster } from "sonner";
 import { NAV_ITEMS, TEMPLES, type SectionId } from "@/lib/temple-data";
 import { useLiveClock } from "@/lib/use-live";
+import { useNavigate } from "@tanstack/react-router";
+import { useAuth } from "@/hooks/use-auth";
 import { DashboardSection } from "./sections/DashboardSection";
 import { HeatmapSection } from "./sections/HeatmapSection";
 import { CCTVSection } from "./sections/CCTVSection";
@@ -58,6 +60,8 @@ const ICONS: Record<string, React.ComponentType<{ className?: string; size?: num
 };
 
 export function TempleShell() {
+  const auth = useAuth();
+  const navigate = useNavigate();
   const [sidebarExpanded, setSidebarExpanded] = useState(true);
   const [section, setSection] = useState<SectionId>(() => {
     if (typeof window !== "undefined") {
@@ -189,8 +193,8 @@ export function TempleShell() {
                   key={item.id}
                   onClick={() => setSection(item.id)}
                   className={`group relative flex w-full items-center ${sidebarExpanded ? "p-1.5 pr-4" : "p-1.5 justify-center"} rounded-2xl text-[14px] transition-all duration-400 border ${active
-                      ? "bg-white/10 backdrop-blur-xl border-white/20 border-t-white/30 border-l-white/30 text-white shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
-                      : "border-transparent text-indigo-100/70 hover:bg-white/[0.06] hover:text-white"
+                    ? "bg-white/10 backdrop-blur-xl border-white/20 border-t-white/30 border-l-white/30 text-white shadow-[0_8px_32px_rgba(0,0,0,0.2)]"
+                    : "border-transparent text-indigo-100/70 hover:bg-white/[0.06] hover:text-white"
                     }`}
                   title={!sidebarExpanded ? item.label : undefined}
                 >
@@ -201,8 +205,8 @@ export function TempleShell() {
 
                   {/* Icon Container */}
                   <div className={`flex items-center justify-center shrink-0 h-[42px] w-[42px] rounded-[14px] transition-colors duration-400 ${active
-                      ? "bg-white/15 ml-3 shadow-inner"
-                      : "bg-white/5 group-hover:bg-white/10"
+                    ? "bg-white/15 ml-3 shadow-inner"
+                    : "bg-white/5 group-hover:bg-white/10"
                     }`}>
                     <Icon
                       size={18}
@@ -248,7 +252,13 @@ export function TempleShell() {
             </div>
 
             {/* Logout Button */}
-            {/* <button className={`flex items-center ${sidebarExpanded ? "gap-3.5 px-3" : "justify-center"} cursor-pointer transition-all duration-300 text-white hover:text-white/80 group`}>
+            <button 
+              onClick={() => {
+                auth.logout();
+                navigate({ to: '/login' });
+              }}
+              className={`flex items-center ${sidebarExpanded ? "gap-3.5 px-3" : "justify-center"} cursor-pointer transition-all duration-300 text-white hover:text-white/80 group`}
+            >
                <LogOut
                  size={20}
                  strokeWidth={2}
@@ -257,7 +267,7 @@ export function TempleShell() {
                {sidebarExpanded && (
                  <span className="font-bold text-[15px] tracking-wide">Logout</span>
                )}
-            </button> */}
+            </button>
           </div>
         </aside>
 
@@ -446,7 +456,7 @@ export function TempleShell() {
               </button>
               {bellOpen && (
                 <div className="absolute right-0 top-full z-50 mt-2 w-80 overflow-hidden rounded-2xl shadow-xl bg-white border border-border/50">
-                  <div className="px-5 py-3 text-[11px] font-bold tracking-tight bg-muted/40 border-b border-border/50">
+                  <div className="px-5 py-3 text-[11px] font-bold tracking-tight bg-muted/40 border-b border-border/50 text-white">
                     Notifications
                   </div>
                   {[
@@ -495,7 +505,7 @@ export function TempleShell() {
             </div>
           </div>
         </header>
-        
+
         <main
           className={`flex-1 pt-16 transition-all duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)] ${sidebarExpanded ? "ml-[260px]" : "ml-[80px]"}`}
         >
